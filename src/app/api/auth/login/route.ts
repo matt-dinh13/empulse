@@ -3,6 +3,10 @@ import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { generateTokens } from '@/lib/auth'
 
+// Force Node.js runtime (not Edge) for bcryptjs and Prisma compatibility
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json()
@@ -74,8 +78,13 @@ export async function POST(request: NextRequest) {
         })
     } catch (error) {
         console.error('Login error:', error)
+        // Return detailed error in development for debugging
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
         return NextResponse.json(
-            { error: 'Internal server error' },
+            {
+                error: 'Internal server error',
+                details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+            },
             { status: 500 }
         )
     }
