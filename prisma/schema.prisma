@@ -1,0 +1,350 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================
+// REGIONS: VN / CZ configuration
+// ============================================
+model Region {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique @db.VarChar(10)
+  name      String   @db.VarChar(100)
+  currency  String   @db.VarChar(10)
+  timezone  String   @db.VarChar(50)
+  locale    String   @db.VarChar(10)
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  teams         Team[]
+  users         User[]
+  rewardCatalog RewardCatalog[]
+
+  @@map("regions")
+}
+
+// ============================================
+// TEAMS: Department/Team structure
+// ============================================
+model Team {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(100)
+  regionId  Int      @map("region_id")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  region Region @relation(fields: [regionId], references: [id])
+  users  User[]
+
+  @@map("teams")
+}
+
+// ============================================
+// USERS: Employee accounts
+// ============================================
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique @db.VarChar(255)
+  passwordHash String    @map("password_hash") @db.VarChar(255)
+  fullName     String    @map("full_name") @db.VarChar(255)
+  employeeId   String?   @unique @map("employee_id") @db.VarChar(50)
+  teamId       Int?      @map("team_id")
+  managerId    Int?      @map("manager_id")
+  regionId     Int       @map("region_id")
+  role         String    @default("employee") @db.VarChar(20)
+  isActive     Boolean   @default(true) @map("is_active")
+  lastLoginAt  DateTime? @map("last_login_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  team    Team?   @relation(fields: [teamId], references: [id])
+  manager User?   @relation("ManagerRelation", fields: [managerId], references: [id])
+  region  Region  @relation(fields: [regionId], references: [id])
+
+  // Self-relations
+  subordinates User[] @relation("ManagerRelation")
+
+  // Wallets
+  quotaWallet  QuotaWallet?
+  rewardWallet RewardWallet?
+
+  // Votes
+  votesSent     Vote[]         @relation("VotesSent")
+  votesReceived Vote[]         @relation("VotesReceived")
+  voteTracking  VoteTracking[] @relation("VoteTrackingSender")
+
+  // Orders
+  orders         RedemptionOrder[] @relation("UserOrders")
+  approvedOrders RedemptionOrder[] @relation("ApprovedBy")
+
+  // System
+  settingsUpdated SystemSetting[]
+  auditLogs       AuditLog[]
+  notifications   NotificationLog[]
+
+  @@index([teamId])
+  @@index([managerId])
+  @@index([regionId])
+  @@map("users")
+}
+
+// ============================================
+// QUOTA_WALLETS: Monthly voting quota
+// ============================================
+model QuotaWallet {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique @map("user_id")
+  balance     Int      @default(0)
+  periodStart DateTime @map("period_start") @db.Date
+  periodEnd   DateTime @map("period_end") @db.Date
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("quota_wallets")
+}
+
+// ============================================
+// REWARD_WALLETS: Accumulated points for redemption
+// ============================================
+model RewardWallet {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @unique @map("user_id")
+  balance      Int      @default(0)
+  quarterStart DateTime @map("quarter_start") @db.Date
+  quarterEnd   DateTime @map("quarter_end") @db.Date
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("reward_wallets")
+}
+
+// ============================================
+// VOTES: Vote transactions
+// ============================================
+model Vote {
+  id            Int      @id @default(autoincrement())
+  senderId      Int      @map("sender_id")
+  receiverId    Int      @map("receiver_id")
+  message       String   @db.Text
+  pointsAwarded Int      @default(10) @map("points_awarded")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  sender   User @relation("VotesSent", fields: [senderId], references: [id])
+  receiver User @relation("VotesReceived", fields: [receiverId], references: [id])
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([createdAt])
+  @@map("votes")
+}
+
+// ============================================
+// VOTE_TRACKING: Track vote limits per user pair
+// ============================================
+model VoteTracking {
+  id            Int       @id @default(autoincrement())
+  senderId      Int       @map("sender_id")
+  receiverId    Int       @map("receiver_id")
+  monthYear     String    @map("month_year") @db.VarChar(7)
+  voteCount     Int       @default(0) @map("vote_count")
+  lastVoteAt    DateTime? @map("last_vote_at")
+  cooldownUntil DateTime? @map("cooldown_until")
+
+  sender User @relation("VoteTrackingSender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@unique([senderId, receiverId, monthYear])
+  @@map("vote_tracking")
+}
+
+// ============================================
+// WEEKLY_VOTE_TRACKING: Track weekly limit
+// ============================================
+model WeeklyVoteTracking {
+  id        Int    @id @default(autoincrement())
+  userId    Int    @map("user_id")
+  weekYear  String @map("week_year") @db.VarChar(10)
+  voteCount Int    @default(0) @map("vote_count")
+
+  @@unique([userId, weekYear])
+  @@map("weekly_vote_tracking")
+}
+
+// ============================================
+// REWARD_CATALOG: Available rewards per region
+// ============================================
+model RewardCatalog {
+  id             Int      @id @default(autoincrement())
+  regionId       Int      @map("region_id")
+  name           String   @db.VarChar(255)
+  description    String?  @db.Text
+  pointsRequired Int      @map("points_required")
+  displayValue   String?  @map("display_value") @db.VarChar(50)
+  rewardType     String   @map("reward_type") @db.VarChar(20)
+  isActive       Boolean  @default(true) @map("is_active")
+  sortOrder      Int      @default(0) @map("sort_order")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  region            Region              @relation(fields: [regionId], references: [id])
+  voucherStock      VoucherStock[]
+  physicalInventory PhysicalInventory?
+  orders            RedemptionOrder[]
+
+  @@map("reward_catalog")
+}
+
+// ============================================
+// VOUCHER_STOCK: Actual voucher codes (VN)
+// ============================================
+model VoucherStock {
+  id                Int       @id @default(autoincrement())
+  catalogId         Int       @map("catalog_id")
+  voucherCode       String    @map("voucher_code") @db.VarChar(255)
+  expiryDate        DateTime? @map("expiry_date") @db.Date
+  status            String    @default("available") @db.VarChar(20)
+  assignedToOrderId Int?      @map("assigned_to_order_id")
+  batchId           String?   @map("batch_id") @db.VarChar(50)
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  catalog RewardCatalog     @relation(fields: [catalogId], references: [id], onDelete: Cascade)
+  order   RedemptionOrder?  @relation(fields: [assignedToOrderId], references: [id])
+
+  @@unique([catalogId, voucherCode])
+  @@index([catalogId, status])
+  @@map("voucher_stock")
+}
+
+// ============================================
+// PHYSICAL_INVENTORY: Stock count for CZ items
+// ============================================
+model PhysicalInventory {
+  id                Int      @id @default(autoincrement())
+  catalogId         Int      @unique @map("catalog_id")
+  stockCount        Int      @default(0) @map("stock_count")
+  lowStockThreshold Int      @default(10) @map("low_stock_threshold")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  catalog RewardCatalog @relation(fields: [catalogId], references: [id], onDelete: Cascade)
+
+  @@map("physical_inventory")
+}
+
+// ============================================
+// REDEMPTION_ORDERS: Order records
+// ============================================
+model RedemptionOrder {
+  id            Int       @id @default(autoincrement())
+  userId        Int       @map("user_id")
+  catalogId     Int       @map("catalog_id")
+  pointsSpent   Int       @map("points_spent")
+  status        String    @db.VarChar(30)
+  voucherId     Int?      @map("voucher_id")
+  queuePosition Int?      @map("queue_position")
+  expectedDate  DateTime? @map("expected_date") @db.Date
+  adminNotes    String?   @map("admin_notes") @db.Text
+  approvedBy    Int?      @map("approved_by")
+  approvedAt    DateTime? @map("approved_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  user         User            @relation("UserOrders", fields: [userId], references: [id])
+  catalog      RewardCatalog   @relation(fields: [catalogId], references: [id])
+  approver     User?           @relation("ApprovedBy", fields: [approvedBy], references: [id])
+  voucherStock VoucherStock[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([status, queuePosition])
+  @@map("redemption_orders")
+}
+
+// ============================================
+// SYSTEM_SETTINGS: Configurable parameters
+// ============================================
+model SystemSetting {
+  id           Int      @id @default(autoincrement())
+  settingKey   String   @unique @map("setting_key") @db.VarChar(100)
+  settingValue String   @map("setting_value") @db.Text
+  dataType     String   @map("data_type") @db.VarChar(20)
+  description  String?  @db.Text
+  updatedBy    Int?     @map("updated_by")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  updater User? @relation(fields: [updatedBy], references: [id])
+
+  @@map("system_settings")
+}
+
+// ============================================
+// NOTIFICATION_LOG: Track sent notifications
+// ============================================
+model NotificationLog {
+  id               Int       @id @default(autoincrement())
+  userId           Int?      @map("user_id")
+  notificationType String    @map("notification_type") @db.VarChar(50)
+  channel          String    @db.VarChar(20)
+  subject          String?   @db.VarChar(255)
+  contentPreview   String?   @map("content_preview") @db.Text
+  status           String    @db.VarChar(20)
+  sentAt           DateTime? @map("sent_at")
+  errorMessage     String?   @map("error_message") @db.Text
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@map("notification_log")
+}
+
+// ============================================
+// AUDIT_LOG: Immutable action history
+// ============================================
+model AuditLog {
+  id         BigInt   @id @default(autoincrement())
+  actorId    Int?     @map("actor_id")
+  action     String   @db.VarChar(100)
+  entityType String   @map("entity_type") @db.VarChar(50)
+  entityId   Int?     @map("entity_id")
+  oldValue   Json?    @map("old_value")
+  newValue   Json?    @map("new_value")
+  ipAddress  String?  @map("ip_address") @db.VarChar(45)
+  userAgent  String?  @map("user_agent") @db.Text
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  actor User? @relation(fields: [actorId], references: [id])
+
+  @@index([actorId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("audit_log")
+}
+
+// ============================================
+// SCHEDULED_JOB_LOG: Track cron job executions
+// ============================================
+model ScheduledJobLog {
+  id               Int       @id @default(autoincrement())
+  jobName          String    @map("job_name") @db.VarChar(100)
+  status           String    @db.VarChar(20)
+  startedAt        DateTime  @map("started_at")
+  completedAt      DateTime? @map("completed_at")
+  recordsProcessed Int?      @map("records_processed")
+  errorMessage     String?   @map("error_message") @db.Text
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  @@map("scheduled_job_log")
+}
