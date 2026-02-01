@@ -249,6 +249,7 @@ export default function HomePage() {
           line-height: 1.1;
           margin-bottom: 1.5rem;
           letter-spacing: -0.03em;
+          color: #fff;
         }
         .brand-color {
           color: #00D264;
@@ -367,9 +368,11 @@ export default function HomePage() {
         
         /* Quote */
         .image-break {
-          background: linear-gradient(135deg, #006ED2 0%, #004a94 100%);
+          background: #0a0a0a;
           padding: 5rem 2rem;
           text-align: center;
+          border-top: 3px solid #006ED2;
+          border-bottom: 3px solid #006ED2;
         }
         .image-break-content h2 {
           font-size: 2rem;
@@ -378,9 +381,10 @@ export default function HomePage() {
           max-width: 800px;
           margin: 0 auto 1rem;
           line-height: 1.4;
+          color: #fff;
         }
         .image-break-content p {
-          color: rgba(255,255,255,0.8);
+          color: rgba(255,255,255,0.6);
         }
         
         /* How It Works */
@@ -416,6 +420,7 @@ export default function HomePage() {
         .step-card h3 {
           font-size: 1.25rem;
           margin-bottom: 0.75rem;
+          color: #fff;
         }
         .step-card p {
           color: rgba(255,255,255,0.7);
@@ -462,24 +467,24 @@ export default function HomePage() {
         
         /* CTA */
         .cta-section {
-          background: linear-gradient(135deg, #00D264 0%, #00a050 100%);
+          background: #000;
           text-align: center;
           padding: 5rem 2rem;
         }
         .cta-section h2 {
           font-size: 2.5rem;
-          color: #000;
+          color: #fff;
           margin-bottom: 1rem;
         }
         .cta-section > div > p {
-          color: rgba(0,0,0,0.7);
+          color: rgba(255,255,255,0.7);
           font-size: 1.125rem;
           margin-bottom: 2rem;
         }
         .btn-cta {
           display: inline-block;
-          background: #000;
-          color: #fff;
+          background: #00D264;
+          color: #000;
           padding: 1rem 3rem;
           border-radius: 8px;
           font-weight: 700;
@@ -489,7 +494,7 @@ export default function HomePage() {
         }
         .btn-cta:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+          box-shadow: 0 8px 30px rgba(0,210,100,0.4);
         }
         .cta-note {
           margin-top: 1.5rem;
