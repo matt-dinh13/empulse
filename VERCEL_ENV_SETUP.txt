@@ -1,0 +1,43 @@
+[VERCEL ENVIRONMENT VARIABLES SETUP]
+
+Để hệ thống hoạt động, bạn cần vào Vercel Dashboard -> Settings -> Environment Variables và thêm các biến sau:
+
+--- FRONTEND & BACKEND ---
+VITE_API_URL=/api
+
+--- BACKEND (Lấy giá trị từ file backend/.env) ---
+
+1. DATABASE_URL
+   Giá trị: postgresql://postgres.xxxx:[PASSWORD]@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true
+   (Lưu ý: Dùng connection string "Transaction Mode" port 6543 nếu có, hoặc Session Mode port 5432)
+
+2. DIRECT_URL
+   Giá trị: postgresql://postgres.xxxx:[PASSWORD]@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres
+   (Bắt buộc: Đây là link trực tiếp port 5432 để Prisma chạy migration)
+
+3. JWT_SECRET
+   Giá trị: (Tự nghĩ ra một chuỗi dài ngẫu nhiên, ví dụ: my-super-secret-key-2026)
+
+4. SUPABASE_URL
+   Giá trị: https://xxxx.supabase.co
+
+5. SUPABASE_KEY
+   Giá trị: (Key anon public dài loằng ngoằng)
+
+---------------------------------------------------
+
+[SAU KHI CẤU HÌNH XONG]
+
+1. Redeploy lại dự án trên Vercel (Tab Deployments -> Redeploy).
+
+2. CHẠY SEED DATA (Quan trọng):
+   Vì Database trên Cloud đang trống trơn, bạn cần nạp dữ liệu mẫu (User admin, Settings...) từ máy local lên Cloud.
+
+   B1: Mở Terminal tại máy bạn:
+       cd backend
+   B2: Chắc chắn file backend/.env đang chứa thông tin kết nối tới SUPABASE (không phải local db).
+   B3: Chạy lệnh:
+       npm run seed
+
+   Kết quả: "✅ Seeding completed!"
+   Sau đó bạn mới có thể đăng nhập bằng admin@empulse.com / password123.
