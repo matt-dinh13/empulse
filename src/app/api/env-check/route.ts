@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 
 export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
     const dbUrl = process.env.DATABASE_URL || 'NOT SET'
@@ -21,13 +22,19 @@ export async function GET() {
         }
     }
 
+    const hasPgBouncer = dbUrl.includes('pgbouncer=true')
+
     return NextResponse.json({
         timestamp: new Date().toISOString(),
         DATABASE_URL: maskUrl(dbUrl),
         DIRECT_URL: maskUrl(directUrl),
-        expected: {
-            DATABASE_URL: '***@aws-1-ap-south-1.pooler.supabase.com:6543/***',
-            DIRECT_URL: '***@db.unxqqidmcjfcvmbzlnav.supabase.co:5432/***'
-        }
+        config: {
+            hasPgBouncerParam: hasPgBouncer,
+            isSupabasePooler: dbUrl.includes('pooler.supabase.com'),
+            nodeEnv: process.env.NODE_ENV
+        },
+        recommendation: !hasPgBouncer && dbUrl.includes('pooler.supabase.com')
+            ? 'WARNING: Supabase Transaction Pooler requires ?pgbouncer=true appended to DATABASE_URL'
+            : 'Config looks OK'
     })
 }

@@ -22,12 +22,21 @@ export async function GET() {
         const userCount = await prisma.user.count()
             ; (results.steps as string[]).push(`User count: ${userCount}`)
 
-        // Step 4: Try to find admin user
+        // Step 4: Try to find admin user (Read)
         const admin = await prisma.user.findFirst({
             where: { email: 'admin@empulse.com' },
             select: { id: true, email: true, fullName: true }
         })
-            ; (results.steps as string[]).push(`Admin found: ${admin ? 'yes' : 'no'}`)
+            ; (results.steps as string[]).push(`Admin found (Read): ${admin ? 'yes' : 'no'}`)
+
+        // Step 5: Try a Write operation (critical for Transaction Pooler test)
+        if (admin) {
+            await prisma.user.update({
+                where: { id: admin.id },
+                data: { updatedAt: new Date() }
+            })
+                ; (results.steps as string[]).push('Write operation (Update) successful')
+        }
 
         results.status = 'ok'
         results.admin = admin
