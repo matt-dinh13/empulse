@@ -1,11 +1,9 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 
 // --- Data ---
-
 const features = [
   { icon: '🎯', title: 'Meaningful Recognition', desc: 'Give props that actually matter. Personal messages make colleagues feel valued.' },
   { icon: '🌍', title: 'Cross-Border Teams', desc: 'Vietnam 🇻🇳 and Czech Republic 🇨🇿 working together? We handle the distance.' },
@@ -22,10 +20,10 @@ const steps = [
 ]
 
 const testimonials = [
-  { text: "EmPulse transformed our team culture. Everyone is more proactive in recognizing each other.", author: "Nguyen Minh Tuan", role: "Engineering Manager, VN" },
-  { text: "The cross-border feature is amazing. Our Czech and Vietnamese teams finally feel connected.", author: "Petra Nováková", role: "HR Director, CZ" },
+  { text: "EmPulse transformed our team culture. Everyone is more proactive in recognizing each other.", author: "Nguyen Minh Tuan", role: "Engineering Manager" },
+  { text: "The cross-border feature is amazing. Our Czech and Vietnamese teams finally feel connected.", author: "Petra Nováková", role: "HR Director" },
   { text: "ROI was clear within 3 months. Employee satisfaction up 32%.", author: "Tran Van Minh", role: "CEO, Embedit" },
-  { text: "Finally a tool that employees actually WANT to use!", author: "Le Thi Huong", role: "HR Manager, VN" },
+  { text: "Finally a tool that employees actually WANT to use!", author: "Le Thi Huong", role: "HR Manager" },
 ]
 
 // --- Components ---
@@ -38,55 +36,58 @@ const MobileMockup = () => {
   const [activeTab, setActiveTab] = useState(0)
 
   useEffect(() => {
-    const interval = setInterval(() => setActiveTab(prev => (prev + 1) % 3), 4000)
+    // Auto-rotate tabs
+    const interval = setInterval(() => {
+      setActiveTab(prev => (prev + 1) % 3)
+    }, 4000)
     return () => clearInterval(interval)
   }, [])
-
-  const screens = [
-    // Screen 1: Recognize
-    <div key="0" className="mockup-screen">
-      <div className="mockup-header">Send Appreciation</div>
-      <div className="mockup-body">
-        <div className="skeleton-avatar"></div>
-        <div className="skeleton-line w-3_4"></div>
-        <div className="skeleton-line w-1_2"></div>
-        <div className="mockup-input">Great job on the release! 🚀</div>
-        <div className="mockup-btn">Send Vote</div>
-      </div>
-    </div>,
-    // Screen 2: Earn
-    <div key="1" className="mockup-screen">
-      <div className="mockup-header">You Earned a Badge!</div>
-      <div className="mockup-body center">
-        <div className="mockup-badge-large">🏆</div>
-        <div className="mockup-text-lg">Super Star</div>
-        <div className="mockup-points">+50 Points</div>
-      </div>
-    </div>,
-    // Screen 3: Redeem
-    <div key="2" className="mockup-screen">
-      <div className="mockup-header">Rewards Catalog</div>
-      <div className="mockup-body grid-2">
-        <div className="mockup-card">☕ Voucher</div>
-        <div className="mockup-card">👕 T-Shirt</div>
-        <div className="mockup-card">🎟️ Cinema</div>
-        <div className="mockup-card">🎧 Headset</div>
-      </div>
-    </div>
-  ]
 
   return (
     <div className="mockup-container">
       <div className="phone-frame">
         <div className="notch"></div>
         <div className="screen-content">
-          {screens[activeTab]}
+          {activeTab === 0 && (
+            <div className="screen-slide fade-in">
+              <div className="mockup-header">Send Appreciation</div>
+              <div className="skeleton-avatar"></div>
+              <div className="skeleton-line w-75"></div>
+              <div className="skeleton-line w-50"></div>
+              <div className="mockup-input">Great job on the release! 🚀</div>
+              <div className="mockup-btn">Send Vote</div>
+            </div>
+          )}
+          {activeTab === 1 && (
+            <div className="screen-slide fade-in center-content">
+              <div className="mockup-header">You Earned a Badge!</div>
+              <div className="mockup-badge-large">🏆</div>
+              <div className="mockup-text-lg">Super Star</div>
+              <div className="mockup-points">+50 Points</div>
+            </div>
+          )}
+          {activeTab === 2 && (
+            <div className="screen-slide fade-in">
+              <div className="mockup-header">Rewards Catalog</div>
+              <div className="catalog-grid">
+                <div className="cat-item">☕</div>
+                <div className="cat-item">👕</div>
+                <div className="cat-item">🎟️</div>
+                <div className="cat-item">🎧</div>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
-      <div className="mockup-dots">
-        {[0, 1, 2].map(i => (
-          <div key={i} className={`dot ${activeTab === i ? 'active' : ''}`} onClick={() => setActiveTab(i)} />
-        ))}
+        {/* Navigation Dots */}
+        <div className="mockup-nav">
+          {[0, 1, 2].map(i => (
+            <div
+              key={i}
+              className={`nav-dot ${activeTab === i ? 'active' : ''}`}
+              onClick={() => setActiveTab(i)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -94,87 +95,87 @@ const MobileMockup = () => {
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false)
-
-  // Floating Emojis logic
   const [emojis, setEmojis] = useState<{ id: number, char: string, style: React.CSSProperties }[]>([])
 
   useEffect(() => {
-    // Generate random floating emojis
+    // Generate background emojis client-side
     const emojiList = ['⭐', '🎁', '🏆', '💎', '🔥', '🚀', '💖']
-    const newEmojis = Array.from({ length: 15 }).map((_, i) => ({
+    const items = Array.from({ length: 12 }).map((_, i) => ({
       id: i,
-      char: emojiList[Math.floor(Math.random() * emojiList.length)],
+      char: emojiList[i % emojiList.length],
       style: {
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
+        left: `${Math.random() * 90}%`,
+        top: `${Math.random() * 90}%`,
         animationDelay: `${Math.random() * 5}s`,
-        animationDuration: `${10 + Math.random() * 20}s`,
-        fontSize: `${1 + Math.random() * 2}rem`
+        animationDuration: `${15 + Math.random() * 10}s`,
+        fontSize: `${1.5 + Math.random() * 1.5}rem`,
       }
     }))
-    setEmojis(newEmojis)
+    setEmojis(items)
 
-    // Scroll listener
-    const handleScroll = () => setScrolled(window.scrollY > 50)
+    const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   return (
-    <div className="landing-page">
-      {/* --- Navigation --- */}
+    <div className="landing-root">
+      {/* Navbar */}
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-        <div className="container nav-container">
-          <div className="logo">
-            <span className="logo-text">EmPulse</span>
-          </div>
+        <div className="container nav-inner">
+          <div className="brand">EmPulse</div>
           <div className="nav-links">
             <a href="#features">Features</a>
-            <a href="#how-it-works">How it Works</a>
+            <a href="#how">How it Works</a>
             <Link href="/login" className="btn-nav">Try Demo</Link>
           </div>
         </div>
       </nav>
 
-      {/* --- Hero Section --- */}
-      <section className="hero">
-        <div className="hero-bg">
+      {/* Hero */}
+      <section className="hero-section">
+        {/* Background Particles */}
+        <div className="hero-bg-layer">
           {emojis.map(e => <EmojiParticle key={e.id} emoji={e.char} style={e.style} />)}
         </div>
-        <div className="container hero-content">
-          <div className="hero-text-col">
-            <div className="badge-wrapper">
-              <span className="badge-new">New</span>
-              <span className="badge-text">Employee Recognition Platform</span>
+
+        <div className="container hero-container">
+          <div className="hero-text">
+            <div className="hero-badge">
+              <span className="badge-bg">NEW</span>
+              <span>Employee Recognition Platform</span>
             </div>
             <h1 className="hero-title">
-              Turn Appreciation<br />into <span className="highlight">Action</span>
+              Turn Appreciation<br />
+              into <span className="text-highlight">Action</span>
             </h1>
-            <p className="hero-subtitle">
-              Empower your team to recognize each other&apos;s wins, earn points, and redeem real rewards. Cross-border ready.
+            <p className="hero-desc">
+              Empower your team to recognize each other&apos;s wins, earn points, and redeem real rewards.
+              Ready for Vietnam & Czech Republic teams.
             </p>
-            <div className="hero-actions">
+            <div className="hero-btns">
               <Link href="/login" className="btn-primary">View Demo</Link>
-              <a href="#contact" className="btn-secondary">Contact Sales</a>
+              <a href="#features" className="btn-outline">Learn More</a>
             </div>
           </div>
-          <div className="hero-visual-col">
+
+          <div className="hero-visual">
             <MobileMockup />
           </div>
         </div>
       </section>
 
-      {/* --- Features Section (3D Tilt) --- */}
-      <section id="features" className="section features-section">
+      {/* Features */}
+      <section id="features" className="section bg-dark">
         <div className="container">
-          <div className="section-header">
+          <div className="section-head">
             <h2>Why EmPulse?</h2>
             <p>Everything you need to build a culture of appreciation.</p>
           </div>
           <div className="features-grid">
             {features.map((f, i) => (
               <div key={i} className="feature-card">
-                <div className="feature-icon">{f.icon}</div>
+                <div className="icon-box">{f.icon}</div>
                 <h3>{f.title}</h3>
                 <p>{f.desc}</p>
               </div>
@@ -183,40 +184,37 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* --- How It Works --- */}
-      <section id="how-it-works" className="section steps-section">
+      {/* Steps */}
+      <section id="how" className="section bg-darker">
         <div className="container">
-          <div className="section-header">
+          <div className="section-head">
             <h2>How It Works</h2>
             <p>Three simple steps to happiness.</p>
           </div>
-          <div className="steps-wrapper">
-            <div className="steps-line"></div>
+          <div className="steps-container">
             {steps.map((s, i) => (
-              <div key={i} className="step-item">
-                <div className="step-circle">{s.num}</div>
-                <div className="step-content">
-                  <div className="step-icon">{s.icon}</div>
-                  <h3>{s.title}</h3>
-                  <p>{s.desc}</p>
-                </div>
+              <div key={i} className="step-card">
+                <div className="step-num">{s.num}</div>
+                <div className="step-icon large">{s.icon}</div>
+                <h3>{s.title}</h3>
+                <p>{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* --- Testimonials (Marquee) --- */}
-      <section className="section testimonials-section">
+      {/* Testimonials */}
+      <section className="section bg-dark">
         <div className="container">
-          <h2 className="text-center mb-xl">Trusted by Teams</h2>
+          <h2 className="text-center mb-large">Trusted by Teams</h2>
         </div>
-        <div className="marquee-wrapper">
-          <div className="marquee-content">
-            {[...testimonials, ...testimonials].map((t, i) => (
-              <div key={i} className="testimonial-card">
-                <p>"{t.text}"</p>
-                <div className="author">
+        <div className="marquee-container">
+          <div className="marquee-track">
+            {[...testimonials, ...testimonials].map((t, x) => (
+              <div key={x} className="review-card">
+                <p>&ldquo;{t.text}&rdquo;</p>
+                <div className="review-author">
                   <strong>{t.author}</strong>
                   <span>{t.role}</span>
                 </div>
@@ -226,269 +224,186 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* --- Cross Border Highlight --- */}
-      <section className="section cross-border-section">
-        <div className="container">
-          <div className="cb-grid">
-            <div className="cb-visual">
-              <div className="flag vn">🇻🇳</div>
-              <div className="connection-line"></div>
-              <div className="flag cz">🇨🇿</div>
-            </div>
-            <div className="cb-text">
-              <h2>One Platform.<br />Two Countries.<br />Infinite Recognition.</h2>
-              <p>Connect your distributed teams seamlessly. Whether in Vietnam or Czech Republic, recognition feels local and instant.</p>
-            </div>
+      {/* Cross Border */}
+      <section className="section bg-gradient">
+        <div className="container cb-container">
+          <div className="cb-visual">
+            <span className="flag">🇻🇳</span>
+            <span className="cb-line"></span>
+            <span className="flag">🇨🇿</span>
+          </div>
+          <div className="cb-text">
+            <h2>One Platform. Two Countries.</h2>
+            <p>Seamlessly connect your distributed teams in Vietnam and Czech Republic.</p>
           </div>
         </div>
       </section>
 
-      {/* --- CTA --- */}
+      {/* CTA */}
       <section className="section cta-section">
-        <div className="cta-bg-particles"></div>
-        <div className="container text-center">
-          <h2 className="cta-title">Ready to Transform Your Workplace?</h2>
-          <p className="cta-subtitle">Start recognizing your team today. No commitment.</p>
-          <Link href="/login" className="btn-cta-large">Try EmPulse Demo</Link>
-          <p className="cta-note">Demo accounts available • No signup required</p>
+        <div className="container cta-container">
+          <h2>Ready to transform your workplace?</h2>
+          <Link href="/login" className="btn-cta">Start Free Demo</Link>
+          <p className="cta-small">No credit card required</p>
         </div>
       </section>
 
-      {/* --- Footer --- */}
+      {/* Footer */}
       <footer className="footer">
-        <div className="container footer-content">
-          <div className="footer-brand">
-            <h3>EmPulse</h3>
-            <p>© 2026 Embedit.</p>
-          </div>
-          <div className="footer-links">
-            <a href="#">Features</a>
-            <a href="#">How it Works</a>
+        <div className="container footer-inner">
+          <div className="brand-muted">EmPulse</div>
+          <div className="footer-nav">
             <a href="#">Privacy</a>
+            <a href="#">Terms</a>
             <a href="#">Contact</a>
           </div>
         </div>
-        <div className="footer-bottom">
-          Made with 💚 in Vietnam & Czech Republic
-        </div>
+        <div className="footer-copy">© 2026 Embedit</div>
       </footer>
 
-      {/* --- Styles --- */}
+      {/* --- STYLES --- */}
       <style jsx global>{`
         :root {
-          --primary-blue: #006ED2;
-          --main-green: #00D264;
-          --bg-dark: #050505;
-          --card-bg: rgba(255, 255, 255, 0.05);
-          --text-muted: rgba(255, 255, 255, 0.7);
+          --c-primary: #00D264;
+          --c-accent: #006ED2;
+          --c-bg: #050505;
+          --c-card: rgba(255, 255, 255, 0.05);
+          --c-text: #fff;
+          --c-muted: rgba(255, 255, 255, 0.6);
+          --font-main: 'Inter', sans-serif;
         }
-        body {
-          background: var(--bg-dark);
-          color: white;
-          overflow-x: hidden;
-        }
+        body { margin: 0; padding: 0; background: var(--c-bg); color: var(--c-text); font-family: var(--font-main); overflow-x: hidden; }
+        * { box-sizing: border-box; }
       `}</style>
 
       <style jsx>{`
-        /* --- General Defaults --- */
-        .landing-page { font-family: 'Inter', sans-serif; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-        .section { padding: 6rem 0; position: relative; }
+        /* Utils */
+        .landing-root { width: 100%; overflow: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; width: 100%; position: relative; z-index: 2; }
+        .section { padding: 5rem 0; }
+        .section-head { text-align: center; margin-bottom: 3rem; }
+        .section-head h2 { font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 800; }
+        .section-head p { color: var(--c-muted); font-size: 1.1rem; }
+        .bg-dark { background: #050505; }
+        .bg-darker { background: #000; }
+        .bg-gradient { background: linear-gradient(45deg, #001a3d, #000); }
         .text-center { text-align: center; }
-        .mb-xl { margin-bottom: 3rem; }
-        
-        /* --- Navbar --- */
-        .navbar {
-          position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-          padding: 1.5rem 0; transition: all 0.3s;
-        }
-        .navbar.scrolled {
-          background: rgba(5,5,5,0.9);
-          backdrop-filter: blur(10px);
-          padding: 1rem 0;
-          border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; }
-        .logo-text { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.05em; }
-        .nav-links { display: flex; gap: 2rem; align-items: center; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color 0.2s; }
-        .nav-links a:hover { color: var(--main-green); }
-        .btn-nav {
-          background: white; color: black; padding: 0.5rem 1.25rem; border-radius: 50px;
-          font-weight: 600; text-decoration: none; transition: transform 0.2s;
-        }
+        .mb-large { margin-bottom: 3rem; }
+
+        /* Navbar */
+        .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1.5rem 0; transition: all 0.3s; }
+        .navbar.scrolled { padding: 1rem 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+        .brand { font-size: 1.5rem; font-weight: 800; color: white; }
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--c-muted); transition: color 0.2s; font-weight: 500; }
+        .nav-links a:hover { color: var(--c-primary); }
+        .btn-nav { background: white; color: black; padding: 0.5rem 1.25rem; border-radius: 50px; font-weight: 600; text-decoration: none; }
         .btn-nav:hover { transform: scale(1.05); }
 
-        /* --- Hero --- */
-        .hero {
-          min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden;
-          padding-top: 4rem;
-        }
-        .hero-bg {
-          position: absolute; inset: 0; z-index: 0;
-          background: linear-gradient(135deg, #000 0%, #0a1628 100%);
-        }
-        .emoji-particle {
-          position: absolute; opacity: 0.3; animation: float 10s infinite ease-in-out;
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(10deg); }
-        }
-        .hero-content {
-          position: relative; z-index: 1; width: 100%;
-          display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
-        }
-        .hero-text-col { text-align: left; }
-        .hero-title {
-          font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.03em;
-        }
-        .highlight { color: var(--main-green); }
-        .hero-subtitle { font-size: 1.25rem; color: var(--text-muted); margin-bottom: 2.5rem; line-height: 1.6; max-width: 500px; }
-        .badge-wrapper {
-          display: inline-flex; align-items: center; gap: 0.75rem;
-          background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 50px;
-          margin-bottom: 2rem; backdrop-filter: blur(5px);
-        }
-        .badge-new { background: var(--main-green); color: black; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
-        .badge-text { font-size: 0.875rem; font-weight: 500; }
+        /* Hero */
+        .hero-section { min-height: 100vh; display: flex; align-items: center; position: relative; padding-top: 4rem; overflow: hidden; }
+        .hero-bg-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        .emoji-particle { position: absolute; font-size: 2rem; opacity: 0.3; animation: flow 20s infinite linear; }
+        @keyframes flow { from { transform: translateY(0) rotate(0deg); } to { transform: translateY(-100px) rotate(20deg); } }
         
-        .hero-actions { display: flex; gap: 1rem; }
-        .btn-primary {
-          background: var(--main-green); color: black; padding: 1rem 2rem; border-radius: 12px;
-          font-weight: 700; text-decoration: none; transition: all 0.2s;
-        }
+        .hero-container { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4rem; }
+        .hero-text { flex: 1; min-width: 300px; max-width: 600px; z-index: 10; }
+        .hero-visual { flex: 1; min-width: 300px; display: flex; justify-content: center; z-index: 10; }
+        
+        .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.1); padding: 0.4rem 0.8rem; border-radius: 50px; margin-bottom: 2rem; }
+        .badge-bg { background: var(--c-primary); color: black; font-weight: 800; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; }
+        
+        .hero-title { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+        .text-highlight { color: var(--c-primary); }
+        .hero-desc { font-size: 1.25rem; color: var(--c-muted); line-height: 1.6; margin-bottom: 2.5rem; }
+        
+        .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn-primary { background: var(--c-primary); color: black; padding: 1rem 2rem; border-radius: 12px; font-weight: 700; text-decoration: none; display: inline-block; transition: all 0.2s; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 210, 100, 0.3); }
-        .btn-secondary {
-          background: transparent; color: white; padding: 1rem 2rem; border-radius: 12px;
-          font-weight: 600; text-decoration: none; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s;
-        }
-        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: white; }
+        .btn-outline { border: 1px solid rgba(255,255,255,0.3); color: white; padding: 1rem 2rem; border-radius: 12px; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; }
 
-        /* --- Mobile Mockup --- */
-        .phone-frame {
-          width: 300px; height: 600px; background: black; border: 12px solid #222; border-radius: 40px;
-          margin: 0 auto; position: relative; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-        }
-        .notch {
-          width: 120px; height: 25px; background: #222; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-          border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; z-index: 10;
-        }
-        .screen-content { height: 100%; background: #111; color: white; padding: 3rem 1.5rem; }
-        .mockup-screen { animation: fadeIn 0.5s ease; height: 100%; display: flex; flex-direction: column; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .mockup-header { font-size: 1.25rem; font-weight: 700; margin-bottom: 2rem; text-align: center; }
+        /* Mockup */
+        .mockup-container { width: 300px; position: relative; }
+        .phone-frame { width: 100%; height: 600px; border: 12px solid #222; border-radius: 40px; background: #000; position: relative; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        .notch { width: 50%; height: 30px; background: #222; position: absolute; top: 0; left: 25%; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; z-index: 20; }
+        .screen-content { height: 100%; padding: 3rem 1.5rem; position: relative; }
+        .screen-slide { height: 100%; display: flex; flex-direction: column; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .mockup-header { text-align: center; font-size: 1.2rem; font-weight: 700; margin-bottom: 2rem; }
+        .mockup-input { background: #222; padding: 1rem; border-radius: 12px; border: 1px solid #333; margin-top: auto; margin-bottom: 1rem; font-size: 0.9rem; color: #ccc; }
+        .mockup-btn { background: var(--c-primary); color: black; padding: 0.8rem; text-align: center; border-radius: 12px; font-weight: 700; }
         .skeleton-avatar { width: 60px; height: 60px; background: #333; border-radius: 50%; margin-bottom: 1rem; }
-        .skeleton-line { height: 12px; background: #333; border-radius: 6px; margin-bottom: 0.75rem; }
-        .w-3_4 { width: 75%; } .w-1_2 { width: 50%; }
-        .mockup-input { background: #222; padding: 1rem; border-radius: 12px; margin-top: auto; margin-bottom: 1rem; color: #aaa; font-size: 0.9rem; border: 1px solid #333; }
-        .mockup-btn { background: var(--main-green); color: black; padding: 0.75rem; text-align: center; border-radius: 12px; font-weight: 700; }
-        .mockup-dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2rem; }
-        .dot { width: 8px; height: 8px; background: #333; border-radius: 50%; cursor: pointer; transition: all 0.3s; }
-        .dot.active { background: var(--main-green); width: 24px; border-radius: 10px; }
-        .center { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
-        .mockup-badge-large { font-size: 5rem; margin-bottom: 1rem; animation: bounce 2s infinite; }
-        .mockup-text-lg { font-size: 1.5rem; font-weight: 700; color: white; margin-bottom: 0.5rem; }
-        .mockup-points { color: var(--main-green); font-weight: 700; font-size: 1.25rem; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .mockup-card { background: #222; padding: 1.5rem 0.5rem; text-align: center; border-radius: 12px; border: 1px solid #333; font-size: 0.9rem; }
+        .skeleton-line { height: 12px; background: #333; border-radius: 6px; margin-bottom: 0.8rem; }
+        .w-75 { width: 75%; } .w-50 { width: 50%; }
+        .mockup-badge-large { font-size: 5rem; text-align: center; margin: 2rem 0; animation: bounce 2s infinite; }
+        .mockup-text-lg { font-size: 1.5rem; text-align: center; font-weight: 700; }
+        .mockup-points { color: var(--c-primary); text-align: center; font-size: 1.2rem; margin-top: 0.5rem; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .catalog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .cat-item { background: #222; padding: 1.5rem; text-align: center; font-size: 2rem; border-radius: 12px; }
+        .mockup-nav { display: flex; justify-content: center; gap: 6px; padding: 1rem 0; position: absolute; bottom: 10px; left: 0; right: 0; }
+        .nav-dot { width: 8px; height: 8px; background: #444; border-radius: 50%; cursor: pointer; transition: 0.3s; }
+        .nav-dot.active { background: var(--c-primary); transform: scale(1.2); }
 
-        /* --- Features --- */
-        .section-header { text-align: center; margin-bottom: 4rem; }
-        .section-header h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .section-header p { color: var(--text-muted); font-size: 1.125rem; }
-        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-        .feature-card {
-          background: var(--card-bg); backdrop-filter: blur(10px);
-          border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 2rem;
-          transition: all 0.3s;
-        }
-        .feature-card:hover { 
-          transform: translateY(-10px); 
-          box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
-          border-color: rgba(255,255,255,0.2);
-        }
-        .feature-icon { font-size: 2.5rem; margin-bottom: 1.5rem; }
-        .feature-card h3 { font-size: 1.25rem; margin-bottom: 0.75rem; font-weight: 700; }
-        .feature-card p { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
+        /* Features */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .feature-card { background: var(--c-card); padding: 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .feature-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.2); }
+        .icon-box { font-size: 2.5rem; margin-bottom: 1rem; }
+        .feature-card h3 { font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 700; }
+        .feature-card p { color: var(--c-muted); line-height: 1.6; }
 
-        /* --- Steps --- */
-        .steps-wrapper { display: flex; justify-content: space-between; position: relative; margin-top: 3rem; }
-        .steps-line {
-          position: absolute; top: 24px; left: 0; right: 0; height: 2px;
-          background: linear-gradient(90deg, #333 0%, var(--main-green) 50%, #333 100%);
-          z-index: 0;
-        }
-        .step-item { flex: 1; text-align: center; position: relative; z-index: 1; padding: 0 1rem; }
-        .step-circle {
-          width: 50px; height: 50px; background: #111; border: 2px solid var(--main-green);
-          border-radius: 50%; display: flex; align-items: center; justify-content: center;
-          margin: 0 auto 2rem; font-weight: 700; font-size: 1.25rem; color: var(--main-green);
-          box-shadow: 0 0 20px rgba(0,210,100,0.2);
-        }
-        .step-content { background: var(--card-bg); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
-        .step-icon { font-size: 2rem; margin-bottom: 1rem; }
-        .step-content h3 { font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600; }
-        .step-content p { color: var(--text-muted); font-size: 0.9rem; }
+        /* Steps */
+        .steps-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; }
+        .step-card { flex: 1; min-width: 250px; background: #111; padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); position: relative; }
+        .step-num { position: absolute; top: -20px; left: 20px; width: 40px; height: 40px; background: var(--c-primary); color: black; border-radius: 50%; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .step-icon.large { font-size: 3rem; margin: 1rem 0; text-align: center; }
+        .step-card h3 { text-align: center; margin-bottom: 0.5rem; font-size: 1.25rem; }
+        .step-card p { text-align: center; color: var(--c-muted); font-size: 0.95rem; }
 
-        /* --- Testimonials --- */
-        .marquee-wrapper { width: 100%; overflow: hidden; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
-        .marquee-content { display: flex; gap: 2rem; width: max-content; animation: scroll 40s linear infinite; }
+        /* Testimonials */
+        .marquee-container { width: 100%; overflow: hidden; white-space: nowrap; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+        .marquee-track { display: inline-flex; gap: 2rem; animation: scroll 30s linear infinite; }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .testimonial-card {
-          width: 350px; background: #111; padding: 2rem; border-radius: 16px;
-          border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0;
-        }
-        .testimonial-card p { font-style: italic; color: #ddd; margin-bottom: 1.5rem; line-height: 1.6; }
-        .author strong { display: block; color: white; }
-        .author span { font-size: 0.85rem; color: var(--main-green); }
+        .review-card { width: 350px; background: #111; border: 1px solid rgba(255,255,255,0.1); padding: 2rem; border-radius: 16px; white-space: normal; }
+        .review-card p { font-style: italic; color: #ccc; margin-bottom: 1.5rem; }
+        .review-author strong { display: block; color: white; }
+        .review-author span { color: var(--c-primary); font-size: 0.85rem; }
 
-        /* --- Cross Border --- */
-        .cb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-        .cb-visual { display: flex; justify-content: center; align-items: center; gap: 2rem; font-size: 5rem; }
-        .flag { animation: wave 3s infinite ease-in-out; }
-        @keyframes wave { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
-        .connection-line {
-          height: 4px; flex: 1; background: linear-gradient(90deg, transparent, var(--main-green), transparent);
-          border-radius: 2px;
-        }
-        .cb-text h2 { font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
-        .cb-text p { font-size: 1.25rem; color: var(--text-muted); }
+        /* Cross Border */
+        .cb-container { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4rem; text-align: center; }
+        .cb-visual { display: flex; align-items: center; gap: 1rem; font-size: 4rem; }
+        .cb-line { height: 2px; width: 100px; background: var(--c-primary); }
+        .cb-text h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; }
+        .cb-text p { font-size: 1.2rem; color: var(--c-muted); max-width: 500px; margin: 0 auto; }
 
-        /* --- CTA --- */
-        .cta-section { background: linear-gradient(180deg, #050505 0%, #001a0d 100%); }
-        .cta-title { font-size: 3rem; margin-bottom: 1rem; font-weight: 800; }
-        .cta-subtitle { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 3rem; }
-        .btn-cta-large {
-          background: var(--main-green); color: black; font-size: 1.25rem; padding: 1.25rem 3.5rem;
-          border-radius: 50px; font-weight: 800; text-decoration: none; display: inline-block;
-          transition: all 0.2s; box-shadow: 0 10px 40px rgba(0,210,100,0.4);
-        }
-        .btn-cta-large:hover { transform: scale(1.05); box-shadow: 0 15px 50px rgba(0,210,100,0.6); }
-        .cta-note { margin-top: 1.5rem; color: rgba(255,255,255,0.4); font-size: 0.9rem; }
+        /* CTA */
+        .cta-section { background: var(--c-primary); color: black; padding: 6rem 0; text-align: center; }
+        .cta-container h2 { font-size: 3rem; font-weight: 900; margin-bottom: 2rem; color: black; }
+        .btn-cta { background: black; color: white; padding: 1.2rem 3rem; font-size: 1.2rem; font-weight: 700; border-radius: 50px; text-decoration: none; transition: transform 0.2s; display: inline-block; }
+        .btn-cta:hover { transform: scale(1.05); }
+        .cta-small { margin-top: 1rem; font-weight: 600; opacity: 0.7; }
 
-        /* --- Footer --- */
-        .footer { padding: 4rem 0 2rem; border-top: 1px solid rgba(255,255,255,0.1); background: #000; }
-        .footer-content { display: flex; justify-content: space-between; margin-bottom: 4rem; }
-        .footer-brand h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .footer-brand p { color: var(--text-muted); }
-        .footer-links { display: flex; gap: 2rem; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-        .footer-links a:hover { color: white; }
-        .footer-bottom { text-align: center; color: rgba(255,255,255,0.3); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem; margin-top: 2rem; }
+        /* Footer */
+        .footer { padding: 4rem 0 2rem; background: #000; border-top: 1px solid rgba(255,255,255,0.1); }
+        .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; align-items: center; margin-bottom: 2rem; }
+        .brand-muted { font-size: 1.5rem; font-weight: 800; color: #555; }
+        .footer-nav { display: flex; gap: 2rem; }
+        .footer-nav a { color: #555; text-decoration: none; transition: 0.2s; }
+        .footer-nav a:hover { color: white; }
+        .footer-copy { text-align: center; color: #333; font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem; }
 
-        /* --- Mobile Responsive --- */
-        @media (max-width: 900px) {
-          .hero-content { grid-template-columns: 1fr; text-align: center; }
-          .hero-text-col { text-align: center; display: flex; flex-direction: column; align-items: center; }
-          .hero-title { font-size: 3rem; }
-          .features-grid { grid-template-columns: 1fr; }
-          .steps-wrapper { flex-direction: column; gap: 2rem; }
-          .steps-line { display: none; }
-          .cb-grid { grid-template-columns: 1fr; text-align: center; }
-          .phone-frame { width: 90%; height: 550px; }
-          .nav-links { display: none; } /* Simplified mobile nav */
+        /* Responsive */
+        @media (max-width: 768px) {
+          .hero-title { font-size: 2.5rem; }
+          .hero-container { flex-direction: column; text-align: center; gap: 3rem; }
+          .hero-text { align-items: center; } 
+          .hero-btns { justify-content: center; }
+          .nav-links { display: none; }
+          .cb-container { flex-direction: column; gap: 2rem; }
+          .cta-container h2 { font-size: 2rem; }
         }
       `}</style>
     </div>
