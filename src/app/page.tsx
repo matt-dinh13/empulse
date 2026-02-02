@@ -186,7 +186,7 @@ export default function LandingPage() {
             <a href="#">Contact</a>
           </div>
         </div>
-        <div className="footer-copy">© 2026 Embedit <span style={{ opacity: 0.5, fontSize: '0.8rem', marginLeft: '8px' }}>| v9-FIX</span></div>
+        <div className="footer-copy">© 2026 Embedit <span style={{ opacity: 0.5, fontSize: '0.8rem', marginLeft: '8px' }}>| v10-GLOBAL</span></div>
       </footer>
 
       {/* --- STYLES --- */}
