@@ -105,7 +105,7 @@ export default function CatalogListPage() {
                         </thead>
                         <tbody>
                             {items.map(item => (
-                                /* ... inside return ... */
+
                                 <tr key={item.id} style={{ borderBottom: '1px solid var(--color-border-light)' }}>
                                     <td className="p-sm align-middle" style={{ fontSize: '1.5rem', textAlign: 'center' }}>{item.icon || '🎁'}</td>
                                     <td className="p-sm align-middle">
@@ -115,7 +115,7 @@ export default function CatalogListPage() {
                                     <td className="p-sm align-middle capitalize">{item.rewardType}</td>
                                     <td className="p-sm align-middle font-bold text-accent">{item.pointsRequired}</td>
                                     <td className="p-sm align-middle">{item.region?.code}</td>
-        /* ... */
+
                                     <td className="p-sm">
                                         {item.isActive ? (
                                             <span className="badge badge-success">Active</span>
