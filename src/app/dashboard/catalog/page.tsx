@@ -25,6 +25,7 @@ export default function CatalogPage() {
     const [ordering, setOrdering] = useState<number | null>(null)
     const [success, setSuccess] = useState('')
     const [error, setError] = useState('')
+    const [uiUser, setUiUser] = useState<any>(null)
     const router = useRouter()
 
     useEffect(() => {
@@ -33,6 +34,9 @@ export default function CatalogPage() {
             router.push('/login')
             return
         }
+        const userStr = localStorage.getItem('user')
+        if (userStr) setUiUser(JSON.parse(userStr))
+
         fetchData(token)
     }, [router])
 
@@ -102,6 +106,13 @@ export default function CatalogPage() {
                     <Link href="/dashboard/votes/sent" className="sidebar-link">📤 Votes Sent</Link>
                     <Link href="/dashboard/catalog" className="sidebar-link active">🎁 Rewards Catalog</Link>
                     <Link href="/dashboard/orders" className="sidebar-link">📦 My Orders</Link>
+                    {(uiUser?.role === 'admin' || uiUser?.role === 'hr_admin') && (
+                        <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                            <Link href="/dashboard/admin" className="sidebar-link">
+                                🛡️ Admin Portal
+                            </Link>
+                        </div>
+                    )}
                 </nav>
                 <div style={{ marginTop: 'auto', paddingTop: 'var(--spacing-lg)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                     <button onClick={() => {

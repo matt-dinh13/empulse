@@ -72,6 +72,13 @@ export default function DashboardPage() {
                     <Link href="/dashboard/orders" className="sidebar-link">
                         📦 My Orders
                     </Link>
+                    {(user?.role === 'admin' || user?.role === 'hr_admin') && (
+                        <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                            <Link href="/dashboard/admin" className="sidebar-link">
+                                🛡️ Admin Portal
+                            </Link>
+                        </div>
+                    )}
                 </nav>
 
                 <div style={{ marginTop: 'auto', paddingTop: 'var(--spacing-lg)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
