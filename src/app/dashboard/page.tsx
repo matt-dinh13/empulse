@@ -126,6 +126,54 @@ export default function DashboardPage() {
                         </Link>
                     </div>
                 </div>
+
+                {/* DEBUG SECTION */}
+                <div className="card" style={{ marginTop: '2rem', border: '1px dashed #666' }}>
+                    <h3 style={{ marginBottom: '0.5rem', color: '#888' }}>Debug Tools</h3>
+                    <p style={{ marginBottom: '1rem' }}>If you are the admin but cannot see the Admin Portal, click below:</p>
+                    <div className="flex gap-md">
+                        <button
+                            className="btn btn-outline"
+                            onClick={async () => {
+                                const token = localStorage.getItem('accessToken')
+                                try {
+                                    const res = await fetch('/api/debug/promote', {
+                                        method: 'POST',
+                                        headers: { Authorization: `Bearer ${token}` }
+                                    })
+                                    const data = await res.json()
+                                    alert(data.message || data.error)
+                                    if (res.ok) {
+                                        handleLogout() // Auto logout to force refresh
+                                    }
+                                } catch (e) {
+                                    alert('Failed to promote')
+                                }
+                            }}
+                        >
+                            🔑 Enable Admin Mode
+                        </button>
+                        <button
+                            className="btn btn-outline"
+                            onClick={async () => {
+                                const token = localStorage.getItem('accessToken')
+                                try {
+                                    const res = await fetch('/api/debug/seed', {
+                                        method: 'POST',
+                                        headers: { Authorization: `Bearer ${token}` }
+                                    })
+                                    const data = await res.json()
+                                    alert(data.message)
+                                    window.location.reload()
+                                } catch (e) {
+                                    alert('Failed to seed')
+                                }
+                            }}
+                        >
+                            🌱 Seed Data
+                        </button>
+                    </div>
+                </div>
             </main>
         </div>
     )
