@@ -228,15 +228,23 @@ export default function LandingPage() {
         .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 500; transition: color 0.2s; }
         .nav-links a:hover { color: #00D264; }
         
+        /* NEW BUTTON STYLES (Minimalist / Bold) */
         .landing-btn-nav { 
-            background: white !important; color: black !important; padding: 0.6rem 1.5rem; border-radius: 50px; 
-            font-weight: 700; text-decoration: none; transition: transform 0.2s;
-            border: none;
+            background: rgba(255,255,255,0.1) !important; 
+            color: white !important; 
+            padding: 0.6rem 1.5rem; 
+            border-radius: 50px; 
+            border: 1px solid rgba(255,255,255,0.1);
+            font-weight: 600; text-decoration: none; transition: all 0.2s;
+            backdrop-filter: blur(5px);
         }
-        .landing-btn-nav:hover { transform: scale(1.05); }
+        .landing-btn-nav:hover { 
+            background: rgba(255,255,255,0.2) !important; 
+            transform: translateY(-2px); 
+        }
 
         /* Hero */
-        .hero-section { min-height: 90vh; display: flex; align-items: center; background: radial-gradient(circle at 60% 50%, #0a1628 0%, #000 80%); padding-top: 5rem; }
+        .hero-section { min-height: 90vh; display: flex; align-items: center; background: radial-gradient(circle at 60% 0%, #0a1628 0%, #000 70%); padding-top: 5rem; }
         .hero-container { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 3rem; width: 100%; }
         .hero-text { flex: 1; min-width: 300px; max-width: 600px; }
         .hero-visual { flex: 1; min-width: 300px; display: flex; justify-content: center; align-items: center; position: relative; }
@@ -249,35 +257,42 @@ export default function LandingPage() {
         @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0); } }
 
         .hero-badge { display: inline-flex; align-items: center; gap: 0.8rem; background: rgba(255,255,255,0.1); padding: 0.4rem 0.8rem; border-radius: 50px; margin-bottom: 2rem; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); }
-        .badge-bg { background: linear-gradient(90deg, #00D264, #00AB50); color: black; font-weight: 800; font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 4px; }
+        .badge-bg { background: white; color: black; font-weight: 800; font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 4px; }
         
-        .hero-title { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+        /* Typography Clamp for Mobile */
+        .hero-title { 
+            font-size: clamp(2.5rem, 8vw, 4rem); 
+            font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.02em; 
+            word-break: break-word; /* Prevent overflow */
+        }
         .hero-desc { font-size: 1.25rem; line-height: 1.6; margin-bottom: 2.5rem; }
         
         .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
         
-        /* === CUSTOM BUTTONS TO OVERRIDE GLOBALS === */
+        /* === HERO BUTTONS: Solid White for maximum contrast === */
         .landing-btn-primary { 
-            background: linear-gradient(135deg, #00D264 0%, #00AB50 100%) !important; 
-            color: black !important; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 700; 
-            text-decoration: none; transition: all 0.3s; 
-            box-shadow: 0 4px 15px rgba(0, 210, 100, 0.4), inset 0 1px 1px rgba(255,255,255,0.4);
-            border: 1px solid rgba(255,255,255,0.1);
-            position: relative; overflow: hidden; display: inline-block; text-align: center;
+            background: #FFFFFF !important; 
+            color: #000000 !important; 
+            padding: 1rem 2.8rem; border-radius: 50px; font-weight: 700; 
+            text-decoration: none; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            display: inline-block; text-align: center;
+            letter-spacing: -0.01em;
         }
         .landing-btn-primary:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 25px rgba(0, 210, 100, 0.6), inset 0 1px 1px rgba(255,255,255,0.4); 
-            filter: brightness(1.1);
+            transform: translateY(-4px); 
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2); 
         }
         
         .landing-btn-outline { 
-            background: rgba(255,255,255,0.05) !important;
-            border: 1px solid rgba(255,255,255,0.2) !important; color: white !important; 
-            padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; text-decoration: none; transition: 0.2s;
-            display: inline-block; text-align: center;
+            background: transparent !important;
+            border: 1px solid rgba(255,255,255,0.3) !important; color: white !important; 
+            padding: 1rem 2.8rem; border-radius: 50px; font-weight: 600; text-decoration: none; 
+            transition: all 0.2s; display: inline-block; text-align: center;
         }
-        .landing-btn-outline:hover { background: rgba(255,255,255,0.15) !important; border-color: white !important; }
+        .landing-btn-outline:hover { 
+            border-color: #FFFFFF !important; 
+            background: rgba(255,255,255,0.1) !important; 
+        }
 
         /* Features */
         .section-head { text-align: center; margin-bottom: 4rem; }
@@ -310,7 +325,12 @@ export default function LandingPage() {
         /* Global Section */
         .cb-container { display: flex; align-items: center; justify-content: space-between; gap: 4rem; flex-wrap: wrap; }
         .cb-text-left { flex: 1; min-width: 300px; }
-        .cb-text-left h2 { font-size: 3rem; font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; }
+        /* Typography Clamp for Global Headline */
+        .cb-text-left h2 { 
+            font-size: clamp(2rem, 6vw, 3rem); 
+            font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; 
+            word-break: break-word;
+        }
         .cb-text-left p { font-size: 1.25rem; line-height: 1.6; color: rgba(255,255,255,0.8); }
         .cb-visual-right { flex: 1; min-width: 300px; display: flex; justify-content: center; }
         .global-map-img { width: 100%; max-width: 500px; height: auto; opacity: 0.9; mix-blend-mode: screen; filter: hue-rotate(15deg); }
@@ -322,13 +342,23 @@ export default function LandingPage() {
             clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 100%);
         }
         .cta-heading { font-size: 3.5rem; font-weight: 900; color: #000; margin-bottom: 2.5rem; letter-spacing: -0.03em; }
+        
+        /* === CTA BUTTON: Solid Black for Impact on Green === */
         .landing-btn-cta { 
-            background: #000 !important; color: white !important; padding: 1.4rem 4rem; border-radius: 50px; 
+            background: #000000 !important; 
+            color: #FFFFFF !important; 
+            padding: 1.4rem 4rem; border-radius: 50px; 
             font-weight: 800; text-decoration: none; font-size: 1.3rem; 
-            transition: transform 0.2s, box-shadow 0.2s; display: inline-block;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            transition: all 0.3s ease; 
+            display: inline-block;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 2px solid transparent;
         }
-        .landing-btn-cta:hover { transform: scale(1.05); box-shadow: 0 15px 50px rgba(0,0,0,0.4); }
+        .landing-btn-cta:hover { 
+            transform: scale(1.05); 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4); 
+            background: #111 !important;
+        }
         .cta-small { margin-top: 1.5rem; font-weight: 600; opacity: 0.7; font-size: 1rem; color: #000; }
 
         /* Footer */
@@ -345,7 +375,8 @@ export default function LandingPage() {
           .hero-section { padding-top: 7rem; text-align: center; }
           .hero-container { flex-direction: column-reverse; gap: 2rem; }
           .hero-text { align-items: center; display: flex; flex-direction: column; }
-          .hero-title { font-size: 2.8rem; }
+          /* Font sizes are handled by clamp() above */
+          
           .hero-btns { flex-direction: column; gap: 1rem; width: 100%; max-width: 300px; }
           .landing-btn-primary, .landing-btn-outline { width: 100%; display: block; box-sizing: border-box; }
           
@@ -353,7 +384,6 @@ export default function LandingPage() {
           .section-head h2 { font-size: 2rem; }
           
           .cb-container { flex-direction: column; text-align: center; }
-          .cb-text-left h2 { font-size: 2.2rem; }
           
           .cta-heading { font-size: 2.2rem; }
           .landing-btn-cta { width: 100%; max-width: 300px; padding: 1rem 2rem; font-size: 1.1rem; }
