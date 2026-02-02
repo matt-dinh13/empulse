@@ -22,7 +22,7 @@ export default function WhitepaperPage() {
     const ActiveComponent = tabs.find(t => t.name === activeTab)?.component || TabOverview
 
     return (
-        <div className="min-h-screen bg-black text-white font-sans selection:bg-purple-500 selection:text-white">
+        <div className="min-h-screen bg-black text-white font-sans selection:bg-purple-500 selection:text-white whitepaper-wrapper">
             {/* Navbar */}
             <nav className="border-b border-white/10 sticky top-0 z-50 bg-black/80 backdrop-blur-md">
                 <div className="container mx-auto px-6 h-16 flex items-center justify-between">
@@ -41,8 +41,8 @@ export default function WhitepaperPage() {
                                 key={tab.name}
                                 onClick={() => setActiveTab(tab.name)}
                                 className={`px-4 py-2 text-sm font-medium rounded-full transition-all whitespace-nowrap ${activeTab === tab.name
-                                        ? 'bg-white text-black'
-                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                    ? 'bg-white text-black'
+                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
                                     }`}
                             >
                                 {tab.name}
@@ -80,6 +80,10 @@ export default function WhitepaperPage() {
             </footer>
 
             <style jsx global>{`
+                body, html { 
+                    margin: 0; padding: 0; background: #000 !important; 
+                    color: white !important; font-family: 'Satoshi', sans-serif;
+                }
                 @keyframes fadeIn {
                     from { opacity: 0; transform: translateY(10px); }
                     to { opacity: 1; transform: translateY(0); }
