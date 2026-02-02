@@ -45,7 +45,7 @@ export default function LandingPage() {
           <div className="nav-links">
             <a href="#features">Features</a>
             <a href="#how">How it Works</a>
-            <Link href="/login" className="btn-nav">Try Demo</Link>
+            <Link href="/login" className="landing-btn-nav">Try Demo</Link>
           </div>
         </div>
       </nav>
@@ -67,14 +67,13 @@ export default function LandingPage() {
               Ready for global teams.
             </p>
             <div className="hero-btns">
-              <Link href="/login" className="btn-primary">View Demo</Link>
-              <a href="#features" className="btn-outline">Learn More</a>
+              <Link href="/login" className="landing-btn-primary">View Demo</Link>
+              <a href="#features" className="landing-btn-outline">Learn More</a>
             </div>
           </div>
 
           <div className="hero-visual">
             <div className="visual-wrapper">
-              {/* Visual Asset: generated 3D illustration */}
               <Image
                 src="/hero-visual.png"
                 alt="3D Recognition Visual"
@@ -172,7 +171,7 @@ export default function LandingPage() {
       <section className="section cta-section">
         <div className="container cta-container">
           <h2 className="cta-heading">Ready to transform your workplace?</h2>
-          <Link href="/login" className="btn-cta">Start Free Demo</Link>
+          <Link href="/login" className="landing-btn-cta">Start Free Demo</Link>
           <p className="cta-small">No credit card required</p>
         </div>
       </section>
@@ -200,7 +199,7 @@ export default function LandingPage() {
 
       <style jsx>{`
         /* Scoped Styles */
-        .landing-wrapper { width: 100%; min-height: 100vh; background: #000; color: white; }
+        .landing-wrapper { width: 100%; min-height: 100vh; background: #000; color: white; overflow-x: hidden; }
 
         /* Typography */
         .text-white { color: #fff !important; }
@@ -208,8 +207,9 @@ export default function LandingPage() {
         .text-gray-light { color: rgba(255,255,255,0.9) !important; }
         .text-highlight { color: #00D264 !important; }
         .text-italic { font-style: italic; }
+        .text-center { text-align: center; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 2; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 2; width: 100%; }
         .section { padding: 6rem 0; }
         .bg-dark { background: #050505; }
         .bg-darker { background: #000; }
@@ -224,14 +224,16 @@ export default function LandingPage() {
         .navbar.scrolled { padding: 1rem 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.1); }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; }
         .brand { font-size: 1.5rem; font-weight: 800; color: white; }
-        .nav-links { display: flex; gap: 2rem; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
         .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 500; transition: color 0.2s; }
         .nav-links a:hover { color: #00D264; }
-        .btn-nav { 
-            background: white; color: black; padding: 0.6rem 1.5rem; border-radius: 50px; 
+        
+        .landing-btn-nav { 
+            background: white !important; color: black !important; padding: 0.6rem 1.5rem; border-radius: 50px; 
             font-weight: 700; text-decoration: none; transition: transform 0.2s;
+            border: none;
         }
-        .btn-nav:hover { transform: scale(1.05); }
+        .landing-btn-nav:hover { transform: scale(1.05); }
 
         /* Hero */
         .hero-section { min-height: 90vh; display: flex; align-items: center; background: radial-gradient(circle at 60% 50%, #0a1628 0%, #000 80%); padding-top: 5rem; }
@@ -252,28 +254,30 @@ export default function LandingPage() {
         .hero-title { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
         .hero-desc { font-size: 1.25rem; line-height: 1.6; margin-bottom: 2.5rem; }
         
-        .hero-btns { display: flex; gap: 1rem; }
-        /* Beautiful Primary Button */
-        .btn-primary { 
-            background: linear-gradient(135deg, #00D264 0%, #00AB50 100%); 
-            color: black; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 700; 
+        .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+        
+        /* === CUSTOM BUTTONS TO OVERRIDE GLOBALS === */
+        .landing-btn-primary { 
+            background: linear-gradient(135deg, #00D264 0%, #00AB50 100%) !important; 
+            color: black !important; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 700; 
             text-decoration: none; transition: all 0.3s; 
             box-shadow: 0 4px 15px rgba(0, 210, 100, 0.4), inset 0 1px 1px rgba(255,255,255,0.4);
             border: 1px solid rgba(255,255,255,0.1);
-            position: relative; overflow: hidden;
+            position: relative; overflow: hidden; display: inline-block; text-align: center;
         }
-        .btn-primary:hover { 
+        .landing-btn-primary:hover { 
             transform: translateY(-2px); 
             box-shadow: 0 8px 25px rgba(0, 210, 100, 0.6), inset 0 1px 1px rgba(255,255,255,0.4); 
             filter: brightness(1.1);
         }
         
-        .btn-outline { 
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.2); color: white; 
-            padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; text-decoration: none; transition: 0.2s; 
+        .landing-btn-outline { 
+            background: rgba(255,255,255,0.05) !important;
+            border: 1px solid rgba(255,255,255,0.2) !important; color: white !important; 
+            padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; text-decoration: none; transition: 0.2s;
+            display: inline-block; text-align: center;
         }
-        .btn-outline:hover { background: rgba(255,255,255,0.15); border-color: white; }
+        .landing-btn-outline:hover { background: rgba(255,255,255,0.15) !important; border-color: white !important; }
 
         /* Features */
         .section-head { text-align: center; margin-bottom: 4rem; }
@@ -309,7 +313,7 @@ export default function LandingPage() {
         .cb-text-left h2 { font-size: 3rem; font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; }
         .cb-text-left p { font-size: 1.25rem; line-height: 1.6; color: rgba(255,255,255,0.8); }
         .cb-visual-right { flex: 1; min-width: 300px; display: flex; justify-content: center; }
-        .global-map-img { width: 100%; max-width: 500px; height: auto; opacity: 0.9; mix-blend-mode: screen; }
+        .global-map-img { width: 100%; max-width: 500px; height: auto; opacity: 0.9; mix-blend-mode: screen; filter: hue-rotate(15deg); }
 
         /* CTA */
         .cta-section { 
@@ -318,13 +322,13 @@ export default function LandingPage() {
             clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 100%);
         }
         .cta-heading { font-size: 3.5rem; font-weight: 900; color: #000; margin-bottom: 2.5rem; letter-spacing: -0.03em; }
-        .btn-cta { 
-            background: #000; color: white; padding: 1.4rem 4rem; border-radius: 50px; 
+        .landing-btn-cta { 
+            background: #000 !important; color: white !important; padding: 1.4rem 4rem; border-radius: 50px; 
             font-weight: 800; text-decoration: none; font-size: 1.3rem; 
             transition: transform 0.2s, box-shadow 0.2s; display: inline-block;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
-        .btn-cta:hover { transform: scale(1.05); box-shadow: 0 15px 50px rgba(0,0,0,0.4); }
+        .landing-btn-cta:hover { transform: scale(1.05); box-shadow: 0 15px 50px rgba(0,0,0,0.4); }
         .cta-small { margin-top: 1.5rem; font-weight: 600; opacity: 0.7; font-size: 1rem; color: #000; }
 
         /* Footer */
@@ -336,11 +340,25 @@ export default function LandingPage() {
 
         /* Responsiveness */
         @media (max-width: 900px) {
-          .hero-title, .cta-heading { font-size: 2.5rem; }
-          .hero-container, .cb-container { flex-direction: column; text-align: center; }
-          .hero-btns { justify-content: center; }
-          .btn-primary, .btn-outline { padding: 1rem 2rem; width: 100%; text-align: center; }
-          .hero-btns { flex-direction: column; width: 100%; }
+          .nav-links { display: none; }
+          
+          .hero-section { padding-top: 7rem; text-align: center; }
+          .hero-container { flex-direction: column-reverse; gap: 2rem; }
+          .hero-text { align-items: center; display: flex; flex-direction: column; }
+          .hero-title { font-size: 2.8rem; }
+          .hero-btns { flex-direction: column; gap: 1rem; width: 100%; max-width: 300px; }
+          .landing-btn-primary, .landing-btn-outline { width: 100%; display: block; box-sizing: border-box; }
+          
+          .section { padding: 4rem 0; }
+          .section-head h2 { font-size: 2rem; }
+          
+          .cb-container { flex-direction: column; text-align: center; }
+          .cb-text-left h2 { font-size: 2.2rem; }
+          
+          .cta-heading { font-size: 2.2rem; }
+          .landing-btn-cta { width: 100%; max-width: 300px; padding: 1rem 2rem; font-size: 1.1rem; }
+          
+          .hero-img-3d, .global-map-img { width: 100%; max-width: 350px; }
         }
       `}</style>
     </div>
