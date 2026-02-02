@@ -71,7 +71,8 @@ export default function LandingPage() {
             </p>
             <div className="hero-btns">
               <Link href="/login" className="landing-btn-primary">View Demo</Link>
-              <a href="#features" className="landing-btn-outline">Learn More</a>
+              <Link href="/whitepaper" className="landing-btn-outline">Read Blueprint 📄</Link>
+              <a href="#features" className="landing-btn-text">Learn More ↓</a>
             </div>
           </div>
 
@@ -325,6 +326,13 @@ export default function LandingPage() {
             border-color: #FFFFFF !important; 
             background: rgba(255,255,255,0.1) !important; 
         }
+
+        .landing-btn-text {
+            color: rgba(255,255,255,0.7) !important; text-decoration: none;
+            padding: 1rem 1.5rem; font-weight: 600; transition: 0.2s;
+            display: inline-block;
+        }
+        .landing-btn-text:hover { color: white !important; transform: translateX(3px); }
 
         /* Features */
         .section-head { text-align: center; margin-bottom: 4rem; }
