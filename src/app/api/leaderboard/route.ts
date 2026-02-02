@@ -24,14 +24,14 @@ export async function GET(request: Request) {
         const grouped = await prisma.vote.groupBy({
             by: ['receiverId'],
             _sum: {
-                points: true
+                pointsAwarded: true
             },
             where: {
                 ...dateFilter
             },
             orderBy: {
                 _sum: {
-                    points: 'desc'
+                    pointsAwarded: 'desc'
                 }
             },
             take: 10
@@ -48,9 +48,12 @@ export async function GET(request: Request) {
             select: {
                 id: true,
                 fullName: true,
-                avatarUrl: true,
-                jobTitle: true,
-                department: true
+                role: true,
+                team: {
+                    select: {
+                        name: true
+                    }
+                }
             }
         })
 
@@ -61,10 +64,10 @@ export async function GET(request: Request) {
                 rank: index + 1,
                 userId: entry.receiverId,
                 name: user?.fullName || 'Unknown',
-                avatar: user?.avatarUrl || null,
-                role: user?.jobTitle || 'Employee',
-                department: user?.department || '',
-                points: entry._sum.points || 0
+                avatar: null, // User model has no avatarUrl yet
+                role: user?.role || 'Employee',
+                department: user?.team?.name || '',
+                points: entry._sum.pointsAwarded || 0
             }
         })
 
