@@ -186,7 +186,7 @@ export default function LandingPage() {
             <a href="#">Contact</a>
           </div>
         </div>
-        <div className="footer-copy">© 2026 Embedit</div>
+        <div className="footer-copy">© 2026 Embedit <span style={{ opacity: 0.5, fontSize: '0.8rem', marginLeft: '8px' }}>| v9-FIX</span></div>
       </footer>
 
       {/* --- STYLES --- */}
@@ -261,7 +261,7 @@ export default function LandingPage() {
         
         /* Typography Clamp for Mobile */
         .hero-title { 
-            font-size: clamp(2.5rem, 8vw, 4rem); 
+            font-size: clamp(1.8rem, 10vw, 4rem); 
             font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.02em; 
             word-break: break-word; /* Prevent overflow */
         }
@@ -327,7 +327,7 @@ export default function LandingPage() {
         .cb-text-left { flex: 1; min-width: 300px; }
         /* Typography Clamp for Global Headline */
         .cb-text-left h2 { 
-            font-size: clamp(2rem, 6vw, 3rem); 
+            font-size: clamp(1.8rem, 8vw, 3rem); 
             font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; 
             word-break: break-word;
         }
