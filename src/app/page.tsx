@@ -47,6 +47,7 @@ export default function LandingPage() {
           <div className="nav-links">
             <a href="#features">Features</a>
             <a href="#how">How it Works</a>
+            <Link href="/whitepaper" className="landing-nav-link text-highlight">📄 Whitepaper</Link>
             <Link href="/login" className="landing-btn-nav">Try Demo</Link>
           </div>
         </div>
@@ -256,6 +257,8 @@ export default function LandingPage() {
         .nav-links { display: flex; gap: 2rem; align-items: center; }
         .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 500; transition: color 0.2s; }
         .nav-links a:hover { color: #00D264; }
+        .landing-nav-link.text-highlight { color: #00D264 !important; font-weight: 700; opacity: 0.9; }
+        .landing-nav-link.text-highlight:hover { opacity: 1; text-shadow: 0 0 10px rgba(0,210,100,0.4); }
         
         /* NEW BUTTON STYLES (Minimalist / Bold) */
         .landing-btn-nav { 
