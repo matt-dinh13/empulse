@@ -102,27 +102,64 @@ export default function WhitepaperPage() {
                 .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; width: 100%; }
                 
                 /* Navbar */
-                .navbar { border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 50; background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); }
-                .nav-content { height: 4rem; display: flex; items-center; justify-content: space-between; }
+                .navbar { 
+                    border-bottom: 1px solid rgba(255,255,255,0.1); 
+                    position: sticky; top: 0; z-index: 100; 
+                    background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); 
+                    height: 4.5rem; display: flex; align-items: center; width: 100%;
+                }
+                .nav-content { 
+                    max-width: 1400px;
+                    display: flex; items-center; justify-content: space-between; 
+                    width: 100%; height: 100%;
+                }
                 
-                .logo { font-size: 1.25rem; font-weight: 700; text-decoration: none; display: flex; items-center; transition: opacity 0.2s; }
+                .logo { 
+                    display: flex; items-center; text-decoration: none; 
+                    flex-shrink: 0; margin-right: 2rem;
+                }
                 .logo:hover { opacity: 0.8; }
-                .text-white { color: white; }
-                .text-emerald { color: #10b981; }
+                .text-white { color: white; font-weight: 800; font-size: 1.5rem; }
+                .text-emerald { color: #00D264; font-weight: 800; font-size: 1.5rem; }
                 
-                .badge { margin-left: 0.5rem; padding: 0.1rem 0.5rem; font-size: 0.75rem; background: rgba(255,255,255,0.1); border-radius: 0.25rem; color: #9ca3af; font-weight: 400; }
+                .badge { 
+                    margin-left: 0.8rem; padding: 0.2rem 0.6rem; 
+                    font-size: 0.75rem; 
+                    background: rgba(0, 210, 100, 0.1); 
+                    border: 1px solid rgba(0, 210, 100, 0.2);
+                    border-radius: 0.25rem; 
+                    color: #00D264; 
+                    font-weight: 600; 
+                    letter-spacing: 0.05em;
+                    text-transform: uppercase;
+                }
 
-                .tabs-bar { display: flex; gap: 0.25rem; overflow-x: auto; margin: 0 1rem; }
+                .tabs-bar { 
+                    display: flex; gap: 0.5rem; overflow-x: auto; 
+                    flex: 1; justify-content: center;
+                    padding: 0 1rem;
+                }
                 .tab-btn { 
-                    padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 500; border-radius: 9999px; border: none; cursor: pointer; white-space: nowrap; transition: 0.2s;
+                    padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: 600; 
+                    border-radius: 9999px; border: 1px solid transparent; 
+                    cursor: pointer; white-space: nowrap; transition: all 0.2s;
                     background: transparent; color: #9ca3af;
                 }
-                .tab-btn:hover { color: white; background: rgba(255,255,255,0.05); }
-                .tab-btn.active { background: white; color: black; }
+                .tab-btn:hover { color: white; background: rgba(255,255,255,0.1); }
+                .tab-btn.active { 
+                    background: #00D264; 
+                    color: black; 
+                    box-shadow: 0 0 15px rgba(0, 210, 100, 0.4);
+                }
 
-                .actions { display: none; }
-                .back-link { font-size: 0.875rem; color: #9ca3af; text-decoration: none; transition: 0.2s; }
-                .back-link:hover { color: white; }
+                .actions { display: flex; align-items: center; flex-shrink: 0; }
+                .back-link { 
+                    font-size: 0.9rem; color: #9ca3af; text-decoration: none; 
+                    transition: 0.2s; font-weight: 500;
+                    padding: 0.5rem 1rem;
+                    border-radius: 0.5rem;
+                }
+                .back-link:hover { color: white; background: rgba(255,255,255,0.05); }
 
                 /* Main */
                 .main-content { padding-top: 3rem; padding-bottom: 3rem; flex: 1; }

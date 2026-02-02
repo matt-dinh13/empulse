@@ -1,23 +1,55 @@
+import Image from 'next/image'
+
 export default function TabOverview() {
     return (
         <div className="overview-container">
             {/* Hero */}
             <section className="hero-section">
-                <h1 className="hero-title">
-                    Peer-to-Peer Recognition that Drives Engagement
-                </h1>
-                <p className="hero-desc">
-                    EmPulse enables instant recognition with real-world rewards, bridging the gap between distributed teams and fostering a culture of gratitude.
-                </p>
+                <div className="hero-content">
+                    <div className="hero-badge">
+                        <span className="badge-dot"></span>
+                        <span>Enterprise Grade Recognition</span>
+                    </div>
+                    <h1 className="hero-title">
+                        Peer-to-Peer Recognition that <span className="text-gradient">Drives Engagement</span>
+                    </h1>
+                    <p className="hero-desc">
+                        EmPulse bridges the gap between distributed teams with instant recognition, gamification, and real-world rewards.
+                        Build a culture of gratitude that scales.
+                    </p>
+                </div>
+
+                {/* Visual Graphic (CSS Shapes + Blur) */}
+                <div className="hero-visual">
+                    <div className="visual-circle circle-1"></div>
+                    <div className="visual-circle circle-2"></div>
+                    <div className="visual-card">
+                        <div className="card-header">
+                            <div className="avatar"></div>
+                            <div className="user-info">
+                                <div className="line line-short"></div>
+                                <div className="line line-long"></div>
+                            </div>
+                        </div>
+                        <div className="card-body">
+                            <div className="line line-full"></div>
+                            <div className="line line-full"></div>
+                            <div className="line line-medium"></div>
+                        </div>
+                        <div className="card-footer">
+                            <span className="tag">+10 Points</span>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             {/* Problem & Solution Grid */}
-            <div className="grid-2 gap-lg mt-xl">
-                <div className="card-box">
+            <div className="grid-2 gap-xl mt-xl">
+                <div className="card-box border-red">
                     <div className="icon-box red-icon">
                         <span className="icon-text">💔</span>
                     </div>
-                    <h3 className="section-title">The Problem</h3>
+                    <h3 className="section-title text-red">The Problem</h3>
                     <ul className="feature-list">
                         <li>
                             <span className="bullet red-bullet">•</span>
@@ -34,11 +66,11 @@ export default function TabOverview() {
                     </ul>
                 </div>
 
-                <div className="card-box">
+                <div className="card-box border-green">
                     <div className="icon-box green-icon">
                         <span className="icon-text">💡</span>
                     </div>
-                    <h3 className="section-title">The Solution</h3>
+                    <h3 className="section-title text-green">The Solution</h3>
                     <ul className="feature-list">
                         <li>
                             <span className="bullet green-bullet">•</span>
@@ -59,58 +91,124 @@ export default function TabOverview() {
             {/* Key Stats */}
             <div className="stats-container">
                 <div className="stat-item">
-                    <div className="stat-value">8</div>
-                    <div className="stat-label">Votes / Month</div>
+                    <div className="stat-value">Top 1%</div>
+                    <div className="stat-label">Engagement Rate</div>
                 </div>
                 <div className="stat-item">
-                    <div className="stat-value">10</div>
-                    <div className="stat-label">Points / Vote</div>
+                    <div className="stat-value text-green">Real ROI</div>
+                    <div className="stat-label">Retention & Morale</div>
                 </div>
                 <div className="stat-item">
-                    <div className="stat-value">2</div>
-                    <div className="stat-label">Regions (VN/CZ)</div>
+                    <div className="stat-value">Global</div>
+                    <div className="stat-label">Multi-Region Support</div>
                 </div>
             </div>
 
             <style jsx>{`
-                .overview-container { max-width: 900px; margin: 0 auto; }
+                .overview-container { max-width: 1200px; margin: 0 auto; }
                 
-                .hero-section { text-align: center; margin-bottom: 4rem; }
+                /* HERO */
+                .hero-section { 
+                    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; 
+                    align-items: center; margin-bottom: 6rem; min-height: 500px;
+                }
+                .hero-content { text-align: left; }
+                
+                .hero-badge { 
+                    display: inline-flex; align-items: center; gap: 0.5rem; 
+                    padding: 0.4rem 0.8rem; border-radius: 2rem; 
+                    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+                    color: #00D264; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem;
+                }
+                .badge-dot { width: 8px; height: 8px; background: #00D264; border-radius: 50%; box-shadow: 0 0 10px #00D264; }
+
                 .hero-title { 
                     font-size: 3.5rem; 
                     font-weight: 800; 
-                    background: linear-gradient(to bottom, #ffffff, #888888); 
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
+                    color: white;
                     margin-bottom: 1.5rem;
                     line-height: 1.1;
+                    letter-spacing: -0.02em;
                 }
-                .hero-desc { color: #9ca3af; font-size: 1.25rem; max-width: 700px; margin: 0 auto; line-height: 1.6; }
+                .text-gradient { 
+                    display: block;
+                    background: linear-gradient(90deg, #fff, #00D264); 
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+                .hero-desc { color: #9ca3af; font-size: 1.15rem; line-height: 1.6; max-width: 500px; }
 
+                /* HERO VISUAL */
+                .hero-visual { position: relative; height: 400px; display: flex; align-items: center; justify-content: center; }
+                .visual-circle { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.4; }
+                .circle-1 { width: 300px; height: 300px; background: #00D264; top: 0; right: 0; }
+                .circle-2 { width: 250px; height: 250px; background: #006ed2; bottom: 0; left: 0; }
+                
+                .visual-card { 
+                    position: relative; z-index: 2; width: 320px; 
+                    background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(20px);
+                    border: 1px solid rgba(255,255,255,0.1); border-radius: 1.5rem;
+                    padding: 2rem; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+                    transform: rotate(-5deg); transition: transform 0.3s;
+                }
+                .visual-card:hover { transform: rotate(0deg) scale(1.02); }
+                
+                .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+                .avatar { width: 48px; height: 48px; background: #333; border-radius: 50%; }
+                .user-info { flex: 1; }
+                .line { height: 10px; background: #333; border-radius: 5px; margin-bottom: 6px; }
+                .line-short { width: 60%; }
+                .line-long { width: 40%; }
+                .line-full { width: 100%; }
+                .line-medium { width: 80%; }
+                
+                .card-footer { margin-top: 1.5rem; display: flex; justify-content: flex-end; }
+                .tag { background: rgba(0, 210, 100, 0.2); color: #00D264; padding: 0.4rem 0.8rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.9rem; }
+
+                /* GRID */
                 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-                .card-box { padding: 2rem; border-radius: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+                .card-box { 
+                    padding: 2.5rem; border-radius: 1.5rem; 
+                    background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); 
+                    border: 1px solid rgba(255,255,255,0.05); 
+                    transition: transform 0.3s;
+                }
+                .card-box:hover { transform: translateY(-5px); }
                 
-                .icon-box { width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+                .border-green { border-top: 4px solid #00D264; }
+                .border-red { border-top: 4px solid #ef4444; }
+
+                .icon-box { width: 3.5rem; height: 3.5rem; border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
                 .red-icon { background: rgba(239, 68, 68, 0.1); }
-                .green-icon { background: rgba(16, 185, 129, 0.1); }
-                .icon-text { font-size: 1.5rem; }
+                .green-icon { background: rgba(0, 210, 100, 0.1); }
+                .icon-text { font-size: 1.8rem; }
                 
-                .section-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: white; }
+                .section-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; color: white; }
+                .text-green { color: #00D264; }
+                .text-red { color: white; } /* Kept white for contrast, bullet handles red */
                 
-                .feature-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1rem; color: #9ca3af; }
-                .feature-list li { display: flex; gap: 0.75rem; align-items: flex-start; }
+                .feature-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1rem; color: #d1d5db; }
+                .feature-list li { display: flex; gap: 0.75rem; align-items: flex-start; font-size: 1.05rem; }
                 .bullet { font-size: 1.2rem; line-height: 1; }
                 .red-bullet { color: #ef4444; }
-                .green-bullet { color: #10b981; }
+                .green-bullet { color: #00D264; }
 
-                .stats-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center; padding: 3rem 0; margin-top: 4rem; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
-                .stat-value { font-size: 2.5rem; font-weight: 700; color: white; margin-bottom: 0.5rem; }
-                .stat-label { font-size: 0.875rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+                /* STATS */
+                .stats-container { 
+                    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; 
+                    text-align: center; padding: 4rem 0; margin-top: 5rem; 
+                    border-top: 1px solid rgba(255,255,255,0.1); 
+                }
+                .stat-value { font-size: 3rem; font-weight: 800; color: white; margin-bottom: 0.5rem; letter-spacing: -0.03em; }
+                .stat-label { font-size: 0.95rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
 
-                @media (max-width: 768px) {
-                    .hero-title { font-size: 2.5rem; }
+                @media (max-width: 900px) {
+                    .hero-section { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
+                    .hero-content { display: flex; flex-direction: column; align-items: center; }
+                    .hero-desc { margin: 0 auto; }
+                    .hero-visual { height: 300px; }
                     .grid-2 { grid-template-columns: 1fr; }
-                    .stats-container { grid-template-columns: 1fr; gap: 2rem; }
+                    .stats-container { grid-template-columns: 1fr; gap: 3rem; }
                 }
             `}</style>
         </div>
