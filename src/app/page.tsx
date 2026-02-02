@@ -41,7 +41,7 @@ export default function LandingPage() {
       {/* Navbar */}
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="container nav-inner">
-          <div className="brand">EmPulse</div>
+          <div className="brand">Em<span style={{ color: '#00D264' }}>/</span>Pulse</div>
           <div className="nav-links">
             <a href="#features">Features</a>
             <a href="#how">How it Works</a>
@@ -179,21 +179,23 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="footer">
         <div className="container footer-inner">
-          <div className="brand-muted">EmPulse</div>
+          <div className="brand-muted">
+            <Image src="/embedit-logo.svg" alt="EmbedIT" width={150} height={40} style={{ opacity: 0.8 }} />
+          </div>
           <div className="footer-nav">
             <a href="#">Privacy</a>
             <a href="#">Terms</a>
             <a href="#">Contact</a>
           </div>
         </div>
-        <div className="footer-copy">© 2026 Embedit <span style={{ opacity: 0.5, fontSize: '0.8rem', marginLeft: '8px' }}>| v10-GLOBAL</span></div>
+        <div className="footer-copy">© 2026 Embedit {/* v10-GLOBAL hidden */}</div>
       </footer>
 
       {/* --- STYLES --- */}
       <style jsx global>{`
         body, html { 
           margin: 0; padding: 0; background: #000 !important; 
-          color: white !important; font-family: 'Inter', sans-serif; overflow-x: hidden;
+          color: white !important; font-family: 'Satoshi', sans-serif; overflow-x: hidden;
         }
       `}</style>
 
