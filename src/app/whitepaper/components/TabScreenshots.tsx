@@ -2,11 +2,11 @@ import Image from 'next/image'
 
 export default function TabScreenshots() {
     const screens = [
-        { title: 'Vote Feed (Dashboard)', src: '/screenshots/dashboard.png', desc: 'Real-time feed of employee recognition.' },
-        { title: 'Leaderboard', src: '/screenshots/leaderboard.png', desc: 'Top contributors and ranking.' },
-        { title: 'Send Vote', src: '/screenshots/send-vote.png', desc: 'Intuitive interface to recognize colleagues.' },
-        { title: 'Catalog', src: '/screenshots/catalog.png', desc: 'Rewards redemption center.' },
-        { title: 'Admin Orders', src: '/screenshots/admin-orders.png', desc: 'Order management and approval workflow.' },
+        { title: 'Vote Feed (Dashboard)', src: '/screenshot-dashboard.png', desc: 'Real-time feed of employee recognition.', isReal: true },
+        { title: 'Leaderboard', src: '/screenshot-leaderboard.png', desc: 'Top contributors and ranking.', isReal: true },
+        { title: 'Send Vote', src: '/screenshot-send-vote.png', desc: 'Intuitive interface to recognize colleagues.', isReal: true },
+        { title: 'Catalog', src: '/screenshot-catalog.png', desc: 'Rewards redemption center.', isReal: true },
+        { title: 'Admin Orders', src: '/screenshot-admin-orders.png', desc: 'Order management and approval workflow.', isReal: true },
     ]
 
     return (
@@ -19,12 +19,24 @@ export default function TabScreenshots() {
             <div className="grid-screens">
                 {screens.map((screen, idx) => (
                     <div key={idx} className={`screen-card ${idx === 0 ? 'full-width' : ''}`}>
-                        <div className="image-placeholder">
-                            <div className="placeholder-text">
-                                [ Screenshot: {screen.src} ]
-                                <br />
-                                (Image Pending Capture)
-                            </div>
+                        <div className="image-wrapper">
+                            {screen.isReal ? (
+                                <Image
+                                    src={screen.src}
+                                    alt={screen.title}
+                                    width={1200}
+                                    height={675}
+                                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                                />
+                            ) : (
+                                <div className="image-placeholder">
+                                    <div className="placeholder-text">
+                                        [ Screenshot: {screen.src} ]
+                                        <br />
+                                        (Image Pending Capture)
+                                    </div>
+                                </div>
+                            )}
                         </div>
                         <div className="card-overlay">
                             <div>
@@ -51,9 +63,9 @@ export default function TabScreenshots() {
                     background: rgba(255,255,255,0.05);
                 }
                 
+                .image-wrapper { aspect-ratio: 16/9; background: #1f2937; position: relative; }
                 .image-placeholder { 
-                    aspect-ratio: 16/9; 
-                    background: #1f2937; 
+                    width: 100%; height: 100%;
                     display: flex; 
                     align-items: center; 
                     justify-content: center; 
