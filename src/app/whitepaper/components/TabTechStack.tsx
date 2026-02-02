@@ -4,40 +4,36 @@ import { useEffect } from 'react'
 
 export default function TabTechStack() {
     useEffect(() => {
-        // Re-init mermaid if switching tabs, though usually loaded by parent/layout if global.
-        // Since we load it in DataModel, we might need it here too if User navigates directly.
-        // For simplicity, we assume DataModel handles the load or we duplicate logic if specific independent loading needed.
-        // Actually, let's just use CSS pills here and maybe another diagram if needed.
         if (typeof window !== 'undefined' && (window as any).mermaid) {
             (window as any).mermaid.init(undefined, document.querySelectorAll('.mermaid'))
         }
     }, [])
 
     return (
-        <div className="max-w-5xl mx-auto space-y-16">
-            <section>
-                <h2 className="text-3xl font-bold mb-8 text-center">Technology Stack</h2>
-                <div className="flex flex-wrap justify-center gap-4">
+        <div className="tech-container">
+            <section className="section">
+                <h2 className="title">Technology Stack</h2>
+                <div className="tech-grid">
                     {[
-                        { name: 'Next.js 14', cat: 'Frontend', color: 'bg-white text-black' },
-                        { name: 'TypeScript', cat: 'Language', color: 'bg-blue-600' },
-                        { name: 'Tailwind CSS', cat: 'Styling', color: 'bg-cyan-500' },
-                        { name: 'PostgreSQL', cat: 'Database', color: 'bg-blue-400' },
-                        { name: 'Prisma', cat: 'ORM', color: 'bg-slate-600' },
-                        { name: 'Supabase', cat: 'Backend', color: 'bg-green-600' },
-                        { name: 'Vercel', cat: 'Hosting', color: 'bg-black border border-white/20' },
+                        { name: 'Next.js 14', cat: 'Frontend', style: 'bg-white' },
+                        { name: 'TypeScript', cat: 'Language', style: 'bg-blue' },
+                        { name: 'Tailwind CSS', cat: 'Styling', style: 'bg-cyan' },
+                        { name: 'PostgreSQL', cat: 'Database', style: 'bg-lightblue' },
+                        { name: 'Prisma', cat: 'ORM', style: 'bg-slate' },
+                        { name: 'Supabase', cat: 'Backend', style: 'bg-green' },
+                        { name: 'Vercel', cat: 'Hosting', style: 'bg-black' },
                     ].map((tech) => (
-                        <div key={tech.name} className={`px-6 py-3 rounded-xl font-bold flex flex-col items-center shadow-lg ${tech.color} bg-opacity-90`}>
-                            <span className="text-lg">{tech.name}</span>
-                            <span className="text-xs opacity-80 font-normal uppercase mt-1">{tech.cat}</span>
+                        <div key={tech.name} className={`tech-card ${tech.style}`}>
+                            <span className="tech-name">{tech.name}</span>
+                            <span className="tech-cat">{tech.cat}</span>
                         </div>
                     ))}
                 </div>
             </section>
 
-            <section>
-                <h2 className="text-3xl font-bold mb-8 text-center">System Architecture</h2>
-                <div className="bg-white/5 p-8 rounded-xl border border-white/10 overflow-hidden text-center">
+            <section className="section">
+                <h2 className="title">System Architecture</h2>
+                <div className="diagram-box">
                     <div className="mermaid">
                         {`
 graph TD
@@ -62,6 +58,37 @@ graph TD
                     </div>
                 </div>
             </section>
+
+            <style jsx>{`
+                .tech-container { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 4rem; }
+                .title { font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 2rem; color: white; }
+                
+                .tech-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+                
+                .tech-card { padding: 0.75rem 1.5rem; border-radius: 0.75rem; display: flex; flex-direction: column; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
+                .tech-name { font-weight: 700; font-size: 1.1rem; color: white; }
+                .tech-cat { font-size: 0.75rem; text-transform: uppercase; margin-top: 0.25rem; opacity: 0.8; color: rgba(255,255,255,0.8); }
+
+                /* Custom Colors reflecting original Tailwind intent */
+                .bg-white { background: rgba(255,255,255,0.1); } /* kept subtle for dark mode */
+                .bg-white .tech-name, .bg-white .tech-cat { color: white; }
+                
+                .bg-blue { background: rgba(37, 99, 235, 0.4); } 
+                .bg-cyan { background: rgba(6, 182, 212, 0.4); }
+                .bg-lightblue { background: rgba(96, 165, 250, 0.4); }
+                .bg-slate { background: rgba(71, 85, 105, 0.6); }
+                .bg-green { background: rgba(22, 163, 74, 0.4); }
+                .bg-black { background: #000; border-color: rgba(255,255,255,0.2); }
+
+                .diagram-box { 
+                    background: rgba(255,255,255,0.05); 
+                    padding: 2rem; 
+                    border-radius: 1rem; 
+                    border: 1px solid rgba(255,255,255,0.1); 
+                    overflow-x: auto; 
+                    text-align: center;
+                }
+            `}</style>
         </div>
     )
 }

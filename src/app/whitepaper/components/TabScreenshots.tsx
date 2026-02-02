@@ -10,32 +10,76 @@ export default function TabScreenshots() {
     ]
 
     return (
-        <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-4 text-center">Application Visuals</h2>
-            <p className="text-center text-gray-400 mb-12">
+        <div className="screens-container">
+            <h2 className="title">Application Visuals</h2>
+            <p className="subtitle">
                 A glimpse into the user interface and experience.
             </p>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid-screens">
                 {screens.map((screen, idx) => (
-                    <div key={idx} className={`group relative rounded-xl overflow-hidden border border-white/10 bg-white/5 ${idx === 0 ? 'md:col-span-2' : ''}`}>
-                        <div className="aspect-video bg-gray-800 relative flex items-center justify-center">
-                            {/* Placeholder because we might not have actual images yet */}
-                            <div className="text-gray-500 font-mono text-sm">
+                    <div key={idx} className={`screen-card ${idx === 0 ? 'full-width' : ''}`}>
+                        <div className="image-placeholder">
+                            <div className="placeholder-text">
                                 [ Screenshot: {screen.src} ]
                                 <br />
                                 (Image Pending Capture)
                             </div>
                         </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6 opacity-0 group-hover:opacity-100 transition duration-300">
+                        <div className="card-overlay">
                             <div>
-                                <h3 className="text-xl font-bold text-white mb-1">{screen.title}</h3>
-                                <p className="text-sm text-gray-300">{screen.desc}</p>
+                                <h3 className="card-title">{screen.title}</h3>
+                                <p className="card-desc">{screen.desc}</p>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
+
+            <style jsx>{`
+                .screens-container { max-width: 1200px; margin: 0 auto; }
+                .title { font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 1rem; color: white; }
+                .subtitle { text-align: center; color: #9ca3af; margin-bottom: 3rem; }
+
+                .grid-screens { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+                
+                .screen-card { 
+                    position: relative; 
+                    border-radius: 1rem; 
+                    overflow: hidden; 
+                    border: 1px solid rgba(255,255,255,0.1); 
+                    background: rgba(255,255,255,0.05);
+                }
+                
+                .image-placeholder { 
+                    aspect-ratio: 16/9; 
+                    background: #1f2937; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center; 
+                }
+                .placeholder-text { font-family: monospace; color: #6b7280; font-size: 0.9rem; text-align: center; }
+
+                .card-overlay { 
+                    position: absolute; 
+                    inset: 0; 
+                    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); 
+                    display: flex; 
+                    align-items: flex-end; 
+                    padding: 1.5rem; 
+                    opacity: 0; 
+                    transition: opacity 0.3s;
+                }
+                .screen-card:hover .card-overlay { opacity: 1; }
+
+                .card-title { font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 0.25rem; }
+                .card-desc { font-size: 0.9rem; color: #d1d5db; }
+
+                @media (min-width: 768px) {
+                    .grid-screens { grid-template-columns: 1fr 1fr; }
+                    .full-width { grid-column: span 2; }
+                }
+            `}</style>
         </div>
     )
 }

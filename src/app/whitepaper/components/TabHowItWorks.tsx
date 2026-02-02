@@ -1,71 +1,114 @@
 export default function TabHowItWorks() {
     return (
-        <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center">Business Flow</h2>
+        <div className="how-container">
+            <h2 className="main-title">Business Flow</h2>
 
-            <div className="relative">
+            <div className="flow-wrapper">
                 {/* Connecting Line (Desktop) */}
-                <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-500/20 via-emerald-500 to-emerald-500/20 -z-10"></div>
+                <div className="connecting-line"></div>
 
-                <div className="grid md:grid-cols-3 gap-12">
+                <div className="steps-grid">
                     {/* Step 1 */}
-                    <div className="text-center group">
-                        <div className="w-24 h-24 mx-auto bg-black border-2 border-emerald-500 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(16,185,129,0.3)] group-hover:scale-110 transition duration-300">
-                            <span className="text-4xl">💌</span>
+                    <div className="step-item group">
+                        <div className="icon-circle">
+                            <span className="icon-emoji">💌</span>
                         </div>
-                        <h3 className="text-xl font-bold mb-3 text-white">1. Send Vote</h3>
-                        <p className="text-gray-400 text-sm leading-relaxed">
+                        <h3 className="step-title">1. Send Vote</h3>
+                        <p className="step-desc">
                             Select a colleague from the directory. Currently supports searching by name/email.
                             <br />
-                            <span className="text-emerald-500 text-xs mt-2 block">Min message length: 20 chars</span>
+                            <span className="highlight-green">Min message length: 20 chars</span>
                         </p>
                     </div>
 
                     {/* Step 2 */}
-                    <div className="text-center group">
-                        <div className="w-24 h-24 mx-auto bg-black border-2 border-emerald-500 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(16,185,129,0.3)] group-hover:scale-110 transition duration-300 delay-100">
-                            <span className="text-4xl">💰</span>
+                    <div className="step-item group">
+                        <div className="icon-circle delay-1">
+                            <span className="icon-emoji">💰</span>
                         </div>
-                        <h3 className="text-xl font-bold mb-3 text-white">2. Accumulate</h3>
-                        <p className="text-gray-400 text-sm leading-relaxed">
-                            Points are deducted from Sender's <span className="text-white">Quota Wallet</span> and added to Receiver's <span className="text-white">Reward Wallet</span> instantly.
+                        <h3 className="step-title">2. Accumulate</h3>
+                        <p className="step-desc">
+                            Points are deducted from Sender's <span className="highlight-white">Quota Wallet</span> and added to Receiver's <span className="highlight-white">Reward Wallet</span> instantly.
                         </p>
                     </div>
 
                     {/* Step 3 */}
-                    <div className="text-center group">
-                        <div className="w-24 h-24 mx-auto bg-black border-2 border-emerald-500 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(16,185,129,0.3)] group-hover:scale-110 transition duration-300 delay-200">
-                            <span className="text-4xl">🎁</span>
+                    <div className="step-item group">
+                        <div className="icon-circle delay-2">
+                            <span className="icon-emoji">🎁</span>
                         </div>
-                        <h3 className="text-xl font-bold mb-3 text-white">3. Redeem</h3>
-                        <p className="text-gray-400 text-sm leading-relaxed">
+                        <h3 className="step-title">3. Redeem</h3>
+                        <p className="step-desc">
                             Employees browse the Catalog (Region-specific) and exchange points for Vouchers or Merchandise.
                         </p>
                     </div>
                 </div>
             </div>
 
-            <div className="mt-20 p-8 rounded-2xl bg-white/5 border border-white/10">
-                <h3 className="text-xl font-bold mb-6">Validation Rules</h3>
-                <div className="grid md:grid-cols-2 gap-6 text-sm text-gray-400">
-                    <div className="flex gap-3 p-4 bg-black/20 rounded-lg">
-                        <span className="text-emerald-500 font-mono">01</span>
+            <div className="validation-box">
+                <h3 className="box-title">Validation Rules</h3>
+                <div className="rules-grid">
+                    <div className="rule-item">
+                        <span className="rule-num">01</span>
                         <span>Cannot vote for self or direct manager.</span>
                     </div>
-                    <div className="flex gap-3 p-4 bg-black/20 rounded-lg">
-                        <span className="text-emerald-500 font-mono">02</span>
+                    <div className="rule-item">
+                        <span className="rule-num">02</span>
                         <span>Limit: 2 votes per week to encourage steady engagement.</span>
                     </div>
-                    <div className="flex gap-3 p-4 bg-black/20 rounded-lg">
-                        <span className="text-emerald-500 font-mono">03</span>
+                    <div className="rule-item">
+                        <span className="rule-num">03</span>
                         <span>Limit: 2 votes per person/month (prevents spamming friends).</span>
                     </div>
-                    <div className="flex gap-3 p-4 bg-black/20 rounded-lg">
-                        <span className="text-emerald-500 font-mono">04</span>
+                    <div className="rule-item">
+                        <span className="rule-num">04</span>
                         <span>Same-team limit: Max 50% of monthly quota can go to teammates.</span>
                     </div>
                 </div>
             </div>
+
+            <style jsx>{`
+                .how-container { max-width: 1000px; margin: 0 auto; }
+                .main-title { font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 3rem; color: white; }
+                
+                .flow-wrapper { position: relative; margin-bottom: 5rem; }
+                .connecting-line { display: none; }
+                
+                .steps-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+                
+                .step-item { text-align: center; position: relative; z-index: 2; }
+                .icon-circle { 
+                    width: 6rem; height: 6rem; margin: 0 auto 1.5rem; 
+                    background: #000; border: 2px solid #10b981; border-radius: 50%; 
+                    display: flex; align-items: center; justify-content: center;
+                    box-shadow: 0 0 30px rgba(16,185,129,0.3);
+                    transition: transform 0.3s;
+                }
+                .step-item:hover .icon-circle { transform: scale(1.1); }
+                .icon-emoji { font-size: 2.5rem; }
+                
+                .step-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: white; }
+                .step-desc { font-size: 0.95rem; color: #9ca3af; line-height: 1.6; max-width: 300px; margin: 0 auto; }
+                
+                .highlight-green { color: #10b981; font-size: 0.8rem; display: block; margin-top: 0.5rem; }
+                .highlight-white { color: white; font-weight: 600; }
+
+                .validation-box { padding: 2rem; border-radius: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+                .box-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; color: white; }
+                .rules-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+                .rule-item { display: flex; gap: 1rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 0.5rem; font-size: 0.9rem; color: #9ca3af; align-items: center; }
+                .rule-num { color: #10b981; font-family: monospace; font-weight: 700; }
+
+                @media (min-width: 768px) {
+                    .connecting-line { 
+                        display: block; position: absolute; top: 3rem; left: 0; width: 100%; height: 2px; 
+                        background: linear-gradient(90deg, rgba(16,185,129,0.2), #10b981, rgba(16,185,129,0.2)); 
+                        z-index: 1; 
+                    }
+                    .steps-grid { grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+                    .rules-grid { grid-template-columns: 1fr 1fr; }
+                }
+            `}</style>
         </div>
     )
 }

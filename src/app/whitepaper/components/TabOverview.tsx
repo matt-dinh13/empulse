@@ -1,55 +1,55 @@
 export default function TabOverview() {
     return (
-        <div className="max-w-4xl mx-auto space-y-16">
+        <div className="overview-container">
             {/* Hero */}
-            <section className="text-center space-y-6">
-                <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-gradient-to-b from-white to-gray-500 bg-clip-text text-transparent pb-2">
+            <section className="hero-section">
+                <h1 className="hero-title">
                     Peer-to-Peer Recognition that Drives Engagement
                 </h1>
-                <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                <p className="hero-desc">
                     EmPulse enables instant recognition with real-world rewards, bridging the gap between distributed teams and fostering a culture of gratitude.
                 </p>
             </section>
 
             {/* Problem & Solution Grid */}
-            <div className="grid md:grid-cols-2 gap-8">
-                <div className="p-8 rounded-2xl bg-white/5 border border-white/10">
-                    <div className="w-12 h-12 bg-red-500/10 rounded-lg flex items-center justify-center mb-6">
-                        <span className="text-2xl">💔</span>
+            <div className="grid-2 gap-lg mt-xl">
+                <div className="card-box">
+                    <div className="icon-box red-icon">
+                        <span className="icon-text">💔</span>
                     </div>
-                    <h3 className="text-2xl font-bold mb-4">The Problem</h3>
-                    <ul className="space-y-4 text-gray-400">
-                        <li className="flex gap-3">
-                            <span className="text-red-500">•</span>
+                    <h3 className="section-title">The Problem</h3>
+                    <ul className="feature-list">
+                        <li>
+                            <span className="bullet red-bullet">•</span>
                             <span>Employees feel disconnected in hybrid/remote setups.</span>
                         </li>
-                        <li className="flex gap-3">
-                            <span className="text-red-500">•</span>
+                        <li>
+                            <span className="bullet red-bullet">•</span>
                             <span>Recognition is infrequent and often top-down only.</span>
                         </li>
-                        <li className="flex gap-3">
-                            <span className="text-red-500">•</span>
+                        <li>
+                            <span className="bullet red-bullet">•</span>
                             <span>"Kudos" channels on Slack get lost and lack tangible value.</span>
                         </li>
                     </ul>
                 </div>
 
-                <div className="p-8 rounded-2xl bg-white/5 border border-white/10">
-                    <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mb-6">
-                        <span className="text-2xl">💡</span>
+                <div className="card-box">
+                    <div className="icon-box green-icon">
+                        <span className="icon-text">💡</span>
                     </div>
-                    <h3 className="text-2xl font-bold mb-4">The Solution</h3>
-                    <ul className="space-y-4 text-gray-400">
-                        <li className="flex gap-3">
-                            <span className="text-emerald-500">•</span>
+                    <h3 className="section-title">The Solution</h3>
+                    <ul className="feature-list">
+                        <li>
+                            <span className="bullet green-bullet">•</span>
                             <span>Democratized recognition: Anyone can reward anyone.</span>
                         </li>
-                        <li className="flex gap-3">
-                            <span className="text-emerald-500">•</span>
+                        <li>
+                            <span className="bullet green-bullet">•</span>
                             <span>Tangible Rewards: Points convert to Vouchers & Merch.</span>
                         </li>
-                        <li className="flex gap-3">
-                            <span className="text-emerald-500">•</span>
+                        <li>
+                            <span className="bullet green-bullet">•</span>
                             <span>Gamification: Leaderboards and Badges drive participation.</span>
                         </li>
                     </ul>
@@ -57,20 +57,62 @@ export default function TabOverview() {
             </div>
 
             {/* Key Stats */}
-            <div className="grid grid-cols-3 gap-4 text-center py-12 border-y border-white/10">
-                <div>
-                    <div className="text-4xl font-bold text-white mb-2">8</div>
-                    <div className="text-sm text-gray-500 uppercase tracking-wider">Votes / Month</div>
+            <div className="stats-container">
+                <div className="stat-item">
+                    <div className="stat-value">8</div>
+                    <div className="stat-label">Votes / Month</div>
                 </div>
-                <div>
-                    <div className="text-4xl font-bold text-white mb-2">10</div>
-                    <div className="text-sm text-gray-500 uppercase tracking-wider">Points / Vote</div>
+                <div className="stat-item">
+                    <div className="stat-value">10</div>
+                    <div className="stat-label">Points / Vote</div>
                 </div>
-                <div>
-                    <div className="text-4xl font-bold text-white mb-2">2</div>
-                    <div className="text-sm text-gray-500 uppercase tracking-wider">Regions (VN/CZ)</div>
+                <div className="stat-item">
+                    <div className="stat-value">2</div>
+                    <div className="stat-label">Regions (VN/CZ)</div>
                 </div>
             </div>
+
+            <style jsx>{`
+                .overview-container { max-width: 900px; margin: 0 auto; }
+                
+                .hero-section { text-align: center; margin-bottom: 4rem; }
+                .hero-title { 
+                    font-size: 3.5rem; 
+                    font-weight: 800; 
+                    background: linear-gradient(to bottom, #ffffff, #888888); 
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    margin-bottom: 1.5rem;
+                    line-height: 1.1;
+                }
+                .hero-desc { color: #9ca3af; font-size: 1.25rem; max-width: 700px; margin: 0 auto; line-height: 1.6; }
+
+                .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+                .card-box { padding: 2rem; border-radius: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+                
+                .icon-box { width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+                .red-icon { background: rgba(239, 68, 68, 0.1); }
+                .green-icon { background: rgba(16, 185, 129, 0.1); }
+                .icon-text { font-size: 1.5rem; }
+                
+                .section-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: white; }
+                
+                .feature-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1rem; color: #9ca3af; }
+                .feature-list li { display: flex; gap: 0.75rem; align-items: flex-start; }
+                .bullet { font-size: 1.2rem; line-height: 1; }
+                .red-bullet { color: #ef4444; }
+                .green-bullet { color: #10b981; }
+
+                .stats-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center; padding: 3rem 0; margin-top: 4rem; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
+                .stat-value { font-size: 2.5rem; font-weight: 700; color: white; margin-bottom: 0.5rem; }
+                .stat-label { font-size: 0.875rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+
+                @media (max-width: 768px) {
+                    .hero-title { font-size: 2.5rem; }
+                    .grid-2 { grid-template-columns: 1fr; }
+                    .stats-container { grid-template-columns: 1fr; gap: 2rem; }
+                }
+            `}</style>
         </div>
     )
 }

@@ -23,13 +23,13 @@ export default function TabDataModel() {
     }, [])
 
     return (
-        <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6 text-center">Entity Relationship Diagram (ERD)</h2>
-            <p className="text-center text-gray-400 mb-12">
+        <div className="data-container">
+            <h2 className="title">Entity Relationship Diagram (ERD)</h2>
+            <p className="subtitle">
                 The core data structure supporting multi-region users, wallets, and voting transactions.
             </p>
 
-            <div className="bg-white/5 p-8 rounded-xl border border-white/10 overflow-x-auto text-center">
+            <div className="diagram-box">
                 <div className="mermaid">
                     {`
 erDiagram
@@ -72,26 +72,53 @@ erDiagram
                 </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 mt-12">
-                <div className="p-6 bg-white/5 rounded-lg border border-white/10">
-                    <h4 className="text-emerald-500 font-bold mb-2">User & Wallets</h4>
-                    <p className="text-sm text-gray-400">
+            <div className="info-grid">
+                <div className="info-card">
+                    <h4 className="info-title">User & Wallets</h4>
+                    <p className="info-text">
                         Separation of <strong>Quota Wallet</strong> (Giving Power) and <strong>Reward Wallet</strong> (Earning Power) ensures budget control.
                     </p>
                 </div>
-                <div className="p-6 bg-white/5 rounded-lg border border-white/10">
-                    <h4 className="text-emerald-500 font-bold mb-2">Vote Transaction</h4>
-                    <p className="text-sm text-gray-400">
+                <div className="info-card">
+                    <h4 className="info-title">Vote Transaction</h4>
+                    <p className="info-text">
                         Atomic transactions ensure points are never lost. Every vote is linked to both Sender and Receiver.
                     </p>
                 </div>
-                <div className="p-6 bg-white/5 rounded-lg border border-white/10">
-                    <h4 className="text-emerald-500 font-bold mb-2">Rewards</h4>
-                    <p className="text-sm text-gray-400">
+                <div className="info-card">
+                    <h4 className="info-title">Rewards</h4>
+                    <p className="info-text">
                         Region-specific catalogs allow VN users to see Vouchers and CZ users to see different options.
                     </p>
                 </div>
             </div>
+
+            <style jsx>{`
+                .data-container { max-width: 1200px; margin: 0 auto; }
+                .title { font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 1rem; color: white; }
+                .subtitle { text-align: center; color: #9ca3af; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+                
+                .diagram-box { 
+                    background: rgba(255,255,255,0.05); 
+                    padding: 2rem; 
+                    border-radius: 1rem; 
+                    border: 1px solid rgba(255,255,255,0.1); 
+                    overflow-x: auto; 
+                    text-align: center;
+                    margin-bottom: 3rem;
+                }
+                
+                .info-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+                
+                .info-card { padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); }
+                .info-title { color: #10b981; font-weight: 700; margin-bottom: 0.5rem; font-size: 1.1rem; }
+                .info-text { font-size: 0.9rem; color: #9ca3af; line-height: 1.5; }
+                .info-text strong { color: white; }
+
+                @media (min-width: 768px) {
+                    .info-grid { grid-template-columns: 1fr 1fr 1fr; }
+                }
+            `}</style>
         </div>
     )
 }
