@@ -95,6 +95,9 @@ model User {
   @@index([teamId])
   @@index([managerId])
   @@index([regionId])
+  @@index([fullName])
+  @@index([email])
+  @@index([isActive])
   @@map("users")
 }
 

@@ -147,18 +147,29 @@ export default function SendVotePage() {
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Recognition Message</label>
+                            <label className="form-label">
+                                Recognition Message
+                                <span style={{ float: 'right', fontSize: '0.8rem', color: message.length < 20 ? 'red' : 'green' }}>
+                                    {message.length} / 20 chars
+                                </span>
+                            </label>
                             <textarea
                                 className="form-input"
                                 rows={4}
-                                placeholder="Tell them why they deserve this recognition..."
+                                placeholder="Tell them why they deserve this recognition... (min 20 chars)"
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 required
+                                minLength={20}
                             />
                         </div>
 
-                        <button type="submit" className="btn btn-primary login-btn" disabled={loading}>
+                        <button
+                            type="submit"
+                            className="btn btn-primary login-btn"
+                            disabled={loading || message.length < 20}
+                            style={{ opacity: message.length < 20 ? 0.5 : 1 }}
+                        >
                             {loading ? 'Sending...' : '🎯 Send Vote (+10 points)'}
                         </button>
                     </form>

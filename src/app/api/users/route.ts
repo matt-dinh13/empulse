@@ -35,7 +35,11 @@ export async function GET(request: NextRequest) {
             take: 50,
         })
 
-        return NextResponse.json({ users })
+        return NextResponse.json({ users }, {
+            headers: {
+                'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+            }
+        })
     } catch (error) {
         console.error('Get users error:', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
