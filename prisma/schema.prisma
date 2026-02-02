@@ -194,6 +194,7 @@ model RewardCatalog {
   pointsRequired Int      @map("points_required")
   displayValue   String?  @map("display_value") @db.VarChar(50)
   rewardType     String   @map("reward_type") @db.VarChar(20)
+  icon           String   @default("🎁")
   isActive       Boolean  @default(true) @map("is_active")
   sortOrder      Int      @default(0) @map("sort_order")
   createdAt      DateTime @default(now()) @map("created_at")

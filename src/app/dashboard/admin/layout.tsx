@@ -64,6 +64,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <Link href="/dashboard/admin/orders" className={`sidebar-link ${pathname.includes('orders') ? 'active' : ''}`}>
                         📋 Order Approvals
                     </Link>
+                    <Link href="/dashboard/admin/catalog" className={`sidebar-link ${pathname.includes('catalog') ? 'active' : ''}`}>
+                        🎁 Reward Catalog
+                    </Link>
+                    {user?.role === 'admin' && (
+                        <Link href="/dashboard/admin/settings" className={`sidebar-link ${pathname.includes('settings') ? 'active' : ''}`}>
+                            ⚙️ System Settings
+                        </Link>
+                    )}
 
                     <div style={{ margin: '1rem 0', borderTop: '1px solid rgba(255,255,255,0.1)' }}></div>
 
