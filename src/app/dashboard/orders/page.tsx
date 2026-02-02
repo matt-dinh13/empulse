@@ -67,6 +67,15 @@ export default function OrdersPage() {
                     <Link href="/dashboard/catalog" className="sidebar-link">🎁 Rewards Catalog</Link>
                     <Link href="/dashboard/orders" className="sidebar-link active">📦 My Orders</Link>
                 </nav>
+                <div style={{ marginTop: 'auto', paddingTop: 'var(--spacing-lg)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                    <button onClick={() => {
+                        localStorage.removeItem('accessToken')
+                        localStorage.removeItem('user')
+                        window.location.href = '/login'
+                    }} className="btn" style={{ width: '100%', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none' }}>
+                        Logout
+                    </button>
+                </div>
             </aside>
 
             <main className="main-content">

@@ -74,9 +74,9 @@ export default function DashboardPage() {
                     </Link>
                 </nav>
 
-                <div style={{ marginTop: 'auto', paddingTop: 'var(--spacing-lg)', borderTop: '1px solid var(--color-border)' }}>
-                    <div className="text-sm text-muted mb-sm">{user?.fullName}</div>
-                    <button onClick={handleLogout} className="btn btn-outline" style={{ width: '100%' }}>
+                <div style={{ marginTop: 'auto', paddingTop: 'var(--spacing-lg)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.6)', marginBottom: '0.5rem' }}>{user?.fullName}</div>
+                    <button onClick={handleLogout} className="btn" style={{ width: '100%', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none' }}>
                         Logout
                     </button>
                 </div>
