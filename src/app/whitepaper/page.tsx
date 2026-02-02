@@ -32,7 +32,7 @@ export default function WhitepaperPage() {
                         <span className="text-emerald">/</span>
                         <span className="text-white">Pulse</span>
                         <span className="text-white">&gt;</span>
-                        <span className="badge">Whitepaper</span>
+                        <span className="badge">Blueprint</span>
                     </Link>
 
                     <div className="tabs-bar no-scrollbar">
@@ -49,7 +49,7 @@ export default function WhitepaperPage() {
 
                     <div className="actions">
                         <Link href="/" className="back-link">
-                            <span>Exit Whitepaper</span>
+                            <span>Back to Home</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
                         </Link>
                     </div>
@@ -73,7 +73,13 @@ export default function WhitepaperPage() {
                             Contact Team
                         </a>
                     </div>
-                    <p className="copyright">© 2026 EmPulse. Internal Documentation.</p>
+
+                    <div className="footer-brand">
+                        <div className="brand-logo">
+                            <img src="/embedit-logo.svg" alt="EmbedIT" className="embedit-logo" />
+                        </div>
+                        <p className="copyright">© 2026 EmbedIT.</p>
+                    </div>
                 </div>
             </footer>
 
@@ -138,7 +144,7 @@ export default function WhitepaperPage() {
 
                 .tabs-bar { 
                     display: flex; gap: 0.5rem; justify-content: center;
-                    position: relative; z-index: 1001;
+                    position: relative; z-index: 1001; margin-left: auto; margin-right: auto;
                 }
                 .tab-btn { 
                     padding: 0.6rem 1.5rem; font-size: 0.9rem; font-weight: 600; 
@@ -174,9 +180,21 @@ export default function WhitepaperPage() {
                 .main-content { padding-top: 4rem; padding-bottom: 4rem; flex: 1; }
 
                 /* Footer */
-                .footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 4rem 0; margin-top: 5rem; background: #050505; }
-                .footer-buttons { gap: 1.5rem; }
-                .copyright { opacity: 0.5; }
+                .footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 4rem 0; margin-top: 5rem; background: #000; }
+                .footer-content { display: flex; flex-direction: column; align-items: center; gap: 2rem; }
+                .footer-title { font-size: 2rem; font-weight: 800; color: white; margin-bottom: 0.5rem; }
+                
+                .footer-buttons { display: flex; gap: 1rem; margin-bottom: 2rem; }
+                .btn { padding: 0.8rem 2rem; font-weight: 700; border-radius: 99px; text-decoration: none; transition: 0.2s; display: inline-block; font-size: 1rem; }
+                .btn-white { background: white; color: black; border: 1px solid white; }
+                .btn-white:hover { background: #e5e7eb; transform: translateY(-2px); }
+                .btn-outline { border: 1px solid rgba(255,255,255,0.3); color: white; background: transparent; }
+                .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+                
+                .footer-brand { display: flex; flex-direction: column; align-items: center; gap: 1rem; opacity: 0.8; }
+                .brand-logo { height: 32px; display: flex; align-items: center; }
+                .embedit-logo { height: 32px; width: auto; object-fit: contain; filter: brightness(0) invert(1); } /* Make SVG white if it's black */
+                .copyright { color: #666; font-size: 0.875rem; font-weight: 500; }
 
                 @media (max-width: 1024px) {
                     .nav-content { display: flex; justify-content: space-between; gap: 1rem; }

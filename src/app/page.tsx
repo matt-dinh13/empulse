@@ -47,7 +47,7 @@ export default function LandingPage() {
           <div className="nav-links">
             <a href="#features">Features</a>
             <a href="#how">How it Works</a>
-            <Link href="/whitepaper" className="landing-nav-link text-highlight">📄 Whitepaper</Link>
+            <Link href="/whitepaper" className="landing-nav-link text-highlight">📄 Blueprint</Link>
             <Link href="/login" className="landing-btn-nav">Try Demo</Link>
           </div>
         </div>
