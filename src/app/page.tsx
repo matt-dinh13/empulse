@@ -91,7 +91,7 @@ export default function LandingPage() {
       <section id="features" className="section bg-dark">
         <div className="container">
           <div className="section-head">
-            <h2 className="text-white">Why EmPulse?</h2>
+            <h2 className="text-white">Why Em<span className="text-highlight">/</span>Pulse?</h2>
             <p className="text-gray">Everything you need to build a culture of appreciation.</p>
           </div>
           <div className="features-grid">
@@ -178,17 +178,42 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="footer">
-        <div className="container footer-inner">
-          <div className="brand-muted">
-            <Image src="/embedit-logo.svg" alt="EmbedIT" width={150} height={40} style={{ opacity: 0.8 }} />
+        <div className="container footer-grid">
+          <div className="footer-brand-col">
+            <div className="brand-muted">
+              <Image src="/embedit-logo.svg" alt="EmbedIT" width={180} height={48} className="footer-logo" />
+            </div>
+            <p className="footer-tagline">Building the future of finance and engagement.</p>
           </div>
-          <div className="footer-nav">
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
+
+          <div className="footer-col">
+            <h4>Product</h4>
+            <a href="#">Features</a>
+            <a href="#">Enterprise</a>
+            <a href="#">Security</a>
+            <a href="#">Changelog</a>
+          </div>
+
+          <div className="footer-col">
+            <h4>Company</h4>
+            <a href="#">About EmbedIT</a>
+            <a href="#">Careers</a>
             <a href="#">Contact</a>
+            <a href="#">Partners</a>
+          </div>
+
+          <div className="footer-col">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
           </div>
         </div>
-        <div className="footer-copy">© 2026 Embedit {/* v10-GLOBAL hidden */}</div>
+        <div className="footer-bottom">
+          <div className="container">
+            <div className="footer-copy">© 2026 Embedit</div>
+          </div>
+        </div>
       </footer>
 
       {/* --- STYLES --- */}
@@ -364,11 +389,20 @@ export default function LandingPage() {
         .cta-small { margin-top: 1.5rem; font-weight: 600; opacity: 0.7; font-size: 1rem; color: #000; }
 
         /* Footer */
-        .footer { padding: 5rem 0 3rem; background: #050505; border-top: 1px solid rgba(255,255,255,0.1); }
-        .brand-muted { color: #fff; font-size: 1.5rem; font-weight: 800; opacity: 0.5; }
-        .footer-nav a { color: #888; text-decoration: none; font-size: 1rem; margin-left: 2rem; transition: 0.2s; }
-        .footer-nav a:hover { color: white; }
-        .footer-copy { text-align: center; color: #444; margin-top: 3rem; font-size: 0.9rem; }
+        /* Footer */
+        .footer { padding: 6rem 0 0; background: #050505; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
+        .footer-brand-col { display: flex; flex-direction: column; gap: 1rem; }
+        .footer-logo { opacity: 1; margin-bottom: 1rem; }
+        .footer-tagline { color: #666; font-size: 0.95rem; max-width: 250px; line-height: 1.6; }
+        
+        .footer-col { display: flex; flex-direction: column; gap: 1rem; }
+        .footer-col h4 { color: white; margin: 0 0 0.5rem; font-size: 1.1rem; font-weight: 700; }
+        .footer-col a { color: #888; text-decoration: none; font-size: 1rem; transition: 0.2s; width: fit-content; }
+        .footer-col a:hover { color: #00D264; transform: translateX(5px); }
+        
+        .footer-bottom { background: #000; padding: 2rem 0; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-copy { color: #444; font-size: 0.9rem; }
 
         /* Responsiveness */
         @media (max-width: 900px) {
@@ -391,6 +425,12 @@ export default function LandingPage() {
           .landing-btn-cta { width: 100%; max-width: 300px; padding: 1rem 2rem; font-size: 1.1rem; }
           
           .hero-img-3d, .global-map-img { width: 100%; max-width: 350px; }
+
+          .footer-grid { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+          .footer-brand-col { align-items: center; }
+          .footer-col { align-items: center; }
+          .footer-tagline { margin: 0 auto; }
+          .footer-copy { text-align: center; }
         }
       `}</style>
     </div>
