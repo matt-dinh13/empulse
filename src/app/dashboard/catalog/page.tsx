@@ -30,6 +30,7 @@ export default function CatalogPage() {
     const router = useRouter()
 
     useEffect(() => {
+        const token = localStorage.getItem('accessToken')
         const storedUser = localStorage.getItem('user')
         if (storedUser) setUiUser(JSON.parse(storedUser))
 
