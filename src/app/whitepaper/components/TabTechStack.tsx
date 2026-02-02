@@ -8,8 +8,8 @@ export default function TabTechStack() {
         // Since we load it in DataModel, we might need it here too if User navigates directly.
         // For simplicity, we assume DataModel handles the load or we duplicate logic if specific independent loading needed.
         // Actually, let's just use CSS pills here and maybe another diagram if needed.
-        if (window.mermaid) {
-            window.mermaid.init(undefined, document.querySelectorAll('.mermaid'))
+        if (typeof window !== 'undefined' && (window as any).mermaid) {
+            (window as any).mermaid.init(undefined, document.querySelectorAll('.mermaid'))
         }
     }, [])
 

@@ -9,10 +9,11 @@ export default function TabDataModel() {
         script.src = 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js'
         script.async = true
         script.onload = () => {
-            // @ts-ignore
-            window.mermaid.initialize({ startOnLoad: true, theme: 'dark' })
-            // @ts-ignore
-            window.mermaid.init(undefined, document.querySelectorAll('.mermaid'))
+            const mermaid = (window as any).mermaid
+            if (mermaid) {
+                mermaid.initialize({ startOnLoad: true, theme: 'dark' })
+                mermaid.init(undefined, document.querySelectorAll('.mermaid'))
+            }
         }
         document.body.appendChild(script)
 
