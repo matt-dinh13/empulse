@@ -116,7 +116,7 @@ export default function CatalogPage() {
 
             <main className="main-content">
                 <div className="page-header">
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center gap-lg">
                         <div>
                             <h1 className="page-title">🎁 Rewards Catalog</h1>
                             <p className="page-subtitle">Redeem your points for amazing rewards!</p>

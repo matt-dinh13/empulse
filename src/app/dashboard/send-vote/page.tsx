@@ -118,7 +118,7 @@ export default function SendVotePage() {
                     <p className="page-subtitle">Recognize a colleague for their great work!</p>
                 </div>
 
-                <div className="card" style={{ maxWidth: '600px' }}>
+                <div className="card" style={{ maxWidth: '800px', margin: '0 auto' }}>
                     {error && <div className="login-error">{error}</div>}
                     {success && <div style={{ background: 'var(--color-success-light)', color: 'var(--color-success)', padding: 'var(--spacing-md)', borderRadius: 'var(--radius-md)', marginBottom: 'var(--spacing-lg)' }}>{success}</div>}
 
