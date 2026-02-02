@@ -4,11 +4,22 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
+interface CatalogItem {
+    id: number
+    name: string
+    icon?: string
+    displayValue?: string
+    rewardType: string
+    pointsRequired: number
+    isActive: boolean
+    region?: { code: string }
+}
+
 export default function CatalogListPage() {
-    const [items, setItems] = useState<any[]>([])
+    const [items, setItems] = useState<CatalogItem[]>([])
     const [loading, setLoading] = useState(true)
     const [showInactive, setShowInactive] = useState(false)
-    const [user, setUser] = useState<any>(null)
+    const [user, setUser] = useState<{ role: string; regionId?: number } | null>(null)
     const router = useRouter()
 
     useEffect(() => {
@@ -77,29 +88,34 @@ export default function CatalogListPage() {
                 {loading ? (
                     <div className="flex justify-center p-md"><div className="spinner"></div></div>
                 ) : (
-                    <table className="w-full" style={{ borderCollapse: 'collapse' }}>
+                    <table className="w-full text-left" style={{ borderCollapse: 'collapse' }}>
                         <thead>
-                            <tr style={{ borderBottom: '1px solid var(--color-border)', textAlign: 'left' }}>
-                                <th className="p-sm">Icon</th>
-                                <th className="p-sm">Name</th>
-                                <th className="p-sm">Type</th>
-                                <th className="p-sm">Points</th>
-                                <th className="p-sm">Region</th>
-                                <th className="p-sm">Status</th>
-                                <th className="p-sm text-right">Actions</th>
+                            <tr style={{
+                                borderBottom: '1px solid var(--color-border)',
+                                background: 'var(--color-surface-hover)',
+                            }}>
+                                <th className="p-sm font-medium text-muted">Icon</th>
+                                <th className="p-sm font-medium text-muted">Name</th>
+                                <th className="p-sm font-medium text-muted">Type</th>
+                                <th className="p-sm font-medium text-muted">Points</th>
+                                <th className="p-sm font-medium text-muted">Region</th>
+                                <th className="p-sm font-medium text-muted">Status</th>
+                                <th className="p-sm text-right font-medium text-muted">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {items.map(item => (
+                                /* ... inside return ... */
                                 <tr key={item.id} style={{ borderBottom: '1px solid var(--color-border-light)' }}>
-                                    <td className="p-sm" style={{ fontSize: '1.5rem' }}>{item.icon || '🎁'}</td>
-                                    <td className="p-sm">
+                                    <td className="p-sm align-middle" style={{ fontSize: '1.5rem', textAlign: 'center' }}>{item.icon || '🎁'}</td>
+                                    <td className="p-sm align-middle">
                                         <div style={{ fontWeight: 500 }}>{item.name}</div>
-                                        <div style={{ fontSize: '0.8rem', color: '#888' }}>{item.displayValue}</div>
+                                        <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{item.displayValue}</div>
                                     </td>
-                                    <td className="p-sm capitalize">{item.rewardType}</td>
-                                    <td className="p-sm font-bold text-accent">{item.pointsRequired}</td>
-                                    <td className="p-sm">{item.region?.code}</td>
+                                    <td className="p-sm align-middle capitalize">{item.rewardType}</td>
+                                    <td className="p-sm align-middle font-bold text-accent">{item.pointsRequired}</td>
+                                    <td className="p-sm align-middle">{item.region?.code}</td>
+        /* ... */
                                     <td className="p-sm">
                                         {item.isActive ? (
                                             <span className="badge badge-success">Active</span>

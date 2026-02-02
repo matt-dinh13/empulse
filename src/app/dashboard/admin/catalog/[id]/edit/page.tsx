@@ -15,12 +15,17 @@ const ICONS_CATEGORY = {
     general: ['⭐', '🏆', '🎉', '💎', '🔥']
 }
 
+interface User {
+    role: string
+    regionId: number
+}
+
 export default function EditCatalogItemPage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = use(params)
     const router = useRouter()
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
-    const [user, setUser] = useState<any>(null)
+    const [user, setUser] = useState<User | null>(null)
     const [formData, setFormData] = useState({
         name: '',
         description: '',

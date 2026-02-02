@@ -12,8 +12,19 @@ const SETTINGS_CATEGORIES = [
     { id: 'features', label: 'Features', icon: '🚀' },
 ]
 
+interface SystemSetting {
+    key: string
+    value: string | number | boolean
+    label: string
+    description: string
+    type: string
+    category: string
+    min?: number
+    max?: number
+}
+
 export default function SystemSettingsPage() {
-    const [settings, setSettings] = useState<any[]>([])
+    const [settings, setSettings] = useState<SystemSetting[]>([])
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
     const [activeTab, setActiveTab] = useState('voting')
@@ -89,15 +100,14 @@ export default function SystemSettingsPage() {
 
             <div className="card p-0 overflow-hidden">
                 {/* Tabs */}
-                <div className="flex border-b border-gray-700 bg-gray-800">
+                <div className="tabs-nav">
                     {SETTINGS_CATEGORIES.map(cat => (
                         <button
                             key={cat.id}
-                            className={`p-md flex items-center gap-sm transition-colors ${activeTab === cat.id ? 'bg-gray-700 text-white border-b-2 border-accent' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}
+                            className={`tab-btn ${activeTab === cat.id ? 'active' : ''}`}
                             onClick={() => setActiveTab(cat.id)}
-                            style={{ border: 'none', borderBottom: activeTab === cat.id ? '2px solid var(--color-accent)' : 'none' }}
                         >
-                            <span>{cat.icon}</span>
+                            <span style={{ fontSize: '1.2rem' }}>{cat.icon}</span>
                             <span>{cat.label}</span>
                         </button>
                     ))}
@@ -113,7 +123,13 @@ export default function SystemSettingsPage() {
                                 <div key={setting.key} className="form-group mb-0">
                                     <div className="flex justify-between items-start mb-sm">
                                         <label className="form-label mb-0" style={{ fontSize: '1rem' }}>{setting.label}</label>
-                                        <span className="badge" style={{ background: '#333', fontSize: '0.7rem' }}>{setting.key}</span>
+                                        <span className="badge" style={{
+                                            background: 'var(--color-surface-hover)',
+                                            border: '1px solid var(--color-border)',
+                                            color: 'var(--color-text-muted)',
+                                            fontFamily: 'monospace',
+                                            fontSize: '0.75rem'
+                                        }}>{setting.key}</span>
                                     </div>
                                     <p className="text-muted text-sm mb-sm">{setting.description}</p>
 
@@ -136,7 +152,7 @@ export default function SystemSettingsPage() {
                                         <input
                                             type="number"
                                             className="form-input"
-                                            value={setting.value}
+                                            value={setting.value as string | number}
                                             min={setting.min}
                                             max={setting.max}
                                             onChange={e => handleChange(setting.key, e.target.value)}

@@ -636,3 +636,203 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-text-muted);
 }
+
+/* =========================================
+   Admin UI Utilities (Added for consistency)
+   ========================================= */
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tbody tr {
+  transition: background-color var(--transition-fast);
+}
+
+tbody tr:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.w-full {
+  width: 100%;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.align-middle {
+  vertical-align: middle;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.text-danger {
+  color: var(--color-error);
+}
+
+.text-success {
+  color: var(--color-success);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+/* Spacing Helpers */
+.p-0 {
+  padding: 0 !important;
+}
+
+.p-sm {
+  padding: var(--spacing-sm);
+}
+
+.p-md {
+  padding: var(--spacing-md);
+}
+
+.p-lg {
+  padding: var(--spacing-lg);
+}
+
+.m-0 {
+  margin: 0 !important;
+}
+
+.mr-sm {
+  margin-right: var(--spacing-sm);
+}
+
+.mt-xs {
+  margin-top: 0.25rem;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.gap-xs {
+  gap: 0.25rem;
+}
+
+.gap-sm {
+  gap: var(--spacing-sm);
+}
+
+/* Visibility */
+.block {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+/* Button Sizes & Variants */
+.btn-sm {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-success {
+  background-color: var(--color-success);
+  color: white;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #00b355;
+}
+
+.btn-danger {
+  background-color: var(--color-error);
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #d32f2f;
+}
+
+/* Tabs Navigation */
+.tabs-nav {
+  display: flex;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.tab-btn {
+  padding: 1rem 1.5rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--color-primary);
+  background-color: var(--color-surface-hover);
+}
+
+.tab-btn.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  background-color: rgba(0, 110, 210, 0.05);
+}
+
+/* Badge Tweaks */
+.badge {
+  line-height: 1;
+}

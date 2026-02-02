@@ -15,10 +15,15 @@ const ICONS_CATEGORY = {
     general: ['⭐', '🏆', '🎉', '💎', '🔥']
 }
 
+interface User {
+    role: string
+    regionId: number
+}
+
 export default function NewCatalogItemPage() {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
-    const [user, setUser] = useState<any>(null)
+    const [user, setUser] = useState<User | null>(null)
     const [formData, setFormData] = useState({
         name: '',
         description: '',
