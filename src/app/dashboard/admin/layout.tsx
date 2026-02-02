@@ -48,7 +48,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
         <div className="dashboard-layout">
             <aside className="sidebar">
-                <Image src="/logo.svg" alt="EmPulse" width={120} height={40} className="sidebar-logo" />
+                <div className="sidebar-logo-text" style={{ fontSize: '1.5rem', fontWeight: 800, color: 'white', padding: '0 0.5rem', marginBottom: '1rem', display: 'inline-block' }}>
+                    <span style={{ color: '#00D264' }}>&lt;</span>em<span style={{ color: '#00D264' }}>/</span>pulse<span style={{ color: '#00D264' }}>&gt;</span>
+                </div>
 
                 <div className="mb-md px-md">
                     <span className="badge badge-warning">ADMIN PORTAL</span>
@@ -86,9 +88,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         localStorage.removeItem('accessToken')
                         localStorage.removeItem('user')
                         window.location.href = '/login'
-                    }} className="btn" style={{ width: '100%', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none' }}>
+                    }} className="btn" style={{ width: '100%', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', marginBottom: '1.5rem' }}>
                         Logout
                     </button>
+
+                    <div style={{ paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', textAlign: 'center', opacity: 0.6 }}>
+                        <Image
+                            src="/embedit-logo.svg"
+                            alt="EmbedIT"
+                            width={100}
+                            height={24}
+                            style={{ height: '20px', width: 'auto', marginBottom: '0.5rem', filter: 'brightness(0) invert(1)' }}
+                        />
+                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)' }}>© 2026 EmbedIT.</div>
+                    </div>
                 </div>
             </aside>
 
