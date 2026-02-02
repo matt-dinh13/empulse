@@ -4,6 +4,9 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'EmPulse - P2P Reward & Recognition System',
   description: 'Employee recognition and reward platform',
+  openGraph: {
+    images: ['/cover.jpg'],
+  },
 }
 
 export default function RootLayout({
