@@ -114,17 +114,24 @@ export default function SendVotePage() {
                                 className="form-input"
                                 placeholder="Search by name or email..."
                                 value={search}
-                                onChange={(e) => setSearch(e.target.value)}
+                                onChange={(e) => {
+                                    setSearch(e.target.value)
+                                    setSelectedUser(null) // Clear selection when typing
+                                }}
                             />
                         </div>
 
                         <div className="form-group">
                             <label className="form-label">Select Colleague</label>
+                            {/* Only show list if searching and not selected yet, or always show but filtered? User said dropdown. Let's keep existing logic but update UI */}
                             <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}>
                                 {filteredUsers.map(user => (
                                     <div
                                         key={user.id}
-                                        onClick={() => setSelectedUser(user.id)}
+                                        onClick={() => {
+                                            setSelectedUser(user.id)
+                                            setSearch(user.fullName) // Update input with name
+                                        }}
                                         style={{
                                             padding: 'var(--spacing-sm) var(--spacing-md)',
                                             cursor: 'pointer',
