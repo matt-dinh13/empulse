@@ -41,7 +41,9 @@ export default function LandingPage() {
       {/* Navbar */}
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="container nav-inner">
-          <div className="brand">Em<span style={{ color: '#00D264' }}>/</span>Pulse</div>
+          <div className="brand">
+            <span style={{ color: '#00D264' }}>&lt;</span>Em<span style={{ color: '#00D264' }}>/</span>Pulse<span style={{ color: '#00D264' }}>&gt;</span>
+          </div>
           <div className="nav-links">
             <a href="#features">Features</a>
             <a href="#how">How it Works</a>
@@ -91,7 +93,7 @@ export default function LandingPage() {
       <section id="features" className="section bg-dark">
         <div className="container">
           <div className="section-head">
-            <h2 className="text-white">Why Em<span className="text-highlight">/</span>Pulse?</h2>
+            <h2 className="text-white">Why <span className="text-highlight">&lt;</span>Em<span className="text-highlight">/</span>Pulse<span className="text-highlight">&gt;</span>?</h2>
             <p className="text-gray">Everything you need to build a culture of appreciation.</p>
           </div>
           <div className="features-grid">
@@ -181,7 +183,7 @@ export default function LandingPage() {
         <div className="container footer-grid">
           <div className="footer-brand-col">
             <div className="brand-muted">
-              <Image src="/embedit-logo.svg" alt="EmbedIT" width={180} height={48} className="footer-logo" />
+              <Image src="/embedit-logo.svg" alt="EmbedIT" width={240} height={64} className="footer-logo" />
             </div>
             <p className="footer-tagline">Building the future of finance and engagement.</p>
           </div>
@@ -393,7 +395,7 @@ export default function LandingPage() {
         .footer { padding: 6rem 0 0; background: #050505; border-top: 1px solid rgba(255,255,255,0.05); }
         .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
         .footer-brand-col { display: flex; flex-direction: column; gap: 1rem; }
-        .footer-logo { opacity: 1; margin-bottom: 1rem; }
+        .footer-logo { opacity: 1; margin-bottom: 1rem; filter: brightness(1.2) contrast(1.1); }
         .footer-tagline { color: #666; font-size: 0.95rem; max-width: 250px; line-height: 1.6; }
         
         .footer-col { display: flex; flex-direction: column; gap: 1rem; }
