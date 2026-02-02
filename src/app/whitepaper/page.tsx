@@ -49,7 +49,8 @@ export default function WhitepaperPage() {
 
                     <div className="actions">
                         <Link href="/" className="back-link">
-                            Back to Home
+                            <span>Exit Whitepaper</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
                         </Link>
                     </div>
                 </div>
@@ -104,82 +105,83 @@ export default function WhitepaperPage() {
                 /* Navbar */
                 .navbar { 
                     border-bottom: 1px solid rgba(255,255,255,0.1); 
-                    position: sticky; top: 0; z-index: 100; 
-                    background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); 
-                    height: 4.5rem; display: flex; align-items: center; width: 100%;
+                    position: sticky; top: 0; z-index: 1000; /* Increased z-index */
+                    background: rgba(0,0,0,0.85); backdrop-filter: blur(16px); 
+                    height: 5rem; display: flex; align-items: center; width: 100%;
                 }
                 .nav-content { 
                     max-width: 1400px;
-                    display: flex; items-center; justify-content: space-between; 
+                    display: grid; grid-template-columns: auto 1fr auto; gap: 2rem;
+                    align-items: center; 
                     width: 100%; height: 100%;
                 }
                 
                 .logo { 
-                    display: flex; items-center; text-decoration: none; 
-                    flex-shrink: 0; margin-right: 2rem;
+                    display: flex; align-items: center; text-decoration: none; 
+                    position: relative; z-index: 1002;
                 }
-                .logo:hover { opacity: 0.8; }
-                .text-white { color: white; font-weight: 800; font-size: 1.5rem; }
+                .logo:hover { opacity: 0.9; }
+                .text-white { color: white; font-weight: 800; font-size: 1.5rem; letter-spacing: -0.02em; }
                 .text-emerald { color: #00D264; font-weight: 800; font-size: 1.5rem; }
                 
                 .badge { 
-                    margin-left: 0.8rem; padding: 0.2rem 0.6rem; 
-                    font-size: 0.75rem; 
+                    margin-left: 0.8rem; padding: 0.25rem 0.75rem; 
+                    font-size: 0.7rem; 
                     background: rgba(0, 210, 100, 0.1); 
-                    border: 1px solid rgba(0, 210, 100, 0.2);
-                    border-radius: 0.25rem; 
+                    border: 1px solid rgba(0, 210, 100, 0.25);
+                    border-radius: 99px; 
                     color: #00D264; 
-                    font-weight: 600; 
+                    font-weight: 700; 
                     letter-spacing: 0.05em;
                     text-transform: uppercase;
                 }
 
                 .tabs-bar { 
-                    display: flex; gap: 0.5rem; overflow-x: auto; 
-                    flex: 1; justify-content: center;
-                    padding: 0 1rem;
+                    display: flex; gap: 0.5rem; justify-content: center;
+                    position: relative; z-index: 1001;
                 }
                 .tab-btn { 
-                    padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: 600; 
+                    padding: 0.6rem 1.5rem; font-size: 0.9rem; font-weight: 600; 
                     border-radius: 9999px; border: 1px solid transparent; 
-                    cursor: pointer; white-space: nowrap; transition: all 0.2s;
+                    cursor: pointer; white-space: nowrap; transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
                     background: transparent; color: #9ca3af;
                 }
-                .tab-btn:hover { color: white; background: rgba(255,255,255,0.1); }
+                .tab-btn:hover { color: white; background: rgba(255,255,255,0.08); }
                 .tab-btn.active { 
                     background: #00D264; 
                     color: black; 
-                    box-shadow: 0 0 15px rgba(0, 210, 100, 0.4);
+                    border-color: #00D264;
+                    box-shadow: 0 4px 20px rgba(0, 210, 100, 0.3);
+                    transform: translateY(-1px);
                 }
 
-                .actions { display: flex; align-items: center; flex-shrink: 0; }
+                .actions { display: flex; align-items: center; }
                 .back-link { 
-                    font-size: 0.9rem; color: #9ca3af; text-decoration: none; 
-                    transition: 0.2s; font-weight: 500;
-                    padding: 0.5rem 1rem;
-                    border-radius: 0.5rem;
+                    display: flex; align-items: center; gap: 0.5rem;
+                    font-size: 0.9rem; color: white; text-decoration: none; 
+                    transition: all 0.2s; font-weight: 600;
+                    padding: 0.6rem 1.25rem;
+                    border-radius: 99px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    background: rgba(255,255,255,0.05);
                 }
-                .back-link:hover { color: white; background: rgba(255,255,255,0.05); }
+                .back-link:hover { 
+                    background: white; color: black; border-color: white;
+                    transform: translateX(2px);
+                }
 
                 /* Main */
-                .main-content { padding-top: 3rem; padding-bottom: 3rem; flex: 1; }
+                .main-content { padding-top: 4rem; padding-bottom: 4rem; flex: 1; }
 
                 /* Footer */
-                .footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 3rem 0; margin-top: 3rem; background: #09090b; }
-                .footer-content { text-align: center; }
-                .footer-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: white; }
-                
-                .footer-buttons { display: flex; justify-content: center; gap: 1rem; display: flex; flex-wrap: wrap; }
-                .btn { padding: 0.75rem 1.5rem; font-weight: 700; border-radius: 0.5rem; text-decoration: none; transition: 0.2s; display: inline-block; }
-                .btn-white { background: white; color: black; }
-                .btn-white:hover { background: #e5e7eb; }
-                .btn-outline { border: 1px solid rgba(255,255,255,0.2); color: white; }
-                .btn-outline:hover { border-color: white; }
-                
-                .copyright { margin-top: 2rem; color: #4b5563; font-size: 0.875rem; }
+                .footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 4rem 0; margin-top: 5rem; background: #050505; }
+                .footer-buttons { gap: 1.5rem; }
+                .copyright { opacity: 0.5; }
 
-                @media (min-width: 768px) {
-                    .actions { display: block; }
+                @media (max-width: 1024px) {
+                    .nav-content { display: flex; justify-content: space-between; gap: 1rem; }
+                    .tabs-bar { display: none; } /* Consider mobile menu for tabs later */
+                    .back-link span { display: none; } /* Hide text on mobile */
                 }
             `}</style>
         </div>
