@@ -23,7 +23,9 @@ export default function Sidebar({ user }: SidebarProps) {
 
     return (
         <aside className="sidebar">
-            <Image src="/logo.svg" alt="EmPulse" width={120} height={40} className="sidebar-logo" priority />
+            <div className="sidebar-logo-text" style={{ fontSize: '1.5rem', fontWeight: 800, color: 'white', padding: '0 0.5rem', marginBottom: '1rem', display: 'inline-block' }}>
+                <span style={{ color: '#00D264' }}>&lt;</span>em<span style={{ color: '#00D264' }}>/</span>pulse<span style={{ color: '#00D264' }}>&gt;</span>
+            </div>
 
             <nav className="sidebar-nav">
                 <Link href="/dashboard" className={`sidebar-link ${isActive('/dashboard')}`}>

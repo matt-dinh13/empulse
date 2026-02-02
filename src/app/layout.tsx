@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'EmPulse - P2P Reward & Recognition System',
+  title: 'em/pulse - P2P Reward & Recognition System',
   description: 'Employee recognition and reward platform',
   openGraph: {
     images: ['/cover.jpg'],

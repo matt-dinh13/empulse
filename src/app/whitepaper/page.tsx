@@ -28,9 +28,9 @@ export default function WhitepaperPage() {
                 <div className="container nav-content">
                     <Link href="/" className="logo">
                         <span className="text-white">&lt;</span>
-                        <span className="text-white">Em</span>
+                        <span className="text-white">em</span>
                         <span className="text-emerald">/</span>
-                        <span className="text-white">Pulse</span>
+                        <span className="text-white">pulse</span>
                         <span className="text-white">&gt;</span>
                         <span className="badge">Blueprint</span>
                     </Link>

@@ -47,8 +47,10 @@ export default function LoginPage() {
         <div className="login-page">
             <div className="login-container">
                 <div className="login-header">
-                    <div className="login-logo">
-                        <Image src="/logo.svg" alt="EmPulse" width={120} height={48} className="login-logo-img" />
+                    <div className="login-logo text-center mb-6">
+                        <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'white', lineHeight: 1 }}>
+                            <span style={{ color: '#00D264' }}>&lt;</span>em<span style={{ color: '#00D264' }}>/</span>pulse<span style={{ color: '#00D264' }}>&gt;</span>
+                        </div>
                     </div>
                     <p className="login-subtitle">P2P Reward & Recognition System</p>
                 </div>

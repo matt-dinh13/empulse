@@ -42,7 +42,7 @@ export default function LandingPage() {
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="container nav-inner">
           <div className="brand">
-            <span style={{ color: '#00D264' }}>&lt;</span>Em<span style={{ color: '#00D264' }}>/</span>Pulse<span style={{ color: '#00D264' }}>&gt;</span>
+            <span style={{ color: '#00D264' }}>&lt;</span>em<span style={{ color: '#00D264' }}>/</span>pulse<span style={{ color: '#00D264' }}>&gt;</span>
           </div>
           <div className="nav-links">
             <a href="#features">Features</a>
@@ -95,7 +95,7 @@ export default function LandingPage() {
       <section id="features" className="section bg-dark">
         <div className="container">
           <div className="section-head">
-            <h2 className="text-white">Why <span className="text-highlight">&lt;</span>Em<span className="text-highlight">/</span>Pulse<span className="text-highlight">&gt;</span>?</h2>
+            <h2 className="text-white">Why <span className="text-highlight">&lt;</span>em<span className="text-highlight">/</span>pulse<span className="text-highlight">&gt;</span>?</h2>
             <p className="text-gray">Everything you need to build a culture of appreciation.</p>
           </div>
           <div className="features-grid">
