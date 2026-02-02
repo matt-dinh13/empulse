@@ -17,6 +17,12 @@ export default function TabOverview() {
                         EmPulse bridges the gap between distributed teams with instant recognition, gamification, and real-world rewards.
                         Build a culture of gratitude that scales.
                     </p>
+                    <div className="hero-actions">
+                        <a href="/" className="btn-hero">
+                            View Demo
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        </a>
+                    </div>
                 </div>
 
                 {/* Visual Graphic (CSS Shapes + Blur) */}
@@ -89,18 +95,19 @@ export default function TabOverview() {
             </div>
 
             {/* Key Stats */}
+            {/* Key Stats - White Section */}
             <div className="stats-container">
                 <div className="stat-item">
-                    <div className="stat-value">Top 1%</div>
-                    <div className="stat-label">Engagement Rate</div>
+                    <div className="stat-value text-black">Top 1%</div>
+                    <div className="stat-label text-dark-gray">Engagement Rate</div>
                 </div>
                 <div className="stat-item">
                     <div className="stat-value text-green">Real ROI</div>
-                    <div className="stat-label">Retention & Morale</div>
+                    <div className="stat-label text-dark-gray">Retention & Morale</div>
                 </div>
                 <div className="stat-item">
-                    <div className="stat-value">Global</div>
-                    <div className="stat-label">Multi-Region Support</div>
+                    <div className="stat-value text-black">Global</div>
+                    <div className="stat-label text-dark-gray">Multi-Region Support</div>
                 </div>
             </div>
 
@@ -136,7 +143,22 @@ export default function TabOverview() {
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                 }
-                .hero-desc { color: #9ca3af; font-size: 1.15rem; line-height: 1.6; max-width: 500px; }
+                .hero-desc { color: #9ca3af; font-size: 1.15rem; line-height: 1.6; max-width: 500px; margin-bottom: 2.5rem; }
+                
+                .hero-actions { display: flex; gap: 1rem; }
+                .btn-hero { 
+                    display: inline-flex; align-items: center; gap: 0.75rem;
+                    background: #00D264; color: black; 
+                    font-size: 1.1rem; font-weight: 800; 
+                    padding: 1rem 2.5rem; border-radius: 99px; 
+                    text-decoration: none; transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+                    box-shadow: 0 0 20px rgba(0, 210, 100, 0.4);
+                }
+                .btn-hero:hover { 
+                    transform: translateY(-4px) scale(1.05); 
+                    box-shadow: 0 10px 30px rgba(0, 210, 100, 0.6);
+                    background: #00eb70;
+                }
 
                 /* HERO VISUAL */
                 .hero-visual { position: relative; height: 400px; display: flex; align-items: center; justify-content: center; }
@@ -193,14 +215,20 @@ export default function TabOverview() {
                 .red-bullet { color: #ef4444; }
                 .green-bullet { color: #00D264; }
 
-                /* STATS */
+                /* STATS - White Card */
                 .stats-container { 
                     display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; 
-                    text-align: center; padding: 4rem 0; margin-top: 5rem; 
-                    border-top: 1px solid rgba(255,255,255,0.1); 
+                    text-align: center; padding: 4rem 3rem; margin-top: 6rem; 
+                    background: white; border-radius: 2rem;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                    transform: skewY(-1deg);
                 }
-                .stat-value { font-size: 3rem; font-weight: 800; color: white; margin-bottom: 0.5rem; letter-spacing: -0.03em; }
-                .stat-label { font-size: 0.95rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+                .stats-container > * { transform: skewY(1deg); } /* Un-skew content */
+
+                .stat-value { font-size: 3.5rem; font-weight: 900; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.04em; }
+                .text-black { color: #111; }
+                .text-dark-gray { color: #4b5563; }
+                .stat-label { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
 
                 @media (max-width: 900px) {
                     .hero-section { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
