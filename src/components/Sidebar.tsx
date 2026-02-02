@@ -30,7 +30,7 @@ export default function Sidebar({ user }: SidebarProps) {
                     📊 Dashboard
                 </Link>
                 <Link href="/dashboard/leaderboard" className={`sidebar-link ${isActive('/dashboard/leaderboard')}`}>
-                    🏆 Leaderboard <span className="badge badge-warning" style={{ marginLeft: 'auto', fontSize: '0.7rem' }}>NEW</span>
+                    🏆 Leaderboard
                 </Link>
                 <Link href="/dashboard/send-vote" className={`sidebar-link ${isActive('/dashboard/send-vote')}`}>
                     🎯 Send Vote
