@@ -1,20 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
-import { verifyToken } from '@/lib/auth'
+import { authenticateAdminRequest } from '@/lib/auth'
 import bcrypt from 'bcryptjs'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-async function checkAdmin(request: NextRequest) {
-    const user = await verifyToken(request)
-    if (!user) return null
-    if (user.role !== 'admin' && user.role !== 'hr_admin') return null
-    return user
-}
-
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-    const admin = await checkAdmin(request)
+    const admin = await authenticateAdminRequest(request)
     if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { id } = await params
@@ -50,7 +43,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-    const admin = await checkAdmin(request)
+    const admin = await authenticateAdminRequest(request)
     if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { id } = await params

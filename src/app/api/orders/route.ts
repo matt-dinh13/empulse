@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
                     userId,
                     catalogId,
                     pointsSpent: catalogItem.pointsRequired,
-                    status: 'pending',
+                    status: 'PENDING_APPROVAL',
                 },
                 include: {
                     catalog: true,

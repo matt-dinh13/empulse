@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
-import { verifyToken } from '@/lib/auth'
+import { authenticateAdminRequest } from '@/lib/auth'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-    const user = await verifyToken(request)
-    if (!user || user.role !== 'admin' && user.role !== 'hr_admin') {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const admin = await authenticateAdminRequest(request)
+    if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { id } = await params
     const orderId = parseInt(id)
@@ -31,7 +29,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             where: { id: orderId },
             data: {
                 status: 'APPROVED',
-                approvedBy: user.id,
+                approvedBy: admin.id,
                 approvedAt: new Date(),
                 adminNotes: notes || null
             }

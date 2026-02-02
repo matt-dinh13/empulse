@@ -51,3 +51,23 @@ export async function authenticateRequest(request: NextRequest): Promise<number 
 
     return payload.userId
 }
+
+export async function authenticateAdminRequest(request: NextRequest) {
+    const userId = await authenticateRequest(request)
+    if (!userId) return null
+
+    // We must import prisma dynamically or ensure no circular deps. 
+    // Usually safe in Next.js api routes but let's be careful.
+    // Ideally pass prisma client or just import it.
+    // Since this file is in lib, we interpret it as server-side.
+    const { default: prisma } = await import('@/lib/prisma')
+
+    const user = await prisma.user.findUnique({
+        where: { id: userId }
+    })
+
+    if (!user) return null
+    if (user.role !== 'admin' && user.role !== 'hr_admin') return null
+
+    return user
+}

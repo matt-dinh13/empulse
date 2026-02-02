@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
-import { verifyToken } from '@/lib/auth'
+import { authenticateAdminRequest } from '@/lib/auth'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
-    const user = await verifyToken(request)
-    if (!user || user.role !== 'admin' && user.role !== 'hr_admin') {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const admin = await authenticateAdminRequest(request)
+    if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
