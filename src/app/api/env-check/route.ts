@@ -4,6 +4,11 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
+    // D3: Protect Debug Endpoints
+    if (process.env.NODE_ENV === 'production' && process.env.ENABLE_DEBUG_ENDPOINTS !== 'true') {
+        return NextResponse.json({ error: 'Endpoint disabled in production' }, { status: 403 })
+    }
+
     const dbUrl = process.env.DATABASE_URL || 'NOT SET'
     const directUrl = process.env.DIRECT_URL || 'NOT SET'
 

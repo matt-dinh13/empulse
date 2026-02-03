@@ -106,7 +106,7 @@ async function main() {
             email: 'admin@empulse.com',
             passwordHash,
             fullName: 'Admin User',
-            role: 'admin',
+            role: 'super_admin',
             regionId: vnRegion.id,
             teamId: engineeringTeam.id,
             quotaWallet: {
@@ -193,7 +193,7 @@ async function main() {
             description: 'Voucher Grab trị giá 50,000 VND',
             pointsRequired: 50,
             displayValue: '50,000 VND',
-            rewardType: 'voucher',
+            rewardType: 'digital_voucher',
             sortOrder: 1,
         },
     })
@@ -207,7 +207,7 @@ async function main() {
             description: 'Voucher Grab trị giá 100,000 VND',
             pointsRequired: 100,
             displayValue: '100,000 VND',
-            rewardType: 'voucher',
+            rewardType: 'digital_voucher',
             sortOrder: 2,
         },
     })
@@ -221,7 +221,7 @@ async function main() {
             description: 'Voucher The Coffee House 100K',
             pointsRequired: 80,
             displayValue: '100,000 VND',
-            rewardType: 'voucher',
+            rewardType: 'digital_voucher',
             sortOrder: 3,
         },
     })

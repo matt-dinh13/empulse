@@ -6,6 +6,11 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
+    // D3: Protect Debug Endpoints
+    if (process.env.NODE_ENV === 'production' && process.env.ENABLE_DEBUG_ENDPOINTS !== 'true') {
+        return NextResponse.json({ error: 'Endpoint disabled in production' }, { status: 403 })
+    }
+
     try {
         const userId = await authenticateRequest(request)
         if (!userId) {
