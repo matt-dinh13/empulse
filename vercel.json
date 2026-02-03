@@ -1,0 +1,9 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "empulse-next/package.json",
+            "use": "@vercel/next"
+        }
+    ]
+}
