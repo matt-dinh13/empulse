@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
+import { getCache, setCache } from '@/lib/memoryCache'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -10,6 +11,16 @@ export async function GET(request: NextRequest) {
     if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     try {
+        const cacheKey = `admin:dashboard:${admin.role}:${admin.regionId ?? 'all'}`
+        const cacheHeaders = {
+            'Cache-Control': 'private, max-age=30'
+        }
+
+        const cached = getCache<{ stats: unknown; leaderboard: unknown[] }>(cacheKey)
+        if (cached) {
+            return NextResponse.json(cached, { headers: cacheHeaders })
+        }
+
         // Run concurrent queries
         const [
             totalUsers,
@@ -46,7 +57,7 @@ export async function GET(request: NextRequest) {
             }
         }))
 
-        return NextResponse.json({
+        const payload = {
             stats: {
                 totalUsers,
                 totalVotes,
@@ -54,7 +65,11 @@ export async function GET(request: NextRequest) {
                 pointsRedeemed: ordersStats._sum.pointsSpent || 0
             },
             leaderboard
-        })
+        }
+
+        setCache(cacheKey, payload, 30_000)
+
+        return NextResponse.json(payload, { headers: cacheHeaders })
 
     } catch (error) {
         console.error('Analytics error:', error)

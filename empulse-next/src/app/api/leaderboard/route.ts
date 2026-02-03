@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getCache, setCache } from '@/lib/memoryCache'
 
 export const dynamic = 'force-dynamic'
 
@@ -7,6 +8,15 @@ export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url)
         const period = searchParams.get('period') || 'month' // 'month' | 'all'
+        const cacheKey = `leaderboard:${period}`
+        const cacheHeaders = {
+            'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+
+        const cached = getCache<{ period: string; leaderboard: unknown[] }>(cacheKey)
+        if (cached) {
+            return NextResponse.json(cached, { headers: cacheHeaders })
+        }
 
         // Date filter
         let dateFilter = {}
@@ -71,10 +81,10 @@ export async function GET(request: Request) {
             }
         })
 
-        return NextResponse.json({
-            period,
-            leaderboard
-        })
+        const payload = { period, leaderboard }
+        setCache(cacheKey, payload, 60_000)
+
+        return NextResponse.json(payload, { headers: cacheHeaders })
 
     } catch (error) {
         console.error('Leaderboard API Error:', error)
