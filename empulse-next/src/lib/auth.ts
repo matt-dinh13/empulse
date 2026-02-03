@@ -71,7 +71,7 @@ export async function authenticateAdminRequest(request: NextRequest) {
     })
 
     if (!user) return null
-    if (user.role !== 'super_admin' && user.role !== 'hr_admin') return null
+    if (user.role !== 'super_admin' && user.role !== 'hr_admin' && user.role !== 'admin') return null
 
     return user
 }

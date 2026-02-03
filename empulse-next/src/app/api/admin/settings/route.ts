@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
     const admin = await authenticateAdminRequest(request)
     if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     // Only Super Admin should usually see this, but maybe HR admin too? Blueprint says Super Admin Only.
-    if (admin.role !== 'super_admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    if (admin.role !== 'super_admin' && admin.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
     try {
         const dbSettings = await prisma.systemSetting.findMany()
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
     const admin = await authenticateAdminRequest(request)
-    if (!admin || admin.role !== 'super_admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    if (!admin || (admin.role !== 'super_admin' && admin.role !== 'admin')) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
     try {
         const body = await request.json()

@@ -40,7 +40,7 @@ export default function SystemSettingsPage() {
                 headers: { Authorization: `Bearer ${token}` }
             })
             if (res.status === 403) {
-                alert('Access Denied: Super Admin only')
+                alert('Access Denied: Admin only')
                 router.push('/dashboard/admin')
                 return
             }

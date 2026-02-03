@@ -29,7 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         const parsedUser = JSON.parse(storedUser)
         // Verify Role
-        if (parsedUser.role !== 'super_admin' && parsedUser.role !== 'hr_admin') {
+        if (parsedUser.role !== 'super_admin' && parsedUser.role !== 'hr_admin' && parsedUser.role !== 'admin') {
             router.push('/dashboard') // Redirect unauthorized to employee dashboard
             return
         }
@@ -70,7 +70,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <Link href="/dashboard/admin/catalog" className={`sidebar-link ${pathname.includes('catalog') ? 'active' : ''}`}>
                         🎁 Reward Catalog
                     </Link>
-                    {user?.role === 'super_admin' && (
+                    {(user?.role === 'super_admin' || user?.role === 'admin') && (
                         <Link href="/dashboard/admin/settings" className={`sidebar-link ${pathname.includes('settings') ? 'active' : ''}`}>
                             ⚙️ System Settings
                         </Link>
@@ -112,4 +112,5 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
     )
 }
+
 

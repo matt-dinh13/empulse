@@ -127,6 +127,34 @@ async function main() {
         },
     })
 
+    // Create HR Admin User
+    await prisma.user.upsert({
+        where: { email: 'hr.admin@empulse.com' },
+        update: {},
+        create: {
+            email: 'hr.admin@empulse.com',
+            passwordHash,
+            fullName: 'HR Admin',
+            role: 'hr_admin',
+            regionId: vnRegion.id,
+            teamId: marketingTeam.id,
+            quotaWallet: {
+                create: {
+                    balance: 8,
+                    periodStart,
+                    periodEnd,
+                },
+            },
+            rewardWallet: {
+                create: {
+                    balance: 80,
+                    quarterStart,
+                    quarterEnd,
+                },
+            },
+        },
+    })
+
     // Create Regular Users
     await prisma.user.upsert({
         where: { email: 'nguyen.van.a@empulse.com' },

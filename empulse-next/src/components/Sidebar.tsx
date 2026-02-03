@@ -55,7 +55,7 @@ export default function Sidebar({ user }: SidebarProps) {
                     📦 My Orders
                 </Link>
 
-                {(user?.role === 'super_admin' || user?.role === 'hr_admin') && (
+                {(user?.role === 'super_admin' || user?.role === 'hr_admin' || user?.role === 'admin') && (
                     <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                         <Link href="/dashboard/admin" className={`sidebar-link ${isActive('/dashboard/admin')}`}>
                             🛡️ Admin Portal
