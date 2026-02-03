@@ -197,8 +197,29 @@ export default function WhitepaperPage() {
                 .copyright { color: #666; font-size: 0.875rem; font-weight: 500; }
 
                 @media (max-width: 1024px) {
-                    .nav-content { display: flex; justify-content: space-between; gap: 1rem; }
-                    .tabs-bar { display: none; } /* Consider mobile menu for tabs later */
+                    .navbar { height: auto; padding: 0.75rem 0; }
+                    .nav-content { 
+                        display: grid; 
+                        grid-template-areas: "logo actions" "tabs tabs";
+                        grid-template-columns: 1fr auto; 
+                        gap: 1rem; 
+                    }
+                    .logo { grid-area: logo; }
+                    .actions { grid-area: actions; }
+                    
+                    .tabs-bar { 
+                        display: flex; 
+                        grid-area: tabs;
+                        overflow-x: auto;
+                        justify-content: flex-start;
+                        width: 100%;
+                        margin: 0;
+                        padding-bottom: 0.25rem;
+                        -webkit-overflow-scrolling: touch;
+                        mask-image: linear-gradient(90deg, black 90%, transparent 100%);
+                    }
+                    
+                    .tab-btn { flex-shrink: 0; font-size: 0.85rem; padding: 0.5rem 1rem; }
                     .back-link span { display: none; } /* Hide text on mobile */
                 }
             `}</style>
