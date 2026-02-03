@@ -1,4 +1,21 @@
+import { useEffect } from 'react'
+
 export default function TabHowItWorks() {
+    useEffect(() => {
+        const script = document.createElement('script')
+        script.src = 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js'
+        script.async = true
+        script.onload = () => {
+            const mermaid = (window as any).mermaid
+            if (mermaid) {
+                mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' })
+                mermaid.init(undefined, document.querySelectorAll('.mermaid'))
+            }
+        }
+        document.body.appendChild(script)
+        return () => { document.body.removeChild(script) }
+    }, [])
+
     return (
         <div className="how-container">
             <h2 className="main-title">Business Flow</h2>
@@ -67,9 +84,41 @@ export default function TabHowItWorks() {
                 </div>
             </div>
 
+            <div className="diagram-section">
+                <h3 className="sub-title">System Process Flow</h3>
+                <div className="diagram-box">
+                    <div className="mermaid">
+                        {`flowchart TD
+    A[Employee Login] --> B{Has Voting Quota?}
+    B -->|Yes| C[Select Colleague]
+    B -->|No| D[Wait for Monthly Reset]
+    C --> E[Write Recognition Message]
+    E --> F[Submit Vote +10 Points]
+    F --> G[Recipient Gets Points]
+    G --> H[Leaderboard Updates]
+    H --> I{Enough Points?}
+    I -->|Yes| J[Redeem Reward]
+    I -->|No| K[Continue Earning]
+    J --> L[Admin Approves Order]
+    L --> M[Reward Delivered]`}
+                    </div>
+                </div>
+            </div>
+
             <style jsx>{`
                 .how-container { max-width: 1000px; margin: 0 auto; }
                 .main-title { font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 3rem; color: white; }
+                .sub-title { font-size: 1.5rem; font-weight: 700; text-align: center; margin-bottom: 2rem; color: white; margin-top: 4rem; }
+                
+                .diagram-section { margin-top: 5rem; margin-bottom: 5rem; }
+                .diagram-box { 
+                    background: rgba(255,255,255,0.03); 
+                    padding: 2rem; 
+                    border-radius: 1rem; 
+                    border: 1px solid rgba(255,255,255,0.1); 
+                    text-align: center;
+                    overflow: hidden;
+                }
                 
                 .flow-wrapper { position: relative; margin-bottom: 5rem; }
                 .connecting-line { display: none; }

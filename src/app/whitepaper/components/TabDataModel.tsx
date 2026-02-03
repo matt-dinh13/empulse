@@ -72,6 +72,37 @@ erDiagram
                 </div>
             </div>
 
+            <h2 className="title" style={{ marginTop: '5rem' }}>System Use Cases</h2>
+            <div className="diagram-box">
+                <div className="mermaid">
+                    {`graph LR
+    subgraph Actors
+        Employee((Employee))
+        Admin((Admin))
+    end
+
+    subgraph "EmPulse System"
+        UC1[Send Vote]
+        UC2[View Leaderboard]
+        UC3[Redeem Points]
+        UC4[View Feed]
+        UC5[Approve Orders]
+        UC6[Manage Users]
+        UC7[View Analytics]
+    end
+
+    Employee --> UC1
+    Employee --> UC2
+    Employee --> UC3
+    Employee --> UC4
+
+    Admin --> UC5
+    Admin --> UC6
+    Admin --> UC7
+    Admin --> UC2`}
+                </div>
+            </div>
+
             <div className="info-grid">
                 <div className="info-card">
                     <h4 className="info-title">User & Wallets</h4>

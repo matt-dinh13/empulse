@@ -94,6 +94,49 @@ export default function TabOverview() {
                 </div>
             </div>
 
+            {/* Business Model */}
+            <div className="business-model-section">
+                <h3 className="section-title center">Business Model: Gamified Employee Engagement</h3>
+                <p className="section-subtitle">Operating on a B2B SaaS model targeting mid-to-large enterprises.</p>
+
+                <div className="model-grid">
+                    <div className="model-card">
+                        <h4 className="model-title">Value Proposition</h4>
+                        <ul className="model-list">
+                            <li>🎯 Reduce employee turnover by fostering a culture of gratitude.</li>
+                            <li>🔄 Replace manual ad-hoc rewards with a streamlined point system.</li>
+                            <li>📊 Provide HR with actionable real-time engagement analytics.</li>
+                        </ul>
+                    </div>
+                    <div className="model-card highlight-card">
+                        <h4 className="model-title">Revenue Streams</h4>
+                        <div className="stream-items">
+                            <div className="stream-item">
+                                <span className="stream-icon">💳</span>
+                                <div>
+                                    <strong>Subscription Fee</strong>
+                                    <span>Per-seat monthly pricing</span>
+                                </div>
+                            </div>
+                            <div className="stream-item">
+                                <span className="stream-icon">🛍️</span>
+                                <div>
+                                    <strong>Marketplace Commission</strong>
+                                    <span>% on 3rd-party vouchers</span>
+                                </div>
+                            </div>
+                            <div className="stream-item">
+                                <span className="stream-icon">⚡</span>
+                                <div>
+                                    <strong>Premium Features</strong>
+                                    <span>Custom branding & SSO</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Key Stats */}
             {/* Key Stats - White Section */}
             <div className="stats-container">
@@ -235,9 +278,36 @@ export default function TabOverview() {
                     .hero-content { display: flex; flex-direction: column; align-items: center; }
                     .hero-desc { margin: 0 auto; }
                     .hero-visual { height: 300px; }
-                    .grid-2 { grid-template-columns: 1fr; }
+                    .grid-2, .model-grid { grid-template-columns: 1fr; }
                     .stats-container { grid-template-columns: 1fr; gap: 3rem; }
                 }
+
+                /* Business Model Styles */
+                .business-model-section { margin-top: 6rem; }
+                .center { text-align: center; }
+                .section-subtitle { text-align: center; color: #9ca3af; margin-bottom: 3rem; font-size: 1.1rem; }
+                
+                .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+                .model-card { 
+                    padding: 2.5rem; border-radius: 1.5rem; 
+                    background: rgba(255,255,255,0.03); 
+                    border: 1px solid rgba(255,255,255,0.05);
+                }
+                .highlight-card { 
+                    background: linear-gradient(135deg, rgba(0,210,100,0.05), rgba(0,0,0,0)); 
+                    border-color: rgba(0,210,100,0.2);
+                }
+                .model-title { font-size: 1.5rem; font-weight: 700; color: white; margin-bottom: 2rem; }
+                
+                .model-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1.5rem; }
+                .model-list li { color: #d1d5db; font-size: 1.1rem; line-height: 1.6; }
+                
+                .stream-items { display: flex; flex-direction: column; gap: 1.5rem; }
+                .stream-item { display: flex; align-items: center; gap: 1rem; }
+                .stream-icon { font-size: 2rem; background: rgba(255,255,255,0.05); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 1rem; }
+                .stream-item div { display: flex; flex-direction: column; }
+                .stream-item strong { color: white; font-size: 1.1rem; }
+                .stream-item span { color: #9ca3af; font-size: 0.9rem; }
             `}</style>
         </div>
     )
