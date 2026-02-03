@@ -13,8 +13,13 @@ interface Vote {
     receiver: { fullName: string; email: string }
 }
 
+interface UiUser {
+    fullName?: string
+    role?: string
+}
+
 export default function VotesSentPage() {
-    const [user, setUser] = useState<any>(null)
+    const [user, setUser] = useState<UiUser | null>(null)
     const [votes, setVotes] = useState<Vote[]>([])
     const [loading, setLoading] = useState(true)
     const router = useRouter()
@@ -22,7 +27,7 @@ export default function VotesSentPage() {
     useEffect(() => {
         const token = localStorage.getItem('accessToken')
         const storedUser = localStorage.getItem('user')
-        if (storedUser) setUser(JSON.parse(storedUser))
+        if (storedUser) setUser(JSON.parse(storedUser) as UiUser)
 
         if (!token) {
             router.push('/login')

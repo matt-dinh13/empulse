@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 import { authenticateAdminRequest } from '@/lib/auth'
 
 export const runtime = 'nodejs'
@@ -12,7 +13,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
 
-    const whereClause: any = {}
+    const whereClause: Prisma.RedemptionOrderWhereInput = {}
     if (status && status !== 'ALL') {
         whereClause.status = status
     }

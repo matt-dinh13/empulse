@@ -2,6 +2,13 @@
 
 import { useEffect } from 'react'
 
+type MermaidApi = {
+    initialize: (opts: { startOnLoad: boolean; theme: string }) => void
+    init: (config: unknown, nodes: NodeListOf<Element>) => void
+}
+
+type MermaidWindow = Window & { mermaid?: MermaidApi }
+
 export default function TabDataModel() {
     useEffect(() => {
         // Dynamically load mermaid
@@ -9,7 +16,7 @@ export default function TabDataModel() {
         script.src = 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js'
         script.async = true
         script.onload = () => {
-            const mermaid = (window as any).mermaid
+            const mermaid = (window as MermaidWindow).mermaid
             if (mermaid) {
                 mermaid.initialize({ startOnLoad: true, theme: 'dark' })
                 mermaid.init(undefined, document.querySelectorAll('.mermaid'))

@@ -2,10 +2,17 @@
 
 import { useEffect } from 'react'
 
+type MermaidApi = {
+    init: (config: unknown, nodes: NodeListOf<Element>) => void
+}
+
+type MermaidWindow = Window & { mermaid?: MermaidApi }
+
 export default function TabTechStack() {
     useEffect(() => {
-        if (typeof window !== 'undefined' && (window as any).mermaid) {
-            (window as any).mermaid.init(undefined, document.querySelectorAll('.mermaid'))
+        const mermaid = (window as MermaidWindow).mermaid
+        if (typeof window !== 'undefined' && mermaid) {
+            mermaid.init(undefined, document.querySelectorAll('.mermaid'))
         }
     }, [])
 

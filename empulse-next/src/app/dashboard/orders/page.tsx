@@ -16,8 +16,13 @@ interface Order {
     }
 }
 
+interface UiUser {
+    fullName?: string
+    role?: string
+}
+
 export default function OrdersPage() {
-    const [user, setUser] = useState<any>(null)
+    const [user, setUser] = useState<UiUser | null>(null)
     const [orders, setOrders] = useState<Order[]>([])
     const [loading, setLoading] = useState(true)
     const router = useRouter()
@@ -25,7 +30,7 @@ export default function OrdersPage() {
     useEffect(() => {
         const token = localStorage.getItem('accessToken')
         const storedUser = localStorage.getItem('user')
-        if (storedUser) setUser(JSON.parse(storedUser))
+        if (storedUser) setUser(JSON.parse(storedUser) as UiUser)
 
         if (!token) {
             router.push('/login')

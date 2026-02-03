@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 import { authenticateAdminRequest } from '@/lib/auth'
 import bcrypt from 'bcryptjs'
 
@@ -17,12 +18,12 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         const { fullName, email, role, teamId, regionId, isActive, password } = body
         const userId = parseInt(id)
 
-        const updateData: any = {
+        const updateData: Prisma.UserUncheckedUpdateInput = {
             fullName,
             email,
             role,
-            teamId: teamId ? Number(teamId) : null,
-            regionId: Number(regionId),
+            teamId: teamId !== undefined ? Number(teamId) : undefined,
+            regionId: regionId !== undefined ? Number(regionId) : undefined,
             isActive
         }
 

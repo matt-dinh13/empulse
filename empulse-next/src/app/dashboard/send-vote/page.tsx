@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import Sidebar from '@/components/Sidebar'
 
 interface User {
@@ -10,6 +9,11 @@ interface User {
     email: string
     fullName: string
     team?: { name: string }
+}
+
+interface UiUser {
+    fullName?: string
+    role?: string
 }
 
 export default function SendVotePage() {
@@ -20,7 +24,7 @@ export default function SendVotePage() {
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
     const [search, setSearch] = useState('')
-    const [uiUser, setUiUser] = useState<any>(null)
+    const [uiUser, setUiUser] = useState<UiUser | null>(null)
     const router = useRouter()
 
     useEffect(() => {
@@ -30,7 +34,7 @@ export default function SendVotePage() {
             return
         }
         const userStr = localStorage.getItem('user')
-        if (userStr) setUiUser(JSON.parse(userStr))
+        if (userStr) setUiUser(JSON.parse(userStr) as UiUser)
 
         fetchUsers(token)
     }, [router])

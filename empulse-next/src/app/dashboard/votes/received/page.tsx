@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import Sidebar from '@/components/Sidebar'
 
 interface Vote {
@@ -13,8 +12,13 @@ interface Vote {
     sender: { fullName: string; email: string }
 }
 
+interface UiUser {
+    fullName?: string
+    role?: string
+}
+
 export default function VotesReceivedPage() {
-    const [user, setUser] = useState<any>(null)
+    const [user, setUser] = useState<UiUser | null>(null)
     const [votes, setVotes] = useState<Vote[]>([])
     const [loading, setLoading] = useState(true)
     const router = useRouter()
@@ -22,7 +26,7 @@ export default function VotesReceivedPage() {
     useEffect(() => {
         const token = localStorage.getItem('accessToken')
         const storedUser = localStorage.getItem('user')
-        if (storedUser) setUser(JSON.parse(storedUser))
+        if (storedUser) setUser(JSON.parse(storedUser) as UiUser)
 
         if (!token) {
             router.push('/login')

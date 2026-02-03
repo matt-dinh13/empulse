@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 import { authenticateAdminRequest } from '@/lib/auth'
 import bcrypt from 'bcryptjs'
 
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
         const regionId = searchParams.get('regionId')
         const teamId = searchParams.get('teamId')
 
-        const where: any = {}
+        const where: Prisma.UserWhereInput = {}
 
         // HR Admin Restriction
         if (admin.role === 'hr_admin') {

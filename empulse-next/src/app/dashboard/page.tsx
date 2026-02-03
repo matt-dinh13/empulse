@@ -1,8 +1,8 @@
 'use client'
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 import Sidebar from '@/components/Sidebar'
 

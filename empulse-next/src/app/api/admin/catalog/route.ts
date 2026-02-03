@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 import { authenticateAdminRequest } from '@/lib/auth'
 
 export const runtime = 'nodejs'
@@ -17,7 +18,7 @@ export async function GET(request: NextRequest) {
         const regionIdParam = searchParams.get('regionId')
         const isActiveParam = searchParams.get('isActive')
 
-        const where: any = {}
+        const where: Prisma.RewardCatalogWhereInput = {}
 
         // Active filter
         if (isActiveParam === 'true') where.isActive = true

@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Link from 'next/link'
 
 export default function TabOverview() {
     return (
@@ -18,10 +18,10 @@ export default function TabOverview() {
                         Build a culture of gratitude that scales.
                     </p>
                     <div className="hero-actions">
-                        <a href="/" className="btn-hero">
+                        <Link href="/" className="btn-hero">
                             View Demo
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-                        </a>
+                        </Link>
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@ export default function TabOverview() {
                         </li>
                         <li>
                             <span className="bullet red-bullet">•</span>
-                            <span>"Kudos" channels on Slack get lost and lack tangible value.</span>
+                            <span>&quot;Kudos&quot; channels on Slack get lost and lack tangible value.</span>
                         </li>
                     </ul>
                 </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /**
  * Database Seed Script for EmPulse
  * Run: npx ts-node prisma/seed.ts
@@ -27,7 +28,7 @@ async function main() {
         },
     })
 
-    const czRegion = await prisma.region.upsert({
+    await prisma.region.upsert({
         where: { code: 'CZ' },
         update: {},
         create: {
@@ -99,7 +100,7 @@ async function main() {
     const quarterEnd = new Date(now.getFullYear(), (quarter + 1) * 3, 0)
 
     // Create Admin User
-    const adminUser = await prisma.user.upsert({
+    await prisma.user.upsert({
         where: { email: 'admin@empulse.com' },
         update: {},
         create: {
@@ -127,7 +128,7 @@ async function main() {
     })
 
     // Create Regular Users
-    const user1 = await prisma.user.upsert({
+    await prisma.user.upsert({
         where: { email: 'nguyen.van.a@empulse.com' },
         update: {},
         create: {
@@ -154,7 +155,7 @@ async function main() {
         },
     })
 
-    const user2 = await prisma.user.upsert({
+    await prisma.user.upsert({
         where: { email: 'tran.thi.b@empulse.com' },
         update: {},
         create: {

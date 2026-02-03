@@ -1,4 +1,5 @@
 'use client'
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
@@ -28,7 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         const parsedUser = JSON.parse(storedUser)
         // Verify Role
-        if (parsedUser.role !== 'admin' && parsedUser.role !== 'hr_admin') {
+        if (parsedUser.role !== 'super_admin' && parsedUser.role !== 'hr_admin') {
             router.push('/dashboard') // Redirect unauthorized to employee dashboard
             return
         }
@@ -69,7 +70,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <Link href="/dashboard/admin/catalog" className={`sidebar-link ${pathname.includes('catalog') ? 'active' : ''}`}>
                         🎁 Reward Catalog
                     </Link>
-                    {user?.role === 'admin' && (
+                    {user?.role === 'super_admin' && (
                         <Link href="/dashboard/admin/settings" className={`sidebar-link ${pathname.includes('settings') ? 'active' : ''}`}>
                             ⚙️ System Settings
                         </Link>
@@ -111,3 +112,4 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
     )
 }
+

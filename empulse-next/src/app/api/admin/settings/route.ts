@@ -5,8 +5,31 @@ import { authenticateAdminRequest } from '@/lib/auth'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
+type BaseSettingMeta = {
+    label: string
+    description: string
+    default: string
+    category: string
+}
+
+type IntegerSettingMeta = BaseSettingMeta & {
+    type: 'integer'
+    min: number
+    max: number
+}
+
+type BooleanSettingMeta = BaseSettingMeta & {
+    type: 'boolean'
+}
+
+type StringSettingMeta = BaseSettingMeta & {
+    type: 'string'
+}
+
+type SettingMeta = IntegerSettingMeta | BooleanSettingMeta | StringSettingMeta
+
 // Definition of all settings with metadata
-const SETTINGS_METADATA: Record<string, any> = {
+const SETTINGS_METADATA: Record<string, SettingMeta> = {
     'quota_per_month': { label: 'Monthly Vote Quota', description: 'Votes per person per month', type: 'integer', min: 1, max: 50, default: '8', category: 'voting' },
     'max_votes_per_week': { label: 'Weekly Vote Limit', description: 'Max votes per week', type: 'integer', min: 1, max: 10, default: '2', category: 'voting' },
     'max_votes_per_person_per_month': { label: 'Per-Person Limit', description: 'Max votes to same person/month', type: 'integer', min: 1, max: 5, default: '2', category: 'voting' },
@@ -31,7 +54,7 @@ export async function GET(request: NextRequest) {
     const admin = await authenticateAdminRequest(request)
     if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     // Only Super Admin should usually see this, but maybe HR admin too? Blueprint says Super Admin Only.
-    if (admin.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    if (admin.role !== 'super_admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
     try {
         const dbSettings = await prisma.systemSetting.findMany()
@@ -52,7 +75,7 @@ export async function GET(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
     const admin = await authenticateAdminRequest(request)
-    if (!admin || admin.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    if (!admin || admin.role !== 'super_admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
     try {
         const body = await request.json()

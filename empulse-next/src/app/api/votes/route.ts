@@ -119,9 +119,10 @@ export async function POST(request: NextRequest) {
     let userId: number | null = null
     try {
         userId = await authenticateRequest(request)
-        if (!userId) {
+        if (userId === null) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
+        const senderId = userId
 
         const body = await request.json()
         const { receiverId, message } = body
@@ -133,12 +134,12 @@ export async function POST(request: NextRequest) {
         if (message.length < 20) {
             return NextResponse.json({ error: 'Message must be at least 20 characters' }, { status: 400 })
         }
-        if (receiverId === userId) {
+        if (receiverId === senderId) {
             return NextResponse.json({ error: 'Cannot vote for yourself' }, { status: 400 })
         }
 
         // Fetch Sender specific data (manager, team)
-        const sender = await prisma.user.findUnique({ where: { id: userId } })
+        const sender = await prisma.user.findUnique({ where: { id: senderId } })
         if (!sender) return NextResponse.json({ error: 'User not found' }, { status: 404 })
 
         // 1. Check Manager
@@ -161,7 +162,7 @@ export async function POST(request: NextRequest) {
         // 2. Check Weekly Limit
         const weekYear = getWeekYear(new Date())
         const weeklyTracking = await prisma.weeklyVoteTracking.findUnique({
-            where: { userId_weekYear: { userId, weekYear } }
+            where: { userId_weekYear: { userId: senderId, weekYear } }
         })
         if (weeklyTracking && weeklyTracking.voteCount >= settings.maxVotesPerWeek) {
             return NextResponse.json({ error: `Maximum ${settings.maxVotesPerWeek} votes per week reached` }, { status: 400 })
@@ -170,7 +171,7 @@ export async function POST(request: NextRequest) {
         // 3. Check Per-Person Month Limit & Cooldown
         const monthYear = getMonthYear(new Date())
         const voteTracking = await prisma.voteTracking.findUnique({
-            where: { senderId_receiverId_monthYear: { senderId: userId, receiverId, monthYear } }
+            where: { senderId_receiverId_monthYear: { senderId: senderId, receiverId, monthYear } }
         })
 
         if (voteTracking) {
@@ -187,7 +188,7 @@ export async function POST(request: NextRequest) {
 
         // 4. Check Same Team Limit
         if (sender.teamId && receiver.teamId === sender.teamId) {
-            const sameTeamVotes = await countSameTeamVotesThisMonth(userId, sender.teamId)
+            const sameTeamVotes = await countSameTeamVotesThisMonth(senderId, sender.teamId)
             const maxSameTeam = Math.floor(settings.quotaPerMonth * settings.sameTeamLimitPercent / 100)
 
             if (sameTeamVotes >= maxSameTeam) {
@@ -198,7 +199,7 @@ export async function POST(request: NextRequest) {
         }
 
         // 5. Check Quota Wallet
-        const quotaWallet = await prisma.quotaWallet.findUnique({ where: { userId } })
+        const quotaWallet = await prisma.quotaWallet.findUnique({ where: { userId: senderId } })
         if (!quotaWallet || quotaWallet.balance < 1) {
             return NextResponse.json({ error: 'Insufficient quota' }, { status: 400 })
         }
@@ -207,7 +208,7 @@ export async function POST(request: NextRequest) {
         const result = await prisma.$transaction(async (tx) => {
             // Deduct Quota
             await tx.quotaWallet.update({
-                where: { userId },
+                where: { userId: senderId },
                 data: { balance: { decrement: 1 } }
             })
 
@@ -220,7 +221,7 @@ export async function POST(request: NextRequest) {
             // Create Vote
             const vote = await tx.vote.create({
                 data: {
-                    senderId: userId,
+                    senderId: senderId,
                     receiverId,
                     message,
                     pointsAwarded: settings.pointsPerVote
@@ -238,9 +239,9 @@ export async function POST(request: NextRequest) {
                 : null
 
             await tx.voteTracking.upsert({
-                where: { senderId_receiverId_monthYear: { senderId: userId, receiverId, monthYear } },
+                where: { senderId_receiverId_monthYear: { senderId: senderId, receiverId, monthYear } },
                 create: {
-                    senderId: userId,
+                    senderId: senderId,
                     receiverId,
                     monthYear,
                     voteCount: 1,
@@ -256,8 +257,8 @@ export async function POST(request: NextRequest) {
 
             // Update Weekly Tracking
             await tx.weeklyVoteTracking.upsert({
-                where: { userId_weekYear: { userId, weekYear } },
-                create: { userId, weekYear, voteCount: 1 },
+                where: { userId_weekYear: { userId: senderId, weekYear } },
+                create: { userId: senderId, weekYear, voteCount: 1 },
                 update: { voteCount: { increment: 1 } }
             })
 
@@ -266,7 +267,7 @@ export async function POST(request: NextRequest) {
             const reciprocalVote = await tx.vote.findFirst({
                 where: {
                     senderId: receiverId,
-                    receiverId: userId,
+                    receiverId: senderId,
                     createdAt: { gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1) }
                 }
             })
@@ -275,12 +276,12 @@ export async function POST(request: NextRequest) {
                 // Log to Audit
                 await tx.auditLog.create({
                     data: {
-                        actorId: userId,
+                        actorId: senderId,
                         action: 'RECIPROCAL_VOTE_DETECTED',
                         entityType: 'vote',
                         entityId: Number(vote.id), // Ensure parsing if needed, though id is Int usually
                         newValue: {
-                            voterId: userId,
+                            voterId: senderId,
                             receiverId,
                             reciprocalVoteId: reciprocalVote.id
                         }
@@ -292,7 +293,7 @@ export async function POST(request: NextRequest) {
         })
 
         // Fetch updated quota for response
-        const updatedQuota = await prisma.quotaWallet.findUnique({ where: { userId } })
+        const updatedQuota = await prisma.quotaWallet.findUnique({ where: { userId: senderId } })
 
         return NextResponse.json({
             message: 'Vote sent successfully',

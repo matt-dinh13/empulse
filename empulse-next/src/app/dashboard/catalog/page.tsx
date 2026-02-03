@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
-import Link from 'next/link'
 import Sidebar from '@/components/Sidebar'
 
 interface CatalogItem {
@@ -19,6 +17,11 @@ interface Wallet {
     balance: number
 }
 
+interface UiUser {
+    fullName?: string
+    role?: string
+}
+
 export default function CatalogPage() {
     const [catalog, setCatalog] = useState<CatalogItem[]>([])
     const [wallet, setWallet] = useState<Wallet | null>(null)
@@ -26,20 +29,20 @@ export default function CatalogPage() {
     const [ordering, setOrdering] = useState<number | null>(null)
     const [success, setSuccess] = useState('')
     const [error, setError] = useState('')
-    const [uiUser, setUiUser] = useState<any>(null)
+    const [uiUser, setUiUser] = useState<UiUser | null>(null)
     const router = useRouter()
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken')
         const storedUser = localStorage.getItem('user')
-        if (storedUser) setUiUser(JSON.parse(storedUser))
+        if (storedUser) setUiUser(JSON.parse(storedUser) as UiUser)
 
         if (!token) {
             router.push('/login')
             return
         }
         const userStr = localStorage.getItem('user')
-        if (userStr) setUiUser(JSON.parse(userStr))
+        if (userStr) setUiUser(JSON.parse(userStr) as UiUser)
 
         fetchData(token)
     }, [router])

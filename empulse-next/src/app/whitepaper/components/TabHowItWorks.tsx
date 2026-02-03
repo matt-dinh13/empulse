@@ -1,12 +1,19 @@
 import { useEffect } from 'react'
 
+type MermaidApi = {
+    initialize: (opts: { startOnLoad: boolean; theme: string; securityLevel: string }) => void
+    init: (config: unknown, nodes: NodeListOf<Element>) => void
+}
+
+type MermaidWindow = Window & { mermaid?: MermaidApi }
+
 export default function TabHowItWorks() {
     useEffect(() => {
         const script = document.createElement('script')
         script.src = 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js'
         script.async = true
         script.onload = () => {
-            const mermaid = (window as any).mermaid
+            const mermaid = (window as MermaidWindow).mermaid
             if (mermaid) {
                 mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' })
                 mermaid.init(undefined, document.querySelectorAll('.mermaid'))
@@ -45,7 +52,7 @@ export default function TabHowItWorks() {
                         </div>
                         <h3 className="step-title">2. Accumulate</h3>
                         <p className="step-desc">
-                            Points are deducted from Sender's <span className="highlight-white">Quota Wallet</span> and added to Receiver's <span className="highlight-white">Reward Wallet</span> instantly.
+                            Points are deducted from Sender&apos;s <span className="highlight-white">Quota Wallet</span> and added to Receiver&apos;s <span className="highlight-white">Reward Wallet</span> instantly.
                         </p>
                     </div>
 

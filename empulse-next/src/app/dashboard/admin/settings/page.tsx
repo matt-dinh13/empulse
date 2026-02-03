@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 
 const SETTINGS_CATEGORIES = [
     { id: 'voting', label: 'Voting Rules', icon: '🗳️' },
@@ -80,7 +79,7 @@ export default function SystemSettingsPage() {
         }
     }
 
-    const handleChange = (key: string, value: any) => {
+    const handleChange = (key: string, value: SystemSetting['value']) => {
         setSettings(prev => prev.map(s => s.key === key ? { ...s, value } : s))
     }
 

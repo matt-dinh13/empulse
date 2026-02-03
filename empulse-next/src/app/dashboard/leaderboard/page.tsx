@@ -14,15 +14,20 @@ interface LeaderboardEntry {
     points: number
 }
 
+interface UiUser {
+    fullName?: string
+    role?: string
+}
+
 export default function LeaderboardPage() {
-    const [user, setUser] = useState<any>(null)
+    const [user, setUser] = useState<UiUser | null>(null)
     const [loading, setLoading] = useState(true)
     const [period, setPeriod] = useState<'month' | 'all'>('month')
     const [data, setData] = useState<LeaderboardEntry[]>([])
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user')
-        if (storedUser) setUser(JSON.parse(storedUser))
+        if (storedUser) setUser(JSON.parse(storedUser) as UiUser)
         fetchLeaderboard()
     }, [period])
 

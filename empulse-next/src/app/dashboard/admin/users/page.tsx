@@ -85,7 +85,7 @@ export default function AdminUsersPage() {
                                         <div className="text-sm text-muted">{user.email}</div>
                                     </td>
                                     <td style={{ padding: '1rem' }}>
-                                        <span className={`badge ${user.role === 'admin' ? 'badge-warning' : 'badge-success'}`}>
+                                        <span className={`badge ${user.role === 'super_admin' ? 'badge-warning' : 'badge-success'}`}>
                                             {user.role}
                                         </span>
                                     </td>

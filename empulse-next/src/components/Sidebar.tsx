@@ -4,8 +4,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 
+interface SidebarUser {
+    fullName?: string
+    role?: string
+}
+
 interface SidebarProps {
-    user: any
+    user: SidebarUser | null
 }
 
 export default function Sidebar({ user }: SidebarProps) {
@@ -50,7 +55,7 @@ export default function Sidebar({ user }: SidebarProps) {
                     📦 My Orders
                 </Link>
 
-                {(user?.role === 'admin' || user?.role === 'hr_admin') && (
+                {(user?.role === 'super_admin' || user?.role === 'hr_admin') && (
                     <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                         <Link href="/dashboard/admin" className={`sidebar-link ${isActive('/dashboard/admin')}`}>
                             🛡️ Admin Portal
