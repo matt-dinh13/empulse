@@ -117,7 +117,8 @@ export default function TabHowItWorks() {
                     border-radius: 1rem; 
                     border: 1px solid rgba(255,255,255,0.1); 
                     text-align: center;
-                    overflow: hidden;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
                 }
                 
                 .flow-wrapper { position: relative; margin-bottom: 5rem; }
