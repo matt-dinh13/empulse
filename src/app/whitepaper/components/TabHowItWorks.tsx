@@ -89,18 +89,20 @@ export default function TabHowItWorks() {
                 <div className="diagram-box">
                     <div className="mermaid">
                         {`flowchart TD
-    A[Employee Login] --> B{Has Voting Quota?}
-    B -->|Yes| C[Select Colleague]
-    B -->|No| D[Wait for Monthly Reset]
-    C --> E[Write Recognition Message]
-    E --> F[Submit Vote +10 Points]
-    F --> G[Recipient Gets Points]
-    G --> H[Leaderboard Updates]
-    H --> I{Enough Points?}
-    I -->|Yes| J[Redeem Reward]
-    I -->|No| K[Continue Earning]
-    J --> L[Admin Approves Order]
-    L --> M[Reward Delivered]`}
+    A[Employee Login] --> B{Monthly Quota Left?}
+    B -->|No| C[Wait for Monthly Reset]
+    B -->|Yes| D{Weekly Limit Reached?}
+    D -->|Yes| E[Wait for Weekly Reset]
+    D -->|No| F[Select Colleague]
+    F --> G[Write Recognition Message]
+    G --> H{Length >= 20 chars?}
+    H -->|No| G
+    H -->|Yes| I[Submit Vote +10 Points]
+    I --> J[Recipient Gets Points]
+    J --> K{Enough Points?}
+    K -->|Yes| L[Redeem Reward]
+    K -->|No| M[Continue Earning]
+    L --> N[Admin Approves Order]`}
                     </div>
                 </div>
             </div>

@@ -149,26 +149,27 @@ export default function SendVotePage() {
                         <div className="form-group">
                             <label className="form-label">
                                 Recognition Message
-                                <span style={{ float: 'right', fontSize: '0.8rem', color: message.length < 20 ? 'red' : 'green' }}>
-                                    {message.length} / 20 chars
+                                <span style={{ float: 'right', fontSize: '0.8rem', color: (message.length < 20 || message.length > 400) ? 'red' : 'green' }}>
+                                    {message.length} / 400 chars
                                 </span>
                             </label>
                             <textarea
                                 className="form-input"
                                 rows={4}
-                                placeholder="Tell them why they deserve this recognition... (min 20 chars)"
+                                placeholder="Tell them why they deserve this recognition... (min 20, max 400 chars)"
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 required
                                 minLength={20}
+                                maxLength={400}
                             />
                         </div>
 
                         <button
                             type="submit"
                             className="btn btn-primary login-btn"
-                            disabled={loading || message.length < 20}
-                            style={{ opacity: message.length < 20 ? 0.5 : 1 }}
+                            disabled={loading || message.length < 20 || message.length > 400}
+                            style={{ opacity: (message.length < 20 || message.length > 400) ? 0.5 : 1 }}
                         >
                             {loading ? 'Sending...' : '🎯 Send Vote (+10 points)'}
                         </button>
