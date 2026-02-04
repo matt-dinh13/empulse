@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
 
 interface Stats {
     totalUsers: number
@@ -21,21 +22,33 @@ export default function AnalyticsPage() {
     const [stats, setStats] = useState<Stats | null>(null)
     const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([])
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
         const fetchAnalytics = async () => {
-            const token = localStorage.getItem('accessToken')
             try {
+                const headers = buildAuthHeaders()
+                if (!headers) {
+                    handleUnauthorized()
+                    return
+                }
                 const res = await fetch('/api/admin/analytics/dashboard', {
-                    headers: { Authorization: `Bearer ${token}` }
+                    headers
                 })
+                if (res.status === 401) {
+                    handleUnauthorized()
+                    return
+                }
                 const data = await res.json()
                 if (res.ok) {
                     setStats(data.stats)
                     setLeaderboard(data.leaderboard)
+                } else {
+                    setError(data?.error || 'Failed to load analytics')
                 }
             } catch (err) {
                 console.error('Failed to fetch analytics', err)
+                setError('Failed to load analytics')
             } finally {
                 setLoading(false)
             }
@@ -44,6 +57,7 @@ export default function AnalyticsPage() {
     }, [])
 
     if (loading) return <div>Loading analytics...</div>
+    if (error) return <div className="text-muted">{error}</div>
 
     return (
         <div>

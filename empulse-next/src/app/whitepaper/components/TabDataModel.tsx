@@ -85,7 +85,9 @@ erDiagram
                     {`graph LR
     subgraph Actors
         Employee((Employee))
-        Admin((Admin))
+        HR((HR Admin))
+        Super((Super Admin))
+        Legacy((Legacy Admin))
     end
 
     subgraph "EmPulse System"
@@ -96,6 +98,8 @@ erDiagram
         UC5[Approve Orders]
         UC6[Manage Users]
         UC7[View Analytics]
+        UC8[Manage Catalog]
+        UC9[System Settings]
     end
 
     Employee --> UC1
@@ -103,12 +107,28 @@ erDiagram
     Employee --> UC3
     Employee --> UC4
 
-    Admin --> UC5
-    Admin --> UC6
-    Admin --> UC7
-    Admin --> UC2`}
+    HR --> UC5
+    HR --> UC8
+    HR --> UC2
+
+    Super --> UC5
+    Super --> UC6
+    Super --> UC7
+    Super --> UC8
+    Super --> UC9
+    Super --> UC2
+
+    Legacy --> UC5
+    Legacy --> UC6
+    Legacy --> UC7
+    Legacy --> UC8
+    Legacy --> UC9`}
                 </div>
             </div>
+
+            <p className="subtitle">
+                Roles note: Legacy Admin is treated as Super Admin for backward compatibility.
+            </p>
 
             <div className="info-grid">
                 <div className="info-card">

@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
 
 const ICONS_CATEGORY = {
     vouchers: ['🎫', '🎟️', '💳', '🏷️', '🎁'],
@@ -39,17 +40,29 @@ export default function EditCatalogItemPage({ params }: { params: Promise<{ id: 
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user')
-        if (storedUser) setUser(JSON.parse(storedUser))
+        if (!storedUser) {
+            handleUnauthorized()
+            return
+        }
+        setUser(JSON.parse(storedUser))
 
         fetchItem()
     }, [])
 
     const fetchItem = async () => {
         try {
-            const token = localStorage.getItem('accessToken')
+            const headers = buildAuthHeaders()
+            if (!headers) {
+                handleUnauthorized()
+                return
+            }
             const res = await fetch(`/api/admin/catalog/${resolvedParams.id}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers
             })
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             const data = await res.json()
             if (res.ok) {
                 setFormData({
@@ -78,17 +91,25 @@ export default function EditCatalogItemPage({ params }: { params: Promise<{ id: 
         setSaving(true)
 
         try {
-            const token = localStorage.getItem('accessToken')
+            const headers = buildAuthHeaders()
+            if (!headers) {
+                handleUnauthorized()
+                return
+            }
             const res = await fetch(`/api/admin/catalog/${resolvedParams.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
+                    ...headers
                 },
                 body: JSON.stringify(formData)
             })
 
             const data = await res.json()
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             if (!res.ok) throw new Error(data.error)
 
             alert('Item updated successfully')

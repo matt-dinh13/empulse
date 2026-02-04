@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
 
 interface User {
     id: number
@@ -19,11 +20,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const pathname = usePathname()
 
     useEffect(() => {
-        const token = localStorage.getItem('accessToken')
         const storedUser = localStorage.getItem('user')
+        const headers = buildAuthHeaders()
 
-        if (!token || !storedUser) {
-            router.push('/login')
+        if (!headers || !storedUser) {
+            handleUnauthorized()
             return
         }
 
@@ -34,8 +35,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             return
         }
 
-        setUser(parsedUser)
-        setLoading(false)
+        const validateSession = async () => {
+            try {
+                const res = await fetch('/api/auth/me', { headers })
+                if (res.status === 401) {
+                    handleUnauthorized()
+                    return
+                }
+                if (res.ok) {
+                    const data = await res.json()
+                    localStorage.setItem('user', JSON.stringify(data.user))
+                    setUser(data.user)
+                } else {
+                    setUser(parsedUser)
+                }
+            } catch {
+                setUser(parsedUser)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        validateSession()
     }, [router])
 
     if (loading) {

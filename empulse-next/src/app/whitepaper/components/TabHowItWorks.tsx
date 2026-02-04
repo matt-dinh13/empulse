@@ -91,6 +91,24 @@ export default function TabHowItWorks() {
                 </div>
             </div>
 
+            <div className="admin-box">
+                <h3 className="box-title">Admin Portal Highlights</h3>
+                <div className="admin-grid">
+                    <div className="admin-card">
+                        <div className="admin-title">Orders & Approvals</div>
+                        <div className="admin-desc">HR Admin reviews and approves orders (region-scoped).</div>
+                    </div>
+                    <div className="admin-card">
+                        <div className="admin-title">Catalog & Inventory</div>
+                        <div className="admin-desc">Manage rewards, voucher stock, and fulfillment pipeline.</div>
+                    </div>
+                    <div className="admin-card">
+                        <div className="admin-title">Analytics & Settings</div>
+                        <div className="admin-desc">Super Admin monitors KPIs and configures system rules.</div>
+                    </div>
+                </div>
+            </div>
+
             <div className="diagram-section">
                 <h3 className="sub-title">System Process Flow</h3>
                 <div className="diagram-box">
@@ -109,7 +127,9 @@ export default function TabHowItWorks() {
     J --> K{Enough Points?}
     K -->|Yes| L[Redeem Reward]
     K -->|No| M[Continue Earning]
-    L --> N[Admin Approves Order]`}
+    L --> N[Admin Approves Order]
+    N --> O[Order Completed]
+    A -.-> P[Admin Portal: Analytics & Settings]`}
                     </div>
                 </div>
             </div>
@@ -158,6 +178,12 @@ export default function TabHowItWorks() {
                 .rule-item { display: flex; gap: 1rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 0.5rem; font-size: 0.9rem; color: #9ca3af; align-items: center; }
                 .rule-num { color: #10b981; font-family: monospace; font-weight: 700; }
 
+                .admin-box { margin-top: 2.5rem; padding: 2rem; border-radius: 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); }
+                .admin-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+                .admin-card { padding: 1rem; border-radius: 0.75rem; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); }
+                .admin-title { font-size: 1rem; font-weight: 700; color: white; margin-bottom: 0.35rem; }
+                .admin-desc { font-size: 0.9rem; color: #9ca3af; }
+
                 @media (min-width: 768px) {
                     .connecting-line { 
                         display: block; position: absolute; top: 3rem; left: 0; width: 100%; height: 2px; 
@@ -166,6 +192,7 @@ export default function TabHowItWorks() {
                     }
                     .steps-grid { grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
                     .rules-grid { grid-template-columns: 1fr 1fr; }
+                    .admin-grid { grid-template-columns: 1fr 1fr 1fr; }
                 }
             `}</style>
         </div>

@@ -320,3 +320,32 @@ empulse-next/
 ---
 
 *Log updated: 2026-02-02 00:35*
+
+---
+
+## 2026-02-03
+
+### Next.js MVP Stabilization
+- ✅ Normalized repo to single `empulse-next` app (legacy stacks archived)
+- ✅ Completed Admin module features (users, catalog, orders, settings, analytics)
+- ✅ Added system settings UI + API (Super Admin only)
+- ✅ Added debug endpoints with production guard (`ENABLE_DEBUG_ENDPOINTS`)
+- ✅ Added lightweight API caching for catalog, leaderboard, admin analytics
+- ✅ Updated role checks to use `super_admin` (with `hr_admin` limits)
+- ✅ Fixed TypeScript and lint errors across dashboard/admin/whitepaper pages
+- ✅ Build passes (`npm -C empulse-next run build`)
+
+---
+
+## 2026-02-04
+
+### QA + Compatibility Updates
+- ✅ Added smoke test scripts:
+  - `typecheck`: `tsc --noEmit`
+  - `test:smoke`: `npm run lint && npm run typecheck`
+- ✅ Smoke test + build re-run (build pass, lint warnings remain)
+- ✅ Fixed strict typing in settings metadata and votes transaction flow
+- ✅ Backward compatibility: legacy `admin` role treated as `super_admin` in UI + API
+- ✅ Added HR Admin demo account in seed (`hr.admin@empulse.com / password123`)
+- ✅ Updated login page to show HR Admin demo credentials
+- ✅ Pushed changes to `origin/main`

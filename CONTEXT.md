@@ -1,8 +1,8 @@
 # EmPulse - P2P Reward & Recognition System
 
 > **Context Document for AI Assistants**  
-> **Last Updated**: 2026-02-03  
-> **Status**: MVP Refined, Deployment Ready
+> **Last Updated**: 2026-02-04  
+> **Status**: MVP Concept, Next.js Single App
 
 ---
 
@@ -14,6 +14,7 @@
 - **Employees**: Vote appreciate đồng nghiệp, redeem rewards
 - **HR Admin**: Manage catalog, approve orders (CZ), upload vouchers (VN)
 - **Super Admin**: System configuration, reports
+- **Legacy Admin**: Treated as Super Admin for backward compatibility
 
 ---
 
@@ -153,18 +154,22 @@ HR sets expected delivery date when approving.
 
 ### Modules (30+ endpoints)
 
-1. **Auth**: `/api/auth/*` - Register, login, logout, refresh
-2. **Votes**: `/api/votes/*` - Submit, list sent/received, stats
-3. **Wallets**: `/api/wallets/*` - Quota, reward, history
-4. **Redemption**: `/api/catalog/*`, `/api/orders/*` - Browse, redeem
-5. **Admin Users**: `/api/admin/users/*`, `/api/admin/teams/*`
-6. **Admin Catalog**: `/api/admin/catalog/*`, `/api/admin/vouchers/*`
-7. **Admin Orders**: `/api/admin/orders/*` - Approve, reject, complete
-8. **Admin Settings**: `/api/admin/settings/*`, `/api/admin/reports/*`
+1. **Auth**: `/api/auth/login`, `/api/auth/register`, `/api/auth/me`
+2. **Votes**: `/api/votes` - Submit, list sent/received
+3. **Wallets**: `/api/wallets`
+4. **Redemption**: `/api/catalog`, `/api/orders`
+5. **Users**: `/api/users`
+6. **Admin Users/Teams**: `/api/admin/users`, `/api/admin/teams`
+7. **Admin Catalog**: `/api/admin/catalog`, `/api/admin/catalog/[id]`
+8. **Admin Orders**: `/api/admin/orders`, `/api/admin/orders/[id]/approve|reject|complete`
+9. **Admin Settings/Analytics**: `/api/admin/settings`, `/api/admin/analytics/dashboard`
+10. **Leaderboard + Health/Debug**: `/api/leaderboard`, `/api/health`, `/api/ping`, `/api/env-check`, `/api/debug/*`
 
 ---
 
 ## Scheduled Jobs
+
+Status: Planned (not implemented in code yet).
 
 | Job | Schedule | Description |
 |-----|----------|-------------|
@@ -182,10 +187,11 @@ HR sets expected delivery date when approving.
 1. ✅ Quota reset: Complete reset to 0 (no rollover)
 2. ✅ Timezone: UTC for all scheduled jobs
 3. ✅ Voting anonymity: Public (receiver sees sender name + message)
-4. ✅ Leaderboard: No (avoid unhealthy competition)
+4. ✅ Leaderboard: Enabled for demo (can be disabled later)
 5. ✅ Org structure: Lightweight (team_id + manager_id only)
 6. ✅ CZ shipping: Simple flow (no detailed tracking)
 7. ✅ Auth: Standalone for POC (future: Azure SSO)
+8. ✅ Legacy role: `admin` treated as `super_admin` for backward compatibility
 
 ---
 
@@ -225,31 +231,18 @@ EmPulse/
 
 ## Next Steps
 
-### Phase 1: Project Setup
-- [ ] Initialize backend (Express + Prisma)
-- [ ] Initialize frontend (Vite + React)
-- [ ] Setup Supabase project
-- [ ] Configure environment variables
+### Completed (Next.js MVP)
+- [x] Core features: auth, votes, wallets, catalog, orders
+- [x] Admin features: users, catalog, orders, settings, analytics
+- [x] Smoke tests: `npm -C empulse-next run test:smoke`
+- [x] Build: `npm -C empulse-next run build`
 
-### Phase 2: Core Implementation
-- [ ] Database migrations
-- [ ] Auth system
-- [ ] Voting API + validation
-- [ ] Wallet management
-- [ ] Redemption flow
-
-### Phase 3: Admin Features
-- [ ] User management
-- [ ] Catalog management
-- [ ] Voucher upload
-- [ ] Order approval (CZ)
-
-### Phase 4: Polish & Deploy
-- [x] Email notifications (configured)
-- [x] Scheduled jobs (implemented)
-- [x] Frontend UI (Landing page refined)
-- [x] Testing (E2E passed)
-- [x] Deployment Config (Vercel)
+### Open Items (Nice-to-have)
+- [ ] Resolve lint warnings (17 warnings remaining)
+- [ ] Set `metadataBase` for OG/Twitter images
+- [ ] Remove duplicate lockfile warning (set `turbopack.root` or consolidate lockfiles)
+- [ ] Decide on DB migration for legacy `admin` role
+- [ ] Implement scheduled jobs + email notifications (currently planned)
 
 ---
 

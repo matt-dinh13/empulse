@@ -154,6 +154,46 @@ export default function TabOverview() {
                 </div>
             </div>
 
+            {/* Roles & Access */}
+            <div className="roles-section">
+                <h3 className="section-title center">Roles & Access</h3>
+                <p className="section-subtitle center">Clear governance with role-based access to the Admin Portal.</p>
+                <div className="roles-grid">
+                    <div className="role-card">
+                        <div className="role-title">Super Admin</div>
+                        <div className="role-desc">Full admin portal, analytics, and system settings.</div>
+                    </div>
+                    <div className="role-card">
+                        <div className="role-title">HR Admin</div>
+                        <div className="role-desc">Region-scoped catalog and order operations.</div>
+                    </div>
+                    <div className="role-card">
+                        <div className="role-title">Legacy Admin</div>
+                        <div className="role-desc">Backward compatible with Super Admin access.</div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Demo Access */}
+            <div className="demo-section">
+                <h3 className="section-title center">Demo Access</h3>
+                <p className="section-subtitle center">Use these demo credentials to explore the portal.</p>
+                <div className="demo-grid">
+                    <div className="demo-card">
+                        <div className="demo-label">Super Admin</div>
+                        <div className="demo-cred">admin@empulse.com / password123</div>
+                    </div>
+                    <div className="demo-card">
+                        <div className="demo-label">HR Admin</div>
+                        <div className="demo-cred">hr.admin@empulse.com / password123</div>
+                    </div>
+                    <div className="demo-card">
+                        <div className="demo-label">Employee</div>
+                        <div className="demo-cred">nguyen.van.a@empulse.com / password123</div>
+                    </div>
+                </div>
+            </div>
+
             <style jsx>{`
                 .overview-container { max-width: 1200px; margin: 0 auto; }
                 
@@ -272,6 +312,24 @@ export default function TabOverview() {
                 .text-black { color: #111; }
                 .text-dark-gray { color: #4b5563; }
                 .stat-label { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
+
+                /* Roles & Demo */
+                .roles-section { margin-top: 5rem; }
+                .roles-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+                .role-card { padding: 1.5rem; border-radius: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+                .role-title { font-size: 1.1rem; font-weight: 800; color: white; margin-bottom: 0.4rem; }
+                .role-desc { color: #9ca3af; font-size: 0.95rem; }
+
+                .demo-section { margin-top: 4rem; }
+                .demo-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+                .demo-card { padding: 1.25rem 1.5rem; border-radius: 0.75rem; background: rgba(0, 210, 100, 0.08); border: 1px solid rgba(0, 210, 100, 0.25); }
+                .demo-label { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.08em; color: #00D264; font-weight: 700; margin-bottom: 0.4rem; }
+                .demo-cred { font-family: monospace; color: white; font-size: 0.95rem; }
+
+                @media (min-width: 900px) {
+                    .roles-grid { grid-template-columns: repeat(3, 1fr); }
+                    .demo-grid { grid-template-columns: repeat(3, 1fr); }
+                }
 
                 @media (max-width: 900px) {
                     .hero-section { grid-template-columns: 1fr; text-align: center; gap: 3rem; }

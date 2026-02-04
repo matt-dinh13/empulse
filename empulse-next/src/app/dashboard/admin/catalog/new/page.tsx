@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
 
 const ICONS_CATEGORY = {
     vouchers: ['🎫', '🎟️', '💳', '🏷️', '🎁'],
@@ -37,16 +38,18 @@ export default function NewCatalogItemPage() {
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user')
-        if (storedUser) {
-            const u = JSON.parse(storedUser)
-            setUser(u)
-            // If HR Admin, auto-set region
-            if (u.role === 'hr_admin') {
-                setFormData(prev => ({ ...prev, regionId: u.regionId }))
-            } else {
-                // Super Admin needs to select region, default 1 for now or fetch list
-                setFormData(prev => ({ ...prev, regionId: '1' }))
-            }
+        if (!storedUser) {
+            handleUnauthorized()
+            return
+        }
+        const u = JSON.parse(storedUser)
+        setUser(u)
+        // If HR Admin, auto-set region
+        if (u.role === 'hr_admin') {
+            setFormData(prev => ({ ...prev, regionId: u.regionId }))
+        } else {
+            // Super Admin needs to select region, default 1 for now or fetch list
+            setFormData(prev => ({ ...prev, regionId: '1' }))
         }
     }, [])
 
@@ -55,17 +58,25 @@ export default function NewCatalogItemPage() {
         setLoading(true)
 
         try {
-            const token = localStorage.getItem('accessToken')
+            const headers = buildAuthHeaders()
+            if (!headers) {
+                handleUnauthorized()
+                return
+            }
             const res = await fetch('/api/admin/catalog', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
+                    ...headers
                 },
                 body: JSON.stringify(formData)
             })
 
             const data = await res.json()
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             if (!res.ok) throw new Error(data.error)
 
             router.push('/dashboard/admin/catalog')

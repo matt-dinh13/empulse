@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
 
 interface CatalogItem {
     id: number
@@ -20,6 +21,7 @@ export default function CatalogListPage() {
     const [loading, setLoading] = useState(true)
     const [showInactive, setShowInactive] = useState(false)
     const [user, setUser] = useState<{ role: string; regionId?: number } | null>(null)
+    const [error, setError] = useState<string | null>(null)
     const router = useRouter()
 
     useEffect(() => {
@@ -30,16 +32,30 @@ export default function CatalogListPage() {
 
     const fetchCatalog = async () => {
         setLoading(true)
-        const token = localStorage.getItem('accessToken')
         try {
+            const headers = buildAuthHeaders()
+            if (!headers) {
+                handleUnauthorized()
+                return
+            }
             const query = showInactive ? '' : '?isActive=true'
             const res = await fetch(`/api/admin/catalog${query}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers
             })
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             const data = await res.json()
-            if (res.ok) setItems(data.items)
+            if (res.ok) {
+                setItems(data.items)
+                setError(null)
+            } else {
+                setError(data?.error || 'Failed to fetch catalog')
+            }
         } catch (error) {
             console.error('Failed to fetch catalog', error)
+            setError('Failed to fetch catalog')
         } finally {
             setLoading(false)
         }
@@ -48,12 +64,20 @@ export default function CatalogListPage() {
     const deleteItem = async (id: number) => {
         if (!confirm('Are you sure you want to deactivate this item?')) return
 
-        const token = localStorage.getItem('accessToken')
         try {
+            const headers = buildAuthHeaders()
+            if (!headers) {
+                handleUnauthorized()
+                return
+            }
             const res = await fetch(`/api/admin/catalog/${id}`, {
                 method: 'DELETE',
-                headers: { Authorization: `Bearer ${token}` }
+                headers
             })
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             if (res.ok) {
                 fetchCatalog()
             } else {
@@ -85,7 +109,9 @@ export default function CatalogListPage() {
             </div>
 
             <div className="card">
-                {loading ? (
+                {error ? (
+                    <div className="text-muted">{error}</div>
+                ) : loading ? (
                     <div className="flex justify-center p-md"><div className="spinner"></div></div>
                 ) : (
                     <table className="w-full text-left" style={{ borderCollapse: 'collapse' }}>

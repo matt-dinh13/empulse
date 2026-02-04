@@ -2,11 +2,13 @@ import Image from 'next/image'
 
 export default function TabScreenshots() {
     const screens = [
-        { title: 'Vote Feed (Dashboard)', src: '/screenshot-dashboard.png', desc: 'Real-time feed of employee recognition.', isReal: true },
-        { title: 'Leaderboard', src: '/screenshot-leaderboard.png', desc: 'Top contributors and ranking.', isReal: true },
-        { title: 'Send Vote', src: '/screenshot-send-vote.png', desc: 'Intuitive interface to recognize colleagues.', isReal: true },
-        { title: 'Catalog', src: '/screenshot-catalog.png', desc: 'Rewards redemption center.', isReal: true },
-        { title: 'Admin Orders', src: '/screenshot-admin-orders.png', desc: 'Order management and approval workflow.', isReal: true },
+        { title: 'Vote Feed (Dashboard)', src: '/screenshot-dashboard.png', desc: 'Real-time feed of employee recognition.', isReal: false },
+        { title: 'Leaderboard', src: '/screenshot-leaderboard.png', desc: 'Top contributors and ranking.', isReal: false },
+        { title: 'Send Vote', src: '/screenshot-send-vote.png', desc: 'Intuitive interface to recognize colleagues.', isReal: false },
+        { title: 'Catalog', src: '/screenshot-catalog.png', desc: 'Rewards redemption center.', isReal: false },
+        { title: 'Admin Orders', src: '/screenshot-admin-orders.png', desc: 'Order management and approval workflow.', isReal: false },
+        { title: 'Admin Analytics', src: '/screenshot-admin-analytics.png', desc: 'Engagement KPIs and activity insights.', isReal: false },
+        { title: 'System Settings', src: '/screenshot-admin-settings.png', desc: 'Configure voting rules and platform controls.', isReal: false },
     ]
 
     return (

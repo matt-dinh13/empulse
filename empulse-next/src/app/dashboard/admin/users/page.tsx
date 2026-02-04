@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
 
 interface User {
     id: number
@@ -16,21 +17,35 @@ export default function AdminUsersPage() {
     const [users, setUsers] = useState<User[]>([])
     const [loading, setLoading] = useState(true)
     const [search, setSearch] = useState('')
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
         fetchUsers()
     }, [])
 
     const fetchUsers = async () => {
-        const token = localStorage.getItem('accessToken')
         try {
+            const headers = buildAuthHeaders()
+            if (!headers) {
+                handleUnauthorized()
+                return
+            }
             const res = await fetch('/api/admin/users', {
-                headers: { Authorization: `Bearer ${token}` }
+                headers
             })
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             const data = await res.json()
-            if (res.ok) setUsers(data.users)
+            if (res.ok) {
+                setUsers(data.users)
+            } else {
+                setError(data?.error || 'Failed to load users')
+            }
         } catch (err) {
             console.error(err)
+            setError('Failed to load users')
         } finally {
             setLoading(false)
         }
@@ -64,8 +79,11 @@ export default function AdminUsersPage() {
                     />
                 </div>
 
-                <div style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                {error ? (
+                    <div className="text-muted">{error}</div>
+                ) : (
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
                             <tr style={{ borderBottom: '2px solid var(--color-border)' }}>
                                 <th style={{ textAlign: 'left', padding: '1rem' }}>User</th>
@@ -106,8 +124,9 @@ export default function AdminUsersPage() {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
-                </div>
+                        </table>
+                    </div>
+                )}
             </div>
         </div>
     )

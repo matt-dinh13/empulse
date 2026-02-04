@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
 
 interface Order {
     id: number
@@ -16,6 +17,7 @@ export default function AdminOrdersPage() {
     const [orders, setOrders] = useState<Order[]>([])
     const [loading, setLoading] = useState(true)
     const [filter, setFilter] = useState('PENDING_APPROVAL')
+    const [error, setError] = useState<string | null>(null)
     const router = useRouter()
 
     useEffect(() => {
@@ -24,15 +26,29 @@ export default function AdminOrdersPage() {
 
     const fetchOrders = async () => {
         setLoading(true)
-        const token = localStorage.getItem('accessToken')
         try {
+            const headers = buildAuthHeaders()
+            if (!headers) {
+                handleUnauthorized()
+                return
+            }
             const res = await fetch(`/api/admin/orders?status=${filter}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers
             })
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             const data = await res.json()
-            if (res.ok) setOrders(data.orders)
+            if (res.ok) {
+                setOrders(data.orders)
+                setError(null)
+            } else {
+                setError(data?.error || 'Failed to load orders')
+            }
         } catch (err) {
             console.error(err)
+            setError('Failed to load orders')
         } finally {
             setLoading(false)
         }
@@ -41,20 +57,28 @@ export default function AdminOrdersPage() {
     const handleAction = async (id: number, action: 'approve' | 'reject') => {
         if (!confirm(`Are you sure you want to ${action} this order?`)) return
 
-        const token = localStorage.getItem('accessToken')
         const endpoint = action === 'approve'
             ? `/api/admin/orders/${id}/approve`
             : `/api/admin/orders/${id}/reject`
 
         try {
+            const headers = buildAuthHeaders()
+            if (!headers) {
+                handleUnauthorized()
+                return
+            }
             const res = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
+                    ...headers
                 },
                 body: JSON.stringify({ reason: action === 'reject' ? 'Admin rejection' : undefined })
             })
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             if (res.ok) {
                 alert(`Order ${action}d successfully`)
                 fetchOrders() // Refresh
@@ -85,7 +109,9 @@ export default function AdminOrdersPage() {
             </div>
 
             <div className="grid grid-2">
-                {loading ? (
+                {error ? (
+                    <div className="text-muted">{error}</div>
+                ) : loading ? (
                     <div>Loading orders...</div>
                 ) : orders.length === 0 ? (
                     <div>No orders found.</div>

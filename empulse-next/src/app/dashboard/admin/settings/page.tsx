@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
 
 const SETTINGS_CATEGORIES = [
     { id: 'voting', label: 'Voting Rules', icon: '🗳️' },
@@ -27,6 +28,7 @@ export default function SystemSettingsPage() {
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
     const [activeTab, setActiveTab] = useState('voting')
+    const [error, setError] = useState<string | null>(null)
     const router = useRouter()
 
     useEffect(() => {
@@ -35,19 +37,33 @@ export default function SystemSettingsPage() {
 
     const fetchSettings = async () => {
         try {
-            const token = localStorage.getItem('accessToken')
+            const headers = buildAuthHeaders()
+            if (!headers) {
+                handleUnauthorized()
+                return
+            }
             const res = await fetch('/api/admin/settings', {
-                headers: { Authorization: `Bearer ${token}` }
+                headers
             })
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             if (res.status === 403) {
                 alert('Access Denied: Admin only')
                 router.push('/dashboard/admin')
                 return
             }
             const data = await res.json()
-            if (res.ok) setSettings(data.settings)
+            if (res.ok) {
+                setSettings(data.settings)
+                setError(null)
+            } else {
+                setError(data?.error || 'Failed to load settings')
+            }
         } catch (error) {
             console.error('Failed to fetch settings', error)
+            setError('Failed to load settings')
         } finally {
             setLoading(false)
         }
@@ -56,17 +72,25 @@ export default function SystemSettingsPage() {
     const handleSave = async () => {
         setSaving(true)
         try {
-            const token = localStorage.getItem('accessToken')
+            const headers = buildAuthHeaders()
+            if (!headers) {
+                handleUnauthorized()
+                return
+            }
             const res = await fetch('/api/admin/settings', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
+                    ...headers
                 },
                 body: JSON.stringify({
                     settings: settings.map(s => ({ key: s.key, value: s.value }))
                 })
             })
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             if (res.ok) {
                 alert('Settings saved successfully!')
             } else {
@@ -116,6 +140,8 @@ export default function SystemSettingsPage() {
                 <div className="p-lg">
                     {loading ? (
                         <div className="flex justify-center"><div className="spinner"></div></div>
+                    ) : error ? (
+                        <div className="text-muted">{error}</div>
                     ) : (
                         <div className="grid grid-2 gap-lg">
                             {filteredSettings.map(setting => (
