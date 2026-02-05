@@ -222,9 +222,10 @@ EmPulse/
 │   ├── src/                # App Router pages + API routes
 │   └── package.json
 │
-└── _archived/              # Legacy Express/Vite stacks (reference only)
-    ├── backend/
-    └── frontend/
+├── _archived/              # Legacy Express/Vite stacks (reference only)
+│   ├── backend/
+│   └── frontend/
+└── _trash/                 # Moved redundant root artifacts (safe storage)
 ```
 
 ---

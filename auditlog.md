@@ -349,3 +349,12 @@ empulse-next/
 - ✅ Added HR Admin demo account in seed (`hr.admin@empulse.com / password123`)
 - ✅ Updated login page to show HR Admin demo credentials
 - ✅ Pushed changes to `origin/main`
+
+## 2026-02-05
+
+### Repo Cleanup & Restructuring
+- âœ… **Analyzed Conflicts**: Identified redundant `src` and `package.json` in root vs `empulse-next`.
+- âœ… **Safety Verification**: Verified `empulse-next` independence via separate build test.
+- âœ… **Root Cleanup**: Moved redundant root artifacts to `_trash/` (src, prisma, package.json, etc.).
+- âœ… **Documentation Update**: Updated `README.md` to point to `empulse-next`.
+- âœ… **Context Update**: Updated `CONTEXT.md` to reflect new structure.
