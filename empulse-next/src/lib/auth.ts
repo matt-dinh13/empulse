@@ -1,10 +1,12 @@
 import jwt from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret'
-
-if (process.env.NODE_ENV === 'production' && (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'fallback-secret')) {
-    throw new Error('FATAL: JWT_SECRET is not defined in production environment!')
+function getJwtSecret(): string {
+    const secret = process.env.JWT_SECRET || 'fallback-secret'
+    if (process.env.NODE_ENV === 'production' && (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'fallback-secret')) {
+        throw new Error('FATAL: JWT_SECRET is not defined in production environment!')
+    }
+    return secret
 }
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
@@ -20,13 +22,13 @@ export interface JWTPayload {
 export function generateTokens(userId: number, role: string) {
     const accessToken = jwt.sign(
         { userId, role, type: 'access' },
-        JWT_SECRET,
+        getJwtSecret(),
         { expiresIn: '1h' }
     )
 
     const refreshToken = jwt.sign(
         { userId, role, type: 'refresh' },
-        JWT_SECRET,
+        getJwtSecret(),
         { expiresIn: '7d' }
     )
 
@@ -35,7 +37,7 @@ export function generateTokens(userId: number, role: string) {
 
 export function verifyToken(token: string): JWTPayload | null {
     try {
-        return jwt.verify(token, JWT_SECRET) as JWTPayload
+        return jwt.verify(token, getJwtSecret()) as JWTPayload
     } catch {
         return null
     }

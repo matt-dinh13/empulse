@@ -1,7 +1,13 @@
 import { Resend } from 'resend'
 import prisma from '@/lib/prisma'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let resend: Resend | null = null
+function getResend() {
+    if (!resend) {
+        resend = new Resend(process.env.RESEND_API_KEY || '')
+    }
+    return resend
+}
 const EMAIL_FROM = process.env.EMAIL_FROM || 'noreply@empulse.embedit.com'
 
 export async function sendEmail(
@@ -12,7 +18,7 @@ export async function sendEmail(
     notificationType: string = 'general'
 ) {
     try {
-        await resend.emails.send({
+        await getResend().emails.send({
             from: EMAIL_FROM,
             to,
             subject,
