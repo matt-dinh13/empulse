@@ -3,7 +3,7 @@
     { "path": "/api/cron/quota-reset", "schedule": "0 0 1 * *" },
     { "path": "/api/cron/quarterly-reset", "schedule": "0 23 28-31 3,6,9,12 *" },
     { "path": "/api/cron/quarterly-warning", "schedule": "0 9 * * *" },
-    { "path": "/api/cron/fifo-processor", "schedule": "*/5 * * * *" },
+    { "path": "/api/cron/fifo-processor", "schedule": "0 2 * * *" },
     { "path": "/api/cron/sla-checker", "schedule": "0 9 * * *" },
     { "path": "/api/cron/voucher-cleanup", "schedule": "0 1 * * *" }
   ]
