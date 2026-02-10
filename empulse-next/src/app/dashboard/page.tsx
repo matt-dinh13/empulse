@@ -170,11 +170,11 @@ export default function DashboardPage() {
                         <h3>Recent Recognition</h3>
                     </div>
                     {feedLoading ? (
-                        <div style={{ textAlign: 'center', padding: '2rem 0', color: 'rgba(255,255,255,0.5)' }}>
+                        <div style={{ textAlign: 'center', padding: '2rem 0' }} className="text-muted">
                             Loading recognition feed...
                         </div>
                     ) : feed.length === 0 ? (
-                        <div style={{ textAlign: 'center', padding: '2rem 0', color: 'rgba(255,255,255,0.5)' }}>
+                        <div style={{ textAlign: 'center', padding: '2rem 0' }} className="text-muted">
                             No recent recognitions yet. Be the first to recognize a colleague!
                         </div>
                     ) : (
@@ -184,21 +184,21 @@ export default function DashboardPage() {
                                     key={item.id}
                                     style={{
                                         padding: '0.75rem 1rem',
-                                        background: 'rgba(255,255,255,0.05)',
+                                        background: 'var(--color-surface-hover)',
                                         borderRadius: '8px',
-                                        border: '1px solid rgba(255,255,255,0.08)',
+                                        border: '1px solid var(--color-border-light)',
                                     }}
                                 >
                                     <div className="flex" style={{ justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.25rem' }}>
                                         <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>
-                                            {item.senderName} <span style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 400 }}>recognized</span> {item.receiverName}
+                                            {item.senderName} <span className="text-muted" style={{ fontWeight: 400 }}>recognized</span> {item.receiverName}
                                         </div>
-                                        <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)', whiteSpace: 'nowrap', marginLeft: '0.5rem' }}>
+                                        <span style={{ fontSize: '0.75rem', whiteSpace: 'nowrap', marginLeft: '0.5rem' }} className="text-muted">
                                             {getRelativeTime(item.createdAt)}
                                         </span>
                                     </div>
                                     {item.message && (
-                                        <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', margin: '0.25rem 0' }}>
+                                        <p className="text-muted" style={{ fontSize: '0.85rem', margin: '0.25rem 0' }}>
                                             {item.message.length > 100 ? `${item.message.slice(0, 100)}...` : item.message}
                                         </p>
                                     )}
