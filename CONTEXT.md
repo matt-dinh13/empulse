@@ -1,8 +1,8 @@
 # EmPulse - P2P Reward & Recognition System
 
-> **Context Document for AI Assistants**  
-> **Last Updated**: 2026-02-04  
-> **Status**: MVP Concept, Next.js Single App
+> **Context Document for AI Assistants**
+> **Last Updated**: 2026-02-10
+> **Status**: Production-Ready, Next.js Single App
 
 ---
 
@@ -38,8 +38,8 @@
 | Per-person limit | Max 2 votes/person/month |
 | Cooldown | 2 weeks after reaching max to same person |
 | Same-team limit | Max 50% of monthly quota |
-| Self-vote | ❌ Blocked |
-| Direct manager vote | ❌ Blocked |
+| Self-vote | Blocked |
+| Direct manager vote | Blocked |
 | Message | Required, min 20 characters |
 | Reciprocal detection | Flag for HR (không block) |
 
@@ -47,7 +47,7 @@
 
 **Tiered System:**
 - 50 points → 100,000 VND
-- 100 points → 200,000 VND  
+- 100 points → 200,000 VND
 - 200 points → 500,000 VND (bonus incentive)
 
 **Flow:**
@@ -68,7 +68,9 @@ HR sets expected delivery date when approving.
 
 ### 5. Notifications
 
-- **Channel**: Email only (MVP)
+- **In-App**: Real-time notification panel with unread badge (sidebar)
+- **Email**: Via Resend (vote received, order updates)
+- **Slack**: Incoming webhook for vote notifications (configurable via `SLACK_WEBHOOK_URL`)
 - **Warning Emails**: 14, 7, 3, 2, 1 days before quarterly reset
 - **Low Stock Alert**: When stock < threshold (default 10)
 
@@ -79,17 +81,21 @@ HR sets expected delivery date when approving.
 
 ---
 
-## Tech Stack (Updated - Next.js Migration)
+## Tech Stack
 
 | Layer | Technology | Notes |
 |-------|------------|-------|
 | **Frontend** | Next.js 16 (App Router) | Full-stack React framework |
-| **Backend** | Next.js API Routes | Replaced Express |
+| **Backend** | Next.js API Routes | Server-side logic |
 | **Database** | PostgreSQL | Hosted on **Supabase** (Transaction Pooler) |
 | **ORM** | Prisma | Type-safe, migrations |
-| **Auth** | JWT + bcryptjs | Standalone (POC) |
-| **Email** | Resend / Nodemailer | Free tier |
-| **Jobs** | Vercel Cron (planned) | Scheduled tasks |
+| **Auth** | JWT (httpOnly cookies) | bcryptjs, middleware-protected routes |
+| **Validation** | Zod | Schema-based API input validation |
+| **Email** | Resend | Transactional emails |
+| **Jobs** | Vercel Cron | Quota reset, quarterly reset, FIFO, SLA, warnings |
+| **Caching** | In-memory (TTL) | Analytics, leaderboard, catalog |
+| **Rate Limiting** | In-memory token bucket | Login, votes, API endpoints |
+| **Slack** | Incoming Webhook | Vote notifications (fire-and-forget) |
 | **Deployment** | Vercel | Single Next.js app |
 
 ---
@@ -133,6 +139,8 @@ HR sets expected delivery date when approving.
 
 **Voting:**
 - `votes` - Vote transactions with messages
+- `vote_value_tags` - Value tag associations per vote
+- `value_tags` - Company value tags (configurable)
 - `vote_tracking` - Per user-pair monthly limits
 - `weekly_vote_tracking` - Weekly limits
 
@@ -142,116 +150,176 @@ HR sets expected delivery date when approving.
 - `physical_inventory` - Physical stock counts (CZ)
 - `redemption_orders` - Order records with state machine
 
+**Notifications:**
+- `in_app_notifications` - In-app notification records with read/unread state
+- `notification_log` - Sent email notifications tracking
+
 **System:**
 - `system_settings` - Configurable parameters
-- `notification_log` - Sent notifications tracking
-- `audit_log` - Immutable action history
+- `audit_log` - Immutable action history (includes reciprocal vote flagging)
 - `scheduled_job_log` - Cron job execution logs
 
 ---
 
 ## API Endpoints Summary
 
-### Modules (30+ endpoints)
+### Auth & User
+- `POST /api/auth/login` - Login (sets httpOnly cookie)
+- `POST /api/auth/register` - Registration
+- `GET /api/auth/me` - Current user profile
+- `POST /api/auth/logout` - Logout (clears cookie)
 
-1. **Auth**: `/api/auth/login`, `/api/auth/register`, `/api/auth/me`
-2. **Votes**: `/api/votes` - Submit, list sent/received
-3. **Wallets**: `/api/wallets`
-4. **Redemption**: `/api/catalog`, `/api/orders`
-5. **Users**: `/api/users`
-6. **Admin Users/Teams**: `/api/admin/users`, `/api/admin/teams`
-7. **Admin Catalog**: `/api/admin/catalog`, `/api/admin/catalog/[id]`
-8. **Admin Orders**: `/api/admin/orders`, `/api/admin/orders/[id]/approve|reject|complete`
-9. **Admin Settings/Analytics**: `/api/admin/settings`, `/api/admin/analytics/dashboard`
-10. **Leaderboard + Health/Debug**: `/api/leaderboard`, `/api/health`, `/api/ping`, `/api/env-check`, `/api/debug/*`
+### Employee Features
+- `GET/POST /api/votes` - List votes / send vote
+- `GET /api/wallets` - Quota + reward balances
+- `GET /api/catalog` - Browse rewards
+- `GET/POST /api/orders` - List / place orders
+- `GET /api/users` - User list (for vote recipient search)
+- `GET /api/leaderboard` - Top vote receivers
+- `GET /api/feed` - Recognition feed
+- `GET /api/notifications` - In-app notifications
+- `GET /api/notifications/count` - Unread count
+- `PATCH /api/notifications/[id]/read` - Mark as read
+
+### Manager Features
+- `GET /api/manager/team` - Team members, stats, and feed
+
+### Admin Features
+- `GET/POST /api/admin/users` - User management
+- `GET/POST /api/admin/teams` - Team management
+- `GET/POST /api/admin/catalog` - Catalog CRUD
+- `GET /api/admin/orders` - Order management
+- `POST /api/admin/orders/[id]/approve|reject|complete` - Order actions
+- `GET/PUT /api/admin/settings` - System settings
+- `GET /api/admin/analytics/dashboard` - Analytics dashboard (cached)
+- `GET /api/admin/export/[type]` - CSV export (votes, redemptions, engagement)
+- `GET /api/admin/flagged-votes` - Reciprocal vote flags
+
+### System
+- `GET /api/health` - Health check
+- `GET /api/cron/quota-reset` - Monthly quota reset
+- `GET /api/cron/quarterly-reset` - Quarterly reward reset
+- `GET /api/cron/quarterly-warning` - Expiry warning emails
+- `GET /api/cron/fifo-processor` - FIFO queue processor
+- `GET /api/cron/sla-checker` - SLA breach alerts
+- `GET /api/cron/expired-voucher-cleanup` - Expired voucher cleanup
 
 ---
 
-## Scheduled Jobs
+## Scheduled Jobs (Implemented)
 
-Status: Planned (not implemented in code yet).
+| Job | Schedule | Endpoint |
+|-----|----------|----------|
+| `quota_reset` | 1st of month, 00:00 UTC | `/api/cron/quota-reset` |
+| `quarterly_reset` | Last day of Q, 23:59 UTC | `/api/cron/quarterly-reset` |
+| `quarterly_warning` | Daily 9AM UTC | `/api/cron/quarterly-warning` |
+| `fifo_processor` | Every 5 mins | `/api/cron/fifo-processor` |
+| `sla_checker` | Daily 9AM UTC | `/api/cron/sla-checker` |
+| `expired_voucher_cleanup` | Daily 1AM UTC | `/api/cron/expired-voucher-cleanup` |
 
-| Job | Schedule | Description |
-|-----|----------|-------------|
-| `quota_reset` | 1st of month, 00:00 UTC | Reset quota wallets |
-| `quarterly_reset` | Last day of Q, 23:59 UTC | Reset reward wallets |
-| `quarterly_warning` | Daily 9AM UTC | Send warning emails |
-| `fifo_processor` | Every 5 mins | Process backorder queue |
-| `sla_checker` | Daily 9AM UTC | Alert pending CZ orders |
-| `expired_voucher_cleanup` | Daily 1AM UTC | Mark expired vouchers |
+All cron endpoints are protected by `CRON_SECRET` authorization header.
 
 ---
 
 ## Key Decisions Made
 
-1. ✅ Quota reset: Complete reset to 0 (no rollover)
-2. ✅ Timezone: UTC for all scheduled jobs
-3. ✅ Voting anonymity: Public (receiver sees sender name + message)
-4. ✅ Leaderboard: Enabled for demo (can be disabled later)
-5. ✅ Org structure: Lightweight (team_id + manager_id only)
-6. ✅ CZ shipping: Simple flow (no detailed tracking)
-7. ✅ Auth: Standalone for POC (future: Azure SSO)
-8. ✅ Legacy role: `admin` treated as `super_admin` for backward compatibility
+1. Quota reset: Complete reset to 0 (no rollover)
+2. Timezone: UTC for all scheduled jobs
+3. Voting anonymity: Public (receiver sees sender name + message)
+4. Leaderboard: Enabled (can be disabled later)
+5. Org structure: Lightweight (team_id + manager_id only)
+6. CZ shipping: Simple flow (no detailed tracking)
+7. Auth: JWT with httpOnly cookies (future: Azure SSO)
+8. Legacy role: `admin` treated as `super_admin` for backward compatibility
+9. Validation: Zod schemas for all API inputs
+10. Email: Resend free tier (covers 50-200 users)
+11. Cron: Vercel Cron Jobs with CRON_SECRET auth
 
 ---
+
+## Security Features (Implemented)
+
+1. **httpOnly cookies** for JWT tokens (no localStorage)
+2. **Next.js middleware** for route protection
+3. **Zod validation** on all API inputs
+4. **Rate limiting** (login: 5/15min, votes: 10/min, API: 100/15min)
+5. **CRON_SECRET** for scheduled job endpoints
+6. **Debug endpoints removed** from production
+7. **Input sanitization** (XSS prevention)
+8. **CORS** restricted to known origins
 
 ## Anti-Gaming Measures
 
-1. ✅ Self-vote blocked at DB level
-2. ✅ Manager vote blocked
-3. ✅ Weekly limit (2 votes/week)
-4. ✅ Same-person limit (2/month + cooldown)
-5. ✅ Same-team limit (50%)
-6. ✅ Minimum message length (20 chars)
-7. ✅ Reciprocal vote flagging (for HR review)
-8. ✅ Full audit logging
+1. Self-vote blocked at DB level
+2. Manager vote blocked
+3. Weekly limit (2 votes/week)
+4. Same-person limit (2/month + cooldown)
+5. Same-team limit (50%)
+6. Minimum message length (20 chars)
+7. Reciprocal vote flagging (for HR review, admin UI available)
+8. Full audit logging
 
 ---
 
-## Project Structure (Recommended)
+## UX Features (Implemented)
+
+1. **Toast notifications** (success/error/info) replacing alerts
+2. **Skeleton loading** screens for all routes
+3. **Error boundaries** (global, dashboard, admin)
+4. **404 page** (branded not-found)
+5. **Mobile responsive** sidebar (hamburger menu on < 768px)
+6. **PWA manifest** (standalone mode, installable)
+7. **Confirmation modals** for destructive actions (catalog redemption)
+8. **CSV export** (votes, redemptions, engagement data)
+
+---
+
+## Project Structure
 
 ```
 EmPulse/
 ├── CONTEXT.md              # This file - AI context
 ├── README.md               # Project readme
-├── vercel.json             # Vercel deployment config
-├── VERCEL_ENV_SETUP.txt    # Env setup notes
+├── auditlog.md             # Development audit log
+├── plans/                  # Implementation plans
 │
 ├── empulse-next/           # Next.js full-stack app (source of truth)
 │   ├── prisma/             # Schema + seed
-│   ├── src/                # App Router pages + API routes
+│   ├── public/             # Static assets + manifest.json
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── api/        # API routes (auth, votes, admin, cron, etc.)
+│   │   │   ├── dashboard/  # Employee dashboard pages
+│   │   │   │   ├── admin/  # Admin portal (analytics, users, orders, catalog, settings, flagged-votes)
+│   │   │   │   ├── my-team/ # Manager team view
+│   │   │   │   └── ...    # votes, catalog, orders, leaderboard, notifications
+│   │   │   ├── login/
+│   │   │   ├── page.tsx    # Landing page
+│   │   │   ├── layout.tsx  # Root layout (Providers, manifest, fonts)
+│   │   │   └── globals.css # Design system + responsive styles
+│   │   ├── components/     # Sidebar, Toast, Providers
+│   │   └── lib/            # prisma, auth, validations, rateLimit, slack, etc.
+│   ├── vercel.json         # Cron job configuration
 │   └── package.json
 │
 ├── _archived/              # Legacy Express/Vite stacks (reference only)
-│   ├── backend/
-│   └── frontend/
-└── _trash/                 # Moved redundant root artifacts (safe storage)
+└── _trash/                 # Moved redundant root artifacts
 ```
 
 ---
 
-## Next Steps
+## Production Readiness (Completed 2026-02-10)
 
-### Completed (Next.js MVP)
-- [x] Core features: auth, votes, wallets, catalog, orders
-- [x] Admin features: users, catalog, orders, settings, analytics
-- [x] Smoke tests: `npm -C empulse-next run test:smoke`
-- [x] Build: `npm -C empulse-next run build`
+All 6 phases of the production readiness plan have been implemented:
 
-### Open Items (Nice-to-have)
-- [ ] Resolve lint warnings (17 warnings remaining)
-- [ ] Set `metadataBase` for OG/Twitter images
-- [ ] Remove duplicate lockfile warning (set `turbopack.root` or consolidate lockfiles)
-- [ ] Decide on DB migration for legacy `admin` role
-- [ ] Implement scheduled jobs + email notifications (currently planned)
-
----
-
-## Important Links
-
-- **Supabase**: https://supabase.com (database)
-- **Prisma**: https://prisma.io (ORM)
-- **Resend**: https://resend.com (email)
+| Phase | Focus | Commit |
+|-------|-------|--------|
+| 1 | Security & Stability (httpOnly cookies, middleware, Zod, rate limiting) | `0f1f895` |
+| 2 | Core Business Logic (6 Vercel cron jobs) | `c5d7f15` |
+| 3 | Engagement Features (feed, notifications, email, value tags) | `af208b7` |
+| 4 | UX Polish (toast, skeletons, error boundaries, 404) | `0e91694` |
+| 5 | Analytics & Reporting (dashboard, CSV export, manager team view) | `656aebb` |
+| 6 | Integrations (Slack webhook, PWA, mobile sidebar, flagged votes) | `9561614` |
 
 ---
 
@@ -259,10 +327,10 @@ EmPulse/
 
 1. **Language**: Vietnamese preferred, English for technical terms
 2. **User Profile**: Senior IT BA, ADHD, INFJ - break tasks into small steps
-3. **Focus**: MVP first, avoid over-engineering
+3. **Focus**: Production-ready, avoid over-engineering
 4. **Output Format**: Use Mermaid diagrams, tables, bullet points
 5. **Database**: Always use PostgreSQL syntax
-6. **Implementation Plan**: See `.gemini/antigravity/brain/*/implementation_plan.md`
+6. **Active Codebase**: `empulse-next/` only (legacy stacks archived)
 
 ---
 
