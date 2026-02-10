@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Sidebar from '@/components/Sidebar'
+import { SkeletonTable } from '@/components/Skeleton'
 import Image from 'next/image'
 
 interface LeaderboardEntry {
@@ -74,7 +75,7 @@ export default function LeaderboardPage() {
             <main className="main-content">
                 <div className="page-header items-center">
                     <div>
-                        <h1 className="page-title">🏆 Leaderboard</h1>
+                        <h1 className="page-title">Leaderboard</h1>
                         <p className="page-subtitle">Recognizing our top contributors</p>
                     </div>
                     <div className="tabs-nav" style={{ border: 'none', background: 'transparent' }}>
@@ -115,7 +116,7 @@ export default function LeaderboardPage() {
                 </div>
 
                 {loading ? (
-                    <div className="flex justify-center p-xl"><div className="spinner"></div></div>
+                    <div className="card" style={{ padding: 'var(--spacing-lg)' }}><SkeletonTable rows={5} /></div>
                 ) : error ? (
                     <div className="card text-center">
                         <p className="text-muted">{error}</p>
@@ -165,7 +166,7 @@ export default function LeaderboardPage() {
                                                             {entry.avatar ? (
                                                                 <Image src={entry.avatar} alt={entry.name} width={40} height={40} />
                                                             ) : (
-                                                                '👤'
+                                                                entry.name.charAt(0).toUpperCase()
                                                             )}
                                                         </div>
                                                         <div>

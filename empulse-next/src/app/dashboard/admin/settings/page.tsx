@@ -6,11 +6,11 @@ import { handleUnauthorized } from '@/lib/clientAuth'
 import { useToast } from '@/components/Toast'
 
 const SETTINGS_CATEGORIES = [
-    { id: 'voting', label: 'Voting Rules', icon: '🗳️' },
-    { id: 'points', label: 'Points Config', icon: '💎' },
-    { id: 'redemption', label: 'Redemption', icon: '🎁' },
-    { id: 'periods', label: 'Periods', icon: '📅' },
-    { id: 'features', label: 'Features', icon: '🚀' },
+    { id: 'voting', label: 'Voting Rules' },
+    { id: 'points', label: 'Points Config' },
+    { id: 'redemption', label: 'Redemption' },
+    { id: 'periods', label: 'Periods' },
+    { id: 'features', label: 'Features' },
 ]
 
 interface SystemSetting {
@@ -105,7 +105,7 @@ export default function SystemSettingsPage() {
         <div>
             <div className="page-header flex justify-between items-center">
                 <div>
-                    <h1 className="page-title">⚙️ System Settings</h1>
+                    <h1 className="page-title">System Settings</h1>
                     <p className="page-subtitle">Configure system-wide rules and parameters</p>
                 </div>
                 <button onClick={handleSave} className="btn btn-primary" disabled={saving}>
@@ -122,7 +122,6 @@ export default function SystemSettingsPage() {
                             className={`tab-btn ${activeTab === cat.id ? 'active' : ''}`}
                             onClick={() => setActiveTab(cat.id)}
                         >
-                            <span style={{ fontSize: '1.2rem' }}>{cat.icon}</span>
                             <span>{cat.label}</span>
                         </button>
                     ))}

@@ -84,7 +84,7 @@ export default function CatalogListPage() {
         <div>
             <div className="page-header flex justify-between items-center">
                 <div>
-                    <h1 className="page-title">🎁 Reward Catalog</h1>
+                    <h1 className="page-title">Reward Catalog</h1>
                     <p className="page-subtitle">Manage rewards and vouchers</p>
                 </div>
                 <div className="flex gap-md">
@@ -125,7 +125,7 @@ export default function CatalogListPage() {
                             {items.map(item => (
 
                                 <tr key={item.id} style={{ borderBottom: '1px solid var(--color-border-light)' }}>
-                                    <td className="p-sm align-middle" style={{ fontSize: '1.5rem', textAlign: 'center' }}>{item.icon || '🎁'}</td>
+                                    <td className="p-sm align-middle" style={{ fontSize: '1.5rem', textAlign: 'center' }}>{item.icon || ''}</td>
                                     <td className="p-sm align-middle">
                                         <div style={{ fontWeight: 500 }}>{item.name}</div>
                                         <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{item.displayValue}</div>
@@ -143,11 +143,11 @@ export default function CatalogListPage() {
                                     </td>
                                     <td className="p-sm text-right">
                                         <Link href={`/dashboard/admin/catalog/${item.id}/edit`} className="btn-sm btn-outline mr-sm">
-                                            ✏️ Edit
+                                            Edit
                                         </Link>
                                         {item.isActive && (
                                             <button onClick={() => deleteItem(item.id)} className="btn-sm btn-outline text-danger">
-                                                🗑️
+                                                Delete
                                             </button>
                                         )}
                                     </td>

@@ -84,7 +84,7 @@ export default function OrdersPage() {
 
             <main className="main-content">
                 <div className="page-header">
-                    <h1 className="page-title">📦 My Orders</h1>
+                    <h1 className="page-title">My Orders</h1>
                     <p className="page-subtitle">Track your reward redemptions</p>
                 </div>
 
@@ -93,7 +93,7 @@ export default function OrdersPage() {
                 ) : orders.length === 0 ? (
                     <div className="card text-center">
                         <p className="text-muted mb-md">You haven&apos;t redeemed any rewards yet.</p>
-                        <Link href="/dashboard/catalog" className="btn btn-primary">🎁 Browse Catalog</Link>
+                        <Link href="/dashboard/catalog" className="btn btn-primary">Browse Catalog</Link>
                     </div>
                 ) : (
                     <div className="grid" style={{ gap: 'var(--spacing-md)' }}>
@@ -101,9 +101,6 @@ export default function OrdersPage() {
                             <div key={order.id} className="card">
                                 <div className="flex justify-between items-center">
                                     <div>
-                                        <div style={{ fontSize: '1.25rem', marginRight: 'var(--spacing-sm)', display: 'inline' }}>
-                                            {order.catalog.rewardType === 'digital_voucher' || order.catalog.rewardType === 'voucher' ? '🎫' : '📦'}
-                                        </div>
                                         <span className="font-bold">{order.catalog.name}</span>
                                     </div>
                                     <span className={`badge ${getStatusBadge(order.status)}`}>

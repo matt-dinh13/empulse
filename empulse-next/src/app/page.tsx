@@ -6,18 +6,18 @@ import Image from 'next/image'
 
 // --- Data ---
 const features = [
-  { icon: '🎯', title: 'Meaningful Recognition', desc: 'Give props that actually matter. Personal messages make colleagues feel valued.' },
-  { icon: '🌍', title: 'Borderless Teams', desc: 'Whether in Vietnam, Czech Republic, or anywhere else. Work as one global team.' },
-  { icon: '🎁', title: 'Real Rewards', desc: 'Not just virtual badges. Digital vouchers, company merch, and experiences.' },
-  { icon: '🛡️', title: 'No Gaming', desc: 'Smart limits prevent abuse. Weekly quotas enable fair recognition for everyone.' },
-  { icon: '📊', title: 'See the Impact', desc: 'Analytics show who is making waves. Celebrate your top cultural contributors.' },
-  { icon: '⚡', title: 'Instant Delivery', desc: 'Digital rewards delivered immediately to email. No waiting around.' },
+  { icon: '01', title: 'Meaningful Recognition', desc: 'Give props that actually matter. Personal messages make colleagues feel valued.' },
+  { icon: '02', title: 'Borderless Teams', desc: 'Whether in Vietnam, Czech Republic, or anywhere else. Work as one global team.' },
+  { icon: '03', title: 'Real Rewards', desc: 'Not just virtual badges. Digital vouchers, company merch, and experiences.' },
+  { icon: '04', title: 'No Gaming', desc: 'Smart limits prevent abuse. Weekly quotas enable fair recognition for everyone.' },
+  { icon: '05', title: 'See the Impact', desc: 'Analytics show who is making waves. Celebrate your top cultural contributors.' },
+  { icon: '06', title: 'Instant Delivery', desc: 'Digital rewards delivered immediately to email. No waiting around.' },
 ]
 
 const steps = [
-  { num: '1', title: 'Recognize Peers', desc: 'Select a colleague, write a heartfelt message, and hit send.', icon: '💬' },
-  { num: '2', title: 'Earn Points', desc: 'Every vote received = +1 point. Reach milestones to unlock badges!', icon: '🏆' },
-  { num: '3', title: 'Redeem Rewards', desc: 'Exchange points for digital vouchers, merchandise, or experiences.', icon: '🎁' },
+  { num: '1', title: 'Recognize Peers', desc: 'Select a colleague, write a heartfelt message, and hit send.', icon: '→' },
+  { num: '2', title: 'Earn Points', desc: 'Every vote received = +1 point. Reach milestones to unlock badges!', icon: '★' },
+  { num: '3', title: 'Redeem Rewards', desc: 'Exchange points for digital vouchers, merchandise, or experiences.', icon: '◆' },
 ]
 
 const testimonials = [
@@ -29,6 +29,7 @@ const testimonials = [
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -47,11 +48,28 @@ export default function LandingPage() {
           <div className="nav-links">
             <a href="#features">Features</a>
             <a href="#how">How it Works</a>
-            <Link href="/whitepaper" className="landing-nav-link text-highlight">📄 Blueprint</Link>
+            <Link href="/whitepaper" className="landing-nav-link text-highlight">Blueprint</Link>
             <Link href="/login" className="landing-btn-nav">Try Demo</Link>
           </div>
+          <button
+            className="mobile-nav-toggle"
+            onClick={() => setMobileNavOpen(!mobileNavOpen)}
+            aria-label={mobileNavOpen ? 'Close menu' : 'Open menu'}
+          >
+            {mobileNavOpen ? '✕' : '☰'}
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Nav */}
+      {mobileNavOpen && (
+        <div className="mobile-nav-panel">
+          <a href="#features" onClick={() => setMobileNavOpen(false)}>Features</a>
+          <a href="#how" onClick={() => setMobileNavOpen(false)}>How it Works</a>
+          <Link href="/whitepaper" onClick={() => setMobileNavOpen(false)}>Blueprint</Link>
+          <Link href="/login" className="landing-btn-nav" onClick={() => setMobileNavOpen(false)}>Try Demo</Link>
+        </div>
+      )}
 
       {/* Hero */}
       <section className="hero-section">
@@ -341,7 +359,7 @@ export default function LandingPage() {
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
         .feature-card { background: rgba(255,255,255,0.03); padding: 2.5rem; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
         .feature-card:hover { transform: translateY(-8px); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        .icon-box { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .icon-box { font-size: 1.5rem; margin-bottom: 1.5rem; color: #00D264; font-weight: 800; font-family: monospace; }
         .feature-card h3 { font-size: 1.35rem; font-weight: 700; margin-bottom: 0.75rem; color: white; }
         .feature-card p { font-size: 1rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
 
@@ -350,7 +368,7 @@ export default function LandingPage() {
         .step-card { flex: 1; min-width: 280px; background: #111; padding: 2.5rem; border-radius: 24px; position: relative; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
         .step-card:hover { border-color: #00D264; transform: translateY(-5px); }
         .step-num { position: absolute; top: -18px; left: 30px; width: 40px; height: 40px; background: #00D264; color: black; font-weight: 800; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(0,210,100,0.5); }
-        .step-icon.large { font-size: 3.5rem; text-align: center; margin: 1.5rem 0; }
+        .step-icon.large { font-size: 2.5rem; text-align: center; margin: 1.5rem 0; color: #00D264; }
         .step-card h3 { text-align: center; color: white; margin-bottom: 0.75rem; font-size: 1.3rem; font-weight: 700; }
         .step-card p { text-align: center; color: rgba(255,255,255,0.7); line-height: 1.6; }
 
@@ -417,9 +435,24 @@ export default function LandingPage() {
         .footer-bottom { background: #000; padding: 2rem 0; border-top: 1px solid rgba(255,255,255,0.05); }
         .footer-copy { color: #444; font-size: 0.9rem; }
 
+        /* Mobile nav toggle */
+        .mobile-nav-toggle { display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; }
+
+        .mobile-nav-panel {
+          display: none;
+          position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(0,0,0,0.95); z-index: 999;
+          flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+          padding-top: 5rem;
+        }
+        .mobile-nav-panel a { color: white; text-decoration: none; font-size: 1.3rem; font-weight: 600; }
+        .mobile-nav-panel a:hover { color: #00D264; }
+
         /* Responsiveness */
         @media (max-width: 900px) {
           .nav-links { display: none; }
+          .mobile-nav-toggle { display: block; }
+          .mobile-nav-panel { display: flex; }
           
           .hero-section { padding-top: 7rem; text-align: center; }
           .hero-container { flex-direction: column-reverse; gap: 2rem; }

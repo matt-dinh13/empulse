@@ -2,11 +2,19 @@ import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { generateTokens, setAuthCookies } from '@/lib/auth'
+import { rateLimit } from '@/lib/rateLimit'
 
 export async function POST(request: NextRequest) {
     try {
+        // Rate limit: 3 registrations per IP per hour
+        const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown'
+        const rl = rateLimit(`register:${ip}`, 3, 60 * 60 * 1000)
+        if (!rl.success) {
+            return NextResponse.json({ error: 'Too many registration attempts. Try again later.' }, { status: 429 })
+        }
+
         const body = await request.json()
-        const { email, password, fullName, regionId, teamId, managerId, role } = body
+        const { email, password, fullName, regionId, teamId, managerId } = body
 
         // Validation
         if (!email || !password || !fullName || !regionId) {
@@ -63,7 +71,7 @@ export async function POST(request: NextRequest) {
                 regionId,
                 teamId: teamId || null,
                 managerId: managerId || null,
-                role: role || 'employee',
+                role: 'employee',
                 quotaWallet: {
                     create: {
                         balance: defaultQuota,

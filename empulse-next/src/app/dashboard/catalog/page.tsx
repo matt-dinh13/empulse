@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import { getStoredUser, handleUnauthorized } from '@/lib/clientAuth'
@@ -34,6 +34,47 @@ export default function CatalogPage() {
     const [confirmItem, setConfirmItem] = useState<CatalogItem | null>(null)
     const router = useRouter()
     const { showToast } = useToast()
+    const modalRef = useRef<HTMLDivElement>(null)
+
+    const closeModal = useCallback(() => setConfirmItem(null), [])
+
+    // Focus trap and ESC key for modal
+    useEffect(() => {
+        if (!confirmItem) return
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                closeModal()
+                return
+            }
+            if (e.key === 'Tab' && modalRef.current) {
+                const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                )
+                const first = focusable[0]
+                const last = focusable[focusable.length - 1]
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault()
+                    last?.focus()
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault()
+                    first?.focus()
+                }
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown)
+        // Auto-focus the modal
+        const timer = setTimeout(() => {
+            const firstBtn = modalRef.current?.querySelector<HTMLElement>('button')
+            firstBtn?.focus()
+        }, 50)
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown)
+            clearTimeout(timer)
+        }
+    }, [confirmItem, closeModal])
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -123,7 +164,7 @@ export default function CatalogPage() {
                 <div className="page-header">
                     <div className="flex justify-between items-center gap-lg">
                         <div>
-                            <h1 className="page-title">🎁 Rewards Catalog</h1>
+                            <h1 className="page-title">Rewards Catalog</h1>
                             <p className="page-subtitle">Redeem your points for amazing rewards!</p>
                         </div>
                         {wallet && (
@@ -138,7 +179,11 @@ export default function CatalogPage() {
                 {error && <div className="login-error mb-md">{error}</div>}
 
                 {loading ? (
-                    <div className="flex justify-center"><div className="spinner"></div></div>
+                    <div className="grid grid-3">
+                        <div className="skeleton-card"><div className="skeleton-line skeleton-title" /><div className="skeleton-line" /><div className="skeleton-line skeleton-short" /></div>
+                        <div className="skeleton-card"><div className="skeleton-line skeleton-title" /><div className="skeleton-line" /><div className="skeleton-line skeleton-short" /></div>
+                        <div className="skeleton-card"><div className="skeleton-line skeleton-title" /><div className="skeleton-line" /><div className="skeleton-line skeleton-short" /></div>
+                    </div>
                 ) : catalog.length === 0 ? (
                     <div className="card text-center">
                         <p className="text-muted">No rewards available for your region.</p>
@@ -147,9 +192,6 @@ export default function CatalogPage() {
                     <div className="grid grid-3">
                         {catalog.map(item => (
                             <div key={item.id} className="card">
-                                <div style={{ fontSize: '2rem', marginBottom: 'var(--spacing-sm)' }}>
-                                    {item.rewardType === 'digital_voucher' || item.rewardType === 'voucher' ? '🎫' : '📦'}
-                                </div>
                                 <h3 style={{ marginBottom: 'var(--spacing-xs)' }}>{item.name}</h3>
                                 <p className="text-sm text-muted mb-md">{item.description}</p>
                                 <div className="flex justify-between items-center">
@@ -181,9 +223,13 @@ export default function CatalogPage() {
                             justifyContent: 'center',
                             zIndex: 1000,
                         }}
-                        onClick={() => setConfirmItem(null)}
+                        onClick={closeModal}
                     >
                         <div
+                            ref={modalRef}
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="confirm-modal-title"
                             className="card"
                             style={{
                                 maxWidth: '420px',
@@ -192,7 +238,7 @@ export default function CatalogPage() {
                             }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <h3 style={{ marginBottom: 'var(--spacing-md)' }}>Confirm Redemption</h3>
+                            <h3 id="confirm-modal-title" style={{ marginBottom: 'var(--spacing-md)' }}>Confirm Redemption</h3>
                             <p style={{ marginBottom: 'var(--spacing-sm)' }}>
                                 <strong>Item:</strong> {confirmItem.name}
                             </p>
@@ -210,7 +256,7 @@ export default function CatalogPage() {
                                 <button
                                     className="btn"
                                     style={{ flex: 1 }}
-                                    onClick={() => setConfirmItem(null)}
+                                    onClick={closeModal}
                                 >
                                     Cancel
                                 </button>

@@ -23,8 +23,6 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Too many login attempts. Try again later.' }, { status: 429 })
         }
 
-        console.log('[Login] Attempting login for:', email)
-
         // Find user
         const user = await prisma.user.findUnique({
             where: { email },
@@ -37,35 +35,28 @@ export async function POST(request: NextRequest) {
         })
 
         if (!user) {
-            console.log('[Login] User not found')
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
         }
 
         if (!user.isActive) {
-            console.log('[Login] User inactive')
-            return NextResponse.json({ error: 'Account is deactivated' }, { status: 403 })
-        }
-
-        // Verify password
-        console.log('[Login] Verifying password')
-        const validPassword = await bcrypt.compare(password, user.passwordHash)
-        if (!validPassword) {
-            console.log('[Login] Invalid password')
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
         }
 
-        // Update last login (Write operation)
-        console.log('[Login] Updating last login')
+        // Verify password
+        const validPassword = await bcrypt.compare(password, user.passwordHash)
+        if (!validPassword) {
+            return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
+        }
+
+        // Update last login
         await prisma.user.update({
             where: { id: user.id },
             data: { lastLoginAt: new Date() },
         })
 
         // Generate tokens
-        console.log('[Login] Generating tokens')
         const tokens = generateTokens(user.id, user.role)
 
-        console.log('[Login] Success')
         const response = NextResponse.json({
             message: 'Login successful',
             user: {
@@ -83,17 +74,7 @@ export async function POST(request: NextRequest) {
         setAuthCookies(response, tokens)
         return response
     } catch (error) {
-        console.error('[Login] Error:', error)
-        // Return detailed error for debugging (even in prod for this issue)
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-        const errorStack = error instanceof Error ? error.stack : undefined
-        return NextResponse.json(
-            {
-                error: 'Internal server error',
-                details: errorMessage,
-                stack: process.env.NODE_ENV === 'development' ? errorStack : undefined
-            },
-            { status: 500 }
-        )
+        console.error('Login error:', error)
+        return NextResponse.json({ error: 'Login failed' }, { status: 500 })
     }
 }

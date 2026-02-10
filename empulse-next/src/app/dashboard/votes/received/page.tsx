@@ -83,7 +83,7 @@ export default function VotesReceivedPage() {
 
             <main className="main-content">
                 <div className="page-header">
-                    <h1 className="page-title">📥 Votes Received</h1>
+                    <h1 className="page-title">Votes Received</h1>
                     <p className="page-subtitle">Recognition you have received from colleagues</p>
                 </div>
 

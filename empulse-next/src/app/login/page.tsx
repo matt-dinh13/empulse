@@ -104,12 +104,6 @@ export default function LoginPage() {
                         ) : 'Sign in'}
                     </button>
 
-                    <div className="login-demo">
-                        <p className="text-sm text-muted">Demo accounts:</p>
-                        <code className="demo-code">admin@empulse.com / password123</code>
-                        <code className="demo-code">hr.admin@empulse.com / password123</code>
-                        <code className="demo-code">nguyen.van.a@empulse.com / password123</code>
-                    </div>
                 </form>
             </div>
         </div>

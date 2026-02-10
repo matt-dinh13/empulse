@@ -84,7 +84,7 @@ export default function VotesSentPage() {
 
             <main className="main-content">
                 <div className="page-header">
-                    <h1 className="page-title">📤 Votes Sent</h1>
+                    <h1 className="page-title">Votes Sent</h1>
                     <p className="page-subtitle">Recognition you have given to colleagues</p>
                 </div>
 
@@ -98,7 +98,7 @@ export default function VotesSentPage() {
                 ) : votes.length === 0 ? (
                     <div className="card text-center">
                         <p className="text-muted">You haven&apos;t sent any votes yet.</p>
-                        <Link href="/dashboard/send-vote" className="btn btn-primary mt-md">🎯 Send Your First Vote</Link>
+                        <Link href="/dashboard/send-vote" className="btn btn-primary mt-md">Send Your First Vote</Link>
                     </div>
                 ) : (
                     <div className="grid" style={{ gap: 'var(--spacing-md)' }}>

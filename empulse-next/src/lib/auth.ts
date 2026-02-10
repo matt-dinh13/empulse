@@ -47,7 +47,7 @@ export function setAuthCookies(response: NextResponse, tokens: { accessToken: st
     response.cookies.set('accessToken', tokens.accessToken, {
         httpOnly: true,
         secure: IS_PRODUCTION,
-        sameSite: 'lax',
+        sameSite: 'strict',
         path: '/',
         maxAge: 60 * 60, // 1 hour
     })
@@ -55,15 +55,15 @@ export function setAuthCookies(response: NextResponse, tokens: { accessToken: st
     response.cookies.set('refreshToken', tokens.refreshToken, {
         httpOnly: true,
         secure: IS_PRODUCTION,
-        sameSite: 'lax',
+        sameSite: 'strict',
         path: '/',
         maxAge: 60 * 60 * 24 * 7, // 7 days
     })
 }
 
 export function clearAuthCookies(response: NextResponse) {
-    response.cookies.set('accessToken', '', { httpOnly: true, secure: IS_PRODUCTION, sameSite: 'lax', path: '/', maxAge: 0 })
-    response.cookies.set('refreshToken', '', { httpOnly: true, secure: IS_PRODUCTION, sameSite: 'lax', path: '/', maxAge: 0 })
+    response.cookies.set('accessToken', '', { httpOnly: true, secure: IS_PRODUCTION, sameSite: 'strict', path: '/', maxAge: 0 })
+    response.cookies.set('refreshToken', '', { httpOnly: true, secure: IS_PRODUCTION, sameSite: 'strict', path: '/', maxAge: 0 })
 }
 
 export function getTokenFromRequest(request: NextRequest): string | null {

@@ -145,7 +145,7 @@ export default function SendVotePage() {
 
             <main className="main-content">
                 <div className="page-header">
-                    <h1 className="page-title">🎯 Send a Vote</h1>
+                    <h1 className="page-title">Send a Vote</h1>
                     <p className="page-subtitle">Recognize a colleague for their great work!</p>
                 </div>
 
@@ -251,7 +251,7 @@ export default function SendVotePage() {
                             disabled={loading || message.length < 20 || message.length > 400}
                             style={{ opacity: (message.length < 20 || message.length > 400) ? 0.5 : 1 }}
                         >
-                            {loading ? 'Sending...' : '🎯 Send Vote (+10 points)'}
+                            {loading ? 'Sending...' : 'Send Vote (+10 points)'}
                         </button>
                     </form>
                 </div>

@@ -48,32 +48,26 @@ export async function POST(request: NextRequest) {
         }
         const { catalogId } = parsed.data
 
-        // Get catalog item
-        const catalogItem = await prisma.rewardCatalog.findUnique({
-            where: { id: catalogId },
-        })
-
-        if (!catalogItem || !catalogItem.isActive) {
-            return NextResponse.json(
-                { error: 'Reward not found or inactive' },
-                { status: 404 }
-            )
-        }
-
-        // Check user balance
-        const rewardWallet = await prisma.rewardWallet.findUnique({
-            where: { userId },
-        })
-
-        if (!rewardWallet || rewardWallet.balance < catalogItem.pointsRequired) {
-            return NextResponse.json(
-                { error: 'Insufficient points' },
-                { status: 400 }
-            )
-        }
-
-        // Create order and deduct points
+        // Create order and deduct points (all checks inside transaction to prevent race conditions)
         const order = await prisma.$transaction(async (tx) => {
+            // Check catalog item inside transaction
+            const catalogItem = await tx.rewardCatalog.findUnique({
+                where: { id: catalogId },
+            })
+
+            if (!catalogItem || !catalogItem.isActive) {
+                throw new Error('ITEM_NOT_FOUND')
+            }
+
+            // Check user balance inside transaction
+            const rewardWallet = await tx.rewardWallet.findUnique({
+                where: { userId },
+            })
+
+            if (!rewardWallet || rewardWallet.balance < catalogItem.pointsRequired) {
+                throw new Error('INSUFFICIENT_BALANCE')
+            }
+
             // Deduct points
             await tx.rewardWallet.update({
                 where: { userId },
@@ -101,6 +95,14 @@ export async function POST(request: NextRequest) {
             order,
         }, { status: 201 })
     } catch (error) {
+        if (error instanceof Error) {
+            if (error.message === 'ITEM_NOT_FOUND') {
+                return NextResponse.json({ error: 'Reward not found or inactive' }, { status: 404 })
+            }
+            if (error.message === 'INSUFFICIENT_BALANCE') {
+                return NextResponse.json({ error: 'Insufficient points' }, { status: 400 })
+            }
+        }
         console.error('Create order error:', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }

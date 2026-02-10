@@ -205,14 +205,14 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        // 5. Check Quota Wallet
-        const quotaWallet = await prisma.quotaWallet.findUnique({ where: { userId: senderId } })
-        if (!quotaWallet || quotaWallet.balance < 1) {
-            return NextResponse.json({ error: 'Insufficient quota' }, { status: 400 })
-        }
-
-        // === Execute Transaction ===
+        // === Execute Transaction (balance check inside to prevent race conditions) ===
         const result = await prisma.$transaction(async (tx) => {
+            // Check Quota Wallet inside transaction
+            const quotaWallet = await tx.quotaWallet.findUnique({ where: { userId: senderId } })
+            if (!quotaWallet || quotaWallet.balance < 1) {
+                throw new Error('INSUFFICIENT_QUOTA')
+            }
+
             // Deduct Quota
             await tx.quotaWallet.update({
                 where: { userId: senderId },
@@ -352,6 +352,9 @@ export async function POST(request: NextRequest) {
         }, { status: 201 })
 
     } catch (error) {
+        if (error instanceof Error && error.message === 'INSUFFICIENT_QUOTA') {
+            return NextResponse.json({ error: 'Insufficient quota' }, { status: 400 })
+        }
         logger.error('Send vote error', error, { userId: userId ?? undefined })
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }

@@ -98,30 +98,30 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
                 <nav className="sidebar-nav" onClick={closeSidebar}>
                     <Link href="/dashboard/admin/analytics" className={`sidebar-link ${pathname.includes('analytics') ? 'active' : ''}`}>
-                        📈 Analytics
+                        Analytics
                     </Link>
                     <Link href="/dashboard/admin/users" className={`sidebar-link ${pathname.includes('users') ? 'active' : ''}`}>
-                        👥 Users & Teams
+                        Users & Teams
                     </Link>
                     <Link href="/dashboard/admin/orders" className={`sidebar-link ${pathname.includes('orders') ? 'active' : ''}`}>
-                        📋 Order Approvals
+                        Order Approvals
                     </Link>
                     <Link href="/dashboard/admin/catalog" className={`sidebar-link ${pathname.includes('catalog') ? 'active' : ''}`}>
-                        🎁 Reward Catalog
+                        Reward Catalog
                     </Link>
                     <Link href="/dashboard/admin/flagged-votes" className={`sidebar-link ${pathname.includes('flagged-votes') ? 'active' : ''}`}>
-                        🚩 Flagged Votes
+                        Flagged Votes
                     </Link>
                     {(user?.role === 'super_admin' || user?.role === 'admin') && (
                         <Link href="/dashboard/admin/settings" className={`sidebar-link ${pathname.includes('settings') ? 'active' : ''}`}>
-                            ⚙️ System Settings
+                            System Settings
                         </Link>
                     )}
 
                     <div style={{ margin: '1rem 0', borderTop: '1px solid rgba(255,255,255,0.1)' }}></div>
 
                     <Link href="/dashboard" className="sidebar-link">
-                        ⬅️ Employee View
+                        Employee View
                     </Link>
                 </nav>
 

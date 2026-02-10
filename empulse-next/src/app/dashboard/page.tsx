@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Sidebar from '@/components/Sidebar'
-import { getStoredUser, handleUnauthorized } from '@/lib/clientAuth'
+import { SkeletonCard } from '@/components/Skeleton'
+import { getStoredUser } from '@/lib/clientAuth'
 
 interface User {
     id: number
@@ -100,14 +101,21 @@ export default function DashboardPage() {
         }
     }, [loading])
 
-    const handleLogout = async () => {
-        await handleUnauthorized()
-    }
-
     if (loading) {
         return (
-            <div className="flex items-center justify-center" style={{ minHeight: '100vh' }}>
-                <div className="spinner"></div>
+            <div className="dashboard-layout">
+                <Sidebar user={null} />
+                <main className="main-content">
+                    <div className="page-header">
+                        <div className="skeleton-line skeleton-title" style={{ marginBottom: '0.5rem' }} />
+                        <div className="skeleton-line skeleton-short" />
+                    </div>
+                    <div className="stats-grid">
+                        <SkeletonCard />
+                        <SkeletonCard />
+                        <SkeletonCard />
+                    </div>
+                </main>
             </div>
         )
     }
@@ -148,10 +156,10 @@ export default function DashboardPage() {
                     <h3 className="mb-md">Quick Actions</h3>
                     <div className="flex gap-md">
                         <Link href="/dashboard/send-vote" className="btn btn-primary">
-                            🎯 Send a Vote
+                            Send a Vote
                         </Link>
                         <Link href="/dashboard/catalog" className="btn btn-secondary">
-                            🎁 Browse Rewards
+                            Browse Rewards
                         </Link>
                     </div>
                 </div>
@@ -219,51 +227,6 @@ export default function DashboardPage() {
                     )}
                 </div>
 
-                {/* DEBUG SECTION */}
-                <div className="card" style={{ marginTop: '2rem', border: '1px dashed #666' }}>
-                    <h3 style={{ marginBottom: '0.5rem', color: '#888' }}>Debug Tools</h3>
-                    <p style={{ marginBottom: '1rem' }}>If you are the admin but cannot see the Admin Portal, click below:</p>
-                    <div className="flex gap-md">
-                        <button
-                            className="btn btn-outline"
-                            onClick={async () => {
-                                try {
-                                    const res = await fetch('/api/debug/promote', {
-                                        method: 'POST',
-                                        credentials: 'include'
-                                    })
-                                    const data = await res.json()
-                                    alert(data.message || data.error)
-                                    if (res.ok) {
-                                        handleLogout() // Auto logout to force refresh
-                                    }
-                                } catch (e) {
-                                    alert('Failed to promote')
-                                }
-                            }}
-                        >
-                            🔑 Enable Admin Mode
-                        </button>
-                        <button
-                            className="btn btn-outline"
-                            onClick={async () => {
-                                try {
-                                    const res = await fetch('/api/debug/seed', {
-                                        method: 'POST',
-                                        credentials: 'include'
-                                    })
-                                    const data = await res.json()
-                                    alert(data.message)
-                                    window.location.reload()
-                                } catch (e) {
-                                    alert('Failed to seed')
-                                }
-                            }}
-                        >
-                            🌱 Seed Data
-                        </button>
-                    </div>
-                </div>
             </main>
         </div>
     )

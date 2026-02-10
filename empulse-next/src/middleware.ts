@@ -4,7 +4,7 @@ import { jwtVerify } from 'jose'
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret')
 
 const PUBLIC_PATHS = ['/', '/login', '/whitepaper']
-const PUBLIC_API_PATHS = ['/api/auth/', '/api/health', '/api/ping', '/api/cron/']
+const PUBLIC_API_PATHS = ['/api/auth/', '/api/health', '/api/ping']
 const ADMIN_ROLES = ['super_admin', 'hr_admin', 'admin']
 
 export async function middleware(request: NextRequest) {
@@ -17,6 +17,11 @@ export async function middleware(request: NextRequest) {
 
     // Allow public API routes
     if (PUBLIC_API_PATHS.some(p => pathname.startsWith(p))) {
+        return NextResponse.next()
+    }
+
+    // Cron endpoints handle their own auth via CRON_SECRET bearer token
+    if (pathname.startsWith('/api/cron/')) {
         return NextResponse.next()
     }
 
