@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
+import { createNotification } from '@/lib/notifications'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -13,7 +14,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     const orderId = parseInt(id)
 
     try {
-        const order = await prisma.redemptionOrder.findUnique({ where: { id: orderId } })
+        const order = await prisma.redemptionOrder.findUnique({
+            where: { id: orderId },
+            include: { catalog: { select: { name: true } } },
+        })
 
         if (!order) {
             return NextResponse.json({ error: 'Order not found' }, { status: 404 })
@@ -31,6 +35,14 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                 updatedAt: new Date()
             }
         })
+
+        await createNotification(
+            order.userId,
+            'ORDER_COMPLETED',
+            'Your order has been completed!',
+            `Your order for "${order.catalog?.name || 'item'}" has been delivered.`,
+            { orderId: order.id }
+        )
 
         return NextResponse.json({ order: updatedOrder, message: 'Order marked as completed' })
     } catch (error) {

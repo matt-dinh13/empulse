@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { verifyCronAuth, logJobExecution } from '@/lib/cron'
 import { sendEmail } from '@/lib/email'
+import { createNotification } from '@/lib/notifications'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -67,6 +68,13 @@ export async function GET(request: NextRequest) {
                 <p>— The EmPulse Team</p>`,
                 wallet.user.id,
                 'quarterly_expiry_warning'
+            )
+            await createNotification(
+                wallet.user.id,
+                'QUARTERLY_WARNING',
+                `Your ${wallet.balance} points expire in ${daysLeft} day${daysLeft === 1 ? '' : 's'}!`,
+                'Visit the rewards catalog to redeem your points before they expire.',
+                { daysLeft, balance: wallet.balance }
             )
             emailsSent++
         }

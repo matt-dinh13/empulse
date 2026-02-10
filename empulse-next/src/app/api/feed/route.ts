@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { getCache, setCache } from '@/lib/memoryCache'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
+
+const FEED_CACHE_TTL = 30 * 1000 // 30 seconds
 
 export async function GET(request: NextRequest) {
     try {
@@ -18,6 +21,12 @@ export async function GET(request: NextRequest) {
         const page = parseInt(searchParams.get('page') || '1')
         const limit = parseInt(searchParams.get('limit') || '10')
         const skip = (page - 1) * limit
+
+        const cacheKey = `feed:${page}:${limit}`
+        const cached = getCache<{ feed: unknown[]; pagination: unknown }>(cacheKey)
+        if (cached) {
+            return NextResponse.json(cached)
+        }
 
         const [votes, total] = await Promise.all([
             prisma.vote.findMany({
@@ -61,7 +70,7 @@ export async function GET(request: NextRequest) {
             createdAt: v.createdAt,
         }))
 
-        return NextResponse.json({
+        const result = {
             feed,
             pagination: {
                 page,
@@ -69,7 +78,11 @@ export async function GET(request: NextRequest) {
                 total,
                 totalPages: Math.ceil(total / limit),
             },
-        })
+        }
+
+        setCache(cacheKey, result, FEED_CACHE_TTL)
+
+        return NextResponse.json(result)
     } catch (error) {
         console.error('Feed error:', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

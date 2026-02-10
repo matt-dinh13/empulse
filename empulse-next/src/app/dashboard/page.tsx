@@ -160,7 +160,6 @@ export default function DashboardPage() {
                 <div className="card" style={{ marginTop: '1.5rem' }}>
                     <div className="flex" style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                         <h3>Recent Recognition</h3>
-                        <a href="#" style={{ fontSize: '0.875rem', color: 'var(--accent)' }}>View All</a>
                     </div>
                     {feedLoading ? (
                         <div style={{ textAlign: 'center', padding: '2rem 0', color: 'rgba(255,255,255,0.5)' }}>

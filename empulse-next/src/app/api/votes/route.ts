@@ -249,6 +249,14 @@ export async function POST(request: NextRequest) {
                 })
             }
 
+            // Fetch value tags for response
+            const voteTags = valueTagIds && valueTagIds.length > 0
+                ? await tx.voteValueTag.findMany({
+                    where: { voteId: vote.id },
+                    include: { valueTag: true },
+                })
+                : []
+
             // Create notification for receiver
             await tx.inAppNotification.create({
                 data: {
@@ -317,7 +325,7 @@ export async function POST(request: NextRequest) {
                 })
             }
 
-            return { vote, isReciprocal: !!reciprocalVote }
+            return { vote, voteTags, isReciprocal: !!reciprocalVote }
         })
 
         // Fetch updated quota for response
@@ -330,7 +338,14 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({
             message: 'Vote sent successfully',
-            vote: result.vote,
+            vote: {
+                ...result.vote,
+                valueTags: result.voteTags.map(vt => ({
+                    id: vt.valueTag.id,
+                    name: vt.valueTag.name,
+                    icon: vt.valueTag.icon,
+                })),
+            },
             quotaRemaining: updatedQuota?.balance || 0,
             isReciprocal: result.isReciprocal,
             warning: result.isReciprocal ? 'Reciprocal vote detected - flagged for review' : undefined
