@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import { getStoredUser, handleUnauthorized } from '@/lib/clientAuth'
+import { useToast } from '@/components/Toast'
 
 interface User {
     id: number
@@ -29,12 +30,12 @@ export default function SendVotePage() {
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
-    const [success, setSuccess] = useState('')
     const [search, setSearch] = useState('')
     const [uiUser, setUiUser] = useState<UiUser | null>(null)
     const [valueTags, setValueTags] = useState<ValueTag[]>([])
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
     const router = useRouter()
+    const { showToast } = useToast()
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -105,7 +106,6 @@ export default function SendVotePage() {
 
         setLoading(true)
         setError('')
-        setSuccess('')
 
         try {
             const res = await fetch('/api/votes', {
@@ -123,7 +123,7 @@ export default function SendVotePage() {
                 throw new Error(data.error || 'Failed to send vote')
             }
 
-            setSuccess('Vote sent successfully! 🎉')
+            showToast('Vote sent successfully!', 'success')
             setSelectedUser(null)
             setMessage('')
             setSelectedTagIds([])
@@ -151,7 +151,6 @@ export default function SendVotePage() {
 
                 <div className="card" style={{ maxWidth: '800px', margin: '0 auto' }}>
                     {error && <div className="login-error">{error}</div>}
-                    {success && <div style={{ background: 'var(--color-success-light)', color: 'var(--color-success)', padding: 'var(--spacing-md)', borderRadius: 'var(--radius-md)', marginBottom: 'var(--spacing-lg)' }}>{success}</div>}
 
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">

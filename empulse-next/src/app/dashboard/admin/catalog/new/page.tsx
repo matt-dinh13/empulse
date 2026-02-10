@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { handleUnauthorized } from '@/lib/clientAuth'
+import { useToast } from '@/components/Toast'
 
 const ICONS_CATEGORY = {
     vouchers: ['🎫', '🎟️', '💳', '🏷️', '🎁'],
@@ -23,6 +24,7 @@ interface User {
 
 export default function NewCatalogItemPage() {
     const router = useRouter()
+    const { showToast } = useToast()
     const [loading, setLoading] = useState(false)
     const [user, setUser] = useState<User | null>(null)
     const [formData, setFormData] = useState({
@@ -74,9 +76,10 @@ export default function NewCatalogItemPage() {
             }
             if (!res.ok) throw new Error(data.error)
 
+            showToast('Item created successfully', 'success')
             router.push('/dashboard/admin/catalog')
         } catch (error) {
-            alert(error instanceof Error ? error.message : 'Failed to create item')
+            showToast(error instanceof Error ? error.message : 'Failed to create item', 'error')
         } finally {
             setLoading(false)
         }

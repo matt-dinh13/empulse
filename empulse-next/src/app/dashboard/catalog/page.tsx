@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import { getStoredUser, handleUnauthorized } from '@/lib/clientAuth'
+import { useToast } from '@/components/Toast'
 
 interface CatalogItem {
     id: number
@@ -28,11 +29,11 @@ export default function CatalogPage() {
     const [wallet, setWallet] = useState<Wallet | null>(null)
     const [loading, setLoading] = useState(true)
     const [ordering, setOrdering] = useState<number | null>(null)
-    const [success, setSuccess] = useState('')
     const [error, setError] = useState('')
     const [uiUser, setUiUser] = useState<UiUser | null>(null)
     const [confirmItem, setConfirmItem] = useState<CatalogItem | null>(null)
     const router = useRouter()
+    const { showToast } = useToast()
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -83,7 +84,6 @@ export default function CatalogPage() {
         setConfirmItem(null)
         setOrdering(itemId)
         setError('')
-        setSuccess('')
 
         try {
             const res = await fetch('/api/orders', {
@@ -101,7 +101,7 @@ export default function CatalogPage() {
                 throw new Error(data.error || 'Failed to create order')
             }
 
-            setSuccess('Order placed successfully! 🎉')
+            showToast('Order placed successfully! Awaiting approval.', 'success')
             // Refresh wallet balance
             const walletRes = await fetch('/api/wallets', {
                 credentials: 'include'
@@ -136,7 +136,6 @@ export default function CatalogPage() {
                 </div>
 
                 {error && <div className="login-error mb-md">{error}</div>}
-                {success && <div style={{ background: 'var(--color-success-light)', color: 'var(--color-success)', padding: 'var(--spacing-md)', borderRadius: 'var(--radius-md)', marginBottom: 'var(--spacing-lg)' }}>{success}</div>}
 
                 {loading ? (
                     <div className="flex justify-center"><div className="spinner"></div></div>

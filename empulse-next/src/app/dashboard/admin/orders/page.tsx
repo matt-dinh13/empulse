@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { handleUnauthorized } from '@/lib/clientAuth'
+import { useToast } from '@/components/Toast'
 
 interface Order {
     id: number
@@ -19,6 +20,7 @@ export default function AdminOrdersPage() {
     const [filter, setFilter] = useState('PENDING_APPROVAL')
     const [error, setError] = useState<string | null>(null)
     const router = useRouter()
+    const { showToast } = useToast()
 
     useEffect(() => {
         fetchOrders()
@@ -70,11 +72,11 @@ export default function AdminOrdersPage() {
                 return
             }
             if (res.ok) {
-                alert(`Order ${action}d successfully`)
+                showToast(`Order ${action}d successfully`, 'success')
                 fetchOrders() // Refresh
             }
         } catch (err) {
-            alert('Action failed')
+            showToast('Action failed', 'error')
         }
     }
 

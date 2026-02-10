@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { handleUnauthorized } from '@/lib/clientAuth'
+import { useToast } from '@/components/Toast'
 
 const SETTINGS_CATEGORIES = [
     { id: 'voting', label: 'Voting Rules', icon: '🗳️' },
@@ -30,6 +31,7 @@ export default function SystemSettingsPage() {
     const [activeTab, setActiveTab] = useState('voting')
     const [error, setError] = useState<string | null>(null)
     const router = useRouter()
+    const { showToast } = useToast()
 
     useEffect(() => {
         fetchSettings()
@@ -45,7 +47,7 @@ export default function SystemSettingsPage() {
                 return
             }
             if (res.status === 403) {
-                alert('Access Denied: Admin only')
+                showToast('Access Denied: Admin only', 'error')
                 router.push('/dashboard/admin')
                 return
             }
@@ -82,12 +84,12 @@ export default function SystemSettingsPage() {
                 return
             }
             if (res.ok) {
-                alert('Settings saved successfully!')
+                showToast('Settings saved successfully!', 'success')
             } else {
                 throw new Error('Failed to save')
             }
         } catch (error) {
-            alert('Error saving settings')
+            showToast('Error saving settings', 'error')
         } finally {
             setSaving(false)
         }

@@ -4,6 +4,7 @@ import { useState, useEffect, use } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { handleUnauthorized } from '@/lib/clientAuth'
+import { useToast } from '@/components/Toast'
 
 const ICONS_CATEGORY = {
     vouchers: ['🎫', '🎟️', '💳', '🏷️', '🎁'],
@@ -24,6 +25,7 @@ interface User {
 export default function EditCatalogItemPage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = use(params)
     const router = useRouter()
+    const { showToast } = useToast()
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
     const [user, setUser] = useState<User | null>(null)
@@ -71,7 +73,7 @@ export default function EditCatalogItemPage({ params }: { params: Promise<{ id: 
                     isActive: data.item.isActive
                 })
             } else {
-                alert(data.error)
+                showToast(data.error || 'Item not found', 'error')
                 router.push('/dashboard/admin/catalog')
             }
         } catch (error) {
@@ -102,10 +104,10 @@ export default function EditCatalogItemPage({ params }: { params: Promise<{ id: 
             }
             if (!res.ok) throw new Error(data.error)
 
-            alert('Item updated successfully')
+            showToast('Item updated successfully', 'success')
             router.push('/dashboard/admin/catalog')
         } catch (error) {
-            alert(error instanceof Error ? error.message : 'Failed to update item')
+            showToast(error instanceof Error ? error.message : 'Failed to update item', 'error')
         } finally {
             setSaving(false)
         }

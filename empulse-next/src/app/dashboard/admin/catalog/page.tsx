@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { handleUnauthorized } from '@/lib/clientAuth'
+import { useToast } from '@/components/Toast'
 
 interface CatalogItem {
     id: number
@@ -23,6 +24,7 @@ export default function CatalogListPage() {
     const [user, setUser] = useState<{ role: string; regionId?: number } | null>(null)
     const [error, setError] = useState<string | null>(null)
     const router = useRouter()
+    const { showToast } = useToast()
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user')
@@ -71,10 +73,10 @@ export default function CatalogListPage() {
             if (res.ok) {
                 fetchCatalog()
             } else {
-                alert('Failed to delete')
+                showToast('Failed to deactivate item', 'error')
             }
         } catch (error) {
-            alert('Error deleting item')
+            showToast('Error deleting item', 'error')
         }
     }
 
