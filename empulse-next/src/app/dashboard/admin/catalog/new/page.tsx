@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
+import { handleUnauthorized } from '@/lib/clientAuth'
 
 const ICONS_CATEGORY = {
     vouchers: ['🎫', '🎟️', '💳', '🏷️', '🎁'],
@@ -58,16 +58,11 @@ export default function NewCatalogItemPage() {
         setLoading(true)
 
         try {
-            const headers = buildAuthHeaders()
-            if (!headers) {
-                handleUnauthorized()
-                return
-            }
             const res = await fetch('/api/admin/catalog', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    ...headers
                 },
                 body: JSON.stringify(formData)
             })

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
+import { getStoredUser, handleUnauthorized } from '@/lib/clientAuth'
 
 interface User {
     id: number
@@ -28,22 +29,35 @@ export default function SendVotePage() {
     const router = useRouter()
 
     useEffect(() => {
-        const token = localStorage.getItem('accessToken')
-        if (!token) {
-            router.push('/login')
-            return
-        }
-        const userStr = localStorage.getItem('user')
-        if (userStr) setUiUser(JSON.parse(userStr) as UiUser)
+        const checkAuth = async () => {
+            try {
+                const res = await fetch('/api/auth/me', { credentials: 'include' })
+                if (!res.ok) {
+                    router.push('/login')
+                    return
+                }
+            } catch {
+                router.push('/login')
+                return
+            }
 
-        fetchUsers(token)
+            const storedUser = getStoredUser()
+            if (storedUser) setUiUser(storedUser as UiUser)
+
+            fetchUsers()
+        }
+        checkAuth()
     }, [router])
 
-    const fetchUsers = async (token: string) => {
+    const fetchUsers = async () => {
         try {
             const res = await fetch('/api/users', {
-                headers: { Authorization: `Bearer ${token}` }
+                credentials: 'include'
             })
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             const data = await res.json()
             if (res.ok) {
                 setUsers(data.users)
@@ -65,13 +79,12 @@ export default function SendVotePage() {
         setSuccess('')
 
         try {
-            const token = localStorage.getItem('accessToken')
             const res = await fetch('/api/votes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
                 },
+                credentials: 'include',
                 body: JSON.stringify({ receiverId: selectedUser, message })
             })
 

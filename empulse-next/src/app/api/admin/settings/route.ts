@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
+import { settingsUpdateSchema } from '@/lib/validations'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -79,11 +80,11 @@ export async function PUT(request: NextRequest) {
 
     try {
         const body = await request.json()
-        const { settings } = body // Array of { key, value }
-
-        if (!Array.isArray(settings)) {
-            return NextResponse.json({ error: 'Invalid input' }, { status: 400 })
+        const parsed = settingsUpdateSchema.safeParse(body)
+        if (!parsed.success) {
+            return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
         }
+        const { settings } = parsed.data
 
         const updates = []
         for (const { key, value } of settings) {
@@ -91,9 +92,9 @@ export async function PUT(request: NextRequest) {
             if (!meta) continue // Skip unknown settings
 
             // Validate
-            let cleanValue = value
+            let cleanValue = String(value)
             if (meta.type === 'integer') {
-                const num = parseInt(value)
+                const num = parseInt(cleanValue)
                 if (isNaN(num) || num < meta.min || num > meta.max) {
                     return NextResponse.json({ error: `Invalid value for ${meta.label}` }, { status: 400 })
                 }

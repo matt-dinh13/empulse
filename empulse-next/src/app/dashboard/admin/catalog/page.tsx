@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
+import { handleUnauthorized } from '@/lib/clientAuth'
 
 interface CatalogItem {
     id: number
@@ -33,14 +33,9 @@ export default function CatalogListPage() {
     const fetchCatalog = async () => {
         setLoading(true)
         try {
-            const headers = buildAuthHeaders()
-            if (!headers) {
-                handleUnauthorized()
-                return
-            }
             const query = showInactive ? '' : '?isActive=true'
             const res = await fetch(`/api/admin/catalog${query}`, {
-                headers
+                credentials: 'include'
             })
             if (res.status === 401) {
                 handleUnauthorized()
@@ -65,14 +60,9 @@ export default function CatalogListPage() {
         if (!confirm('Are you sure you want to deactivate this item?')) return
 
         try {
-            const headers = buildAuthHeaders()
-            if (!headers) {
-                handleUnauthorized()
-                return
-            }
             const res = await fetch(`/api/admin/catalog/${id}`, {
                 method: 'DELETE',
-                headers
+                credentials: 'include'
             })
             if (res.status === 401) {
                 handleUnauthorized()

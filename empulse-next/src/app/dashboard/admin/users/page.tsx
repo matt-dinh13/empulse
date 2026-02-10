@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
+import { handleUnauthorized } from '@/lib/clientAuth'
 
 interface User {
     id: number
@@ -25,13 +25,8 @@ export default function AdminUsersPage() {
 
     const fetchUsers = async () => {
         try {
-            const headers = buildAuthHeaders()
-            if (!headers) {
-                handleUnauthorized()
-                return
-            }
             const res = await fetch('/api/admin/users', {
-                headers
+                credentials: 'include'
             })
             if (res.status === 401) {
                 handleUnauthorized()

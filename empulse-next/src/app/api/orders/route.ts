@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateRequest } from '@/lib/auth'
+import { orderSchema } from '@/lib/validations'
+import { rateLimit } from '@/lib/rateLimit'
 
 // GET /api/orders - Get user's orders
 export async function GET(request: NextRequest) {
@@ -33,15 +35,18 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        const body = await request.json()
-        const { catalogId } = body
-
-        if (!catalogId) {
-            return NextResponse.json(
-                { error: 'Catalog ID is required' },
-                { status: 400 }
-            )
+        // Rate limit: 5 orders per user per minute
+        const rl = rateLimit(`order:${userId}`, 5, 60 * 1000)
+        if (!rl.success) {
+            return NextResponse.json({ error: 'Too many requests. Please slow down.' }, { status: 429 })
         }
+
+        const body = await request.json()
+        const parsed = orderSchema.safeParse(body)
+        if (!parsed.success) {
+            return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
+        }
+        const { catalogId } = parsed.data
 
         // Get catalog item
         const catalogItem = await prisma.rewardCatalog.findUnique({

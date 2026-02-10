@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
+import { handleUnauthorized } from '@/lib/clientAuth'
 
 const SETTINGS_CATEGORIES = [
     { id: 'voting', label: 'Voting Rules', icon: '🗳️' },
@@ -37,13 +37,8 @@ export default function SystemSettingsPage() {
 
     const fetchSettings = async () => {
         try {
-            const headers = buildAuthHeaders()
-            if (!headers) {
-                handleUnauthorized()
-                return
-            }
             const res = await fetch('/api/admin/settings', {
-                headers
+                credentials: 'include'
             })
             if (res.status === 401) {
                 handleUnauthorized()
@@ -72,16 +67,11 @@ export default function SystemSettingsPage() {
     const handleSave = async () => {
         setSaving(true)
         try {
-            const headers = buildAuthHeaders()
-            if (!headers) {
-                handleUnauthorized()
-                return
-            }
             const res = await fetch('/api/admin/settings', {
                 method: 'PUT',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    ...headers
                 },
                 body: JSON.stringify({
                     settings: settings.map(s => ({ key: s.key, value: s.value }))

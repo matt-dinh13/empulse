@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateRequest } from '@/lib/auth'
 import { logger } from '@/lib/logger'
+import { voteSchema } from '@/lib/validations'
+import { rateLimit } from '@/lib/rateLimit'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -124,16 +126,18 @@ export async function POST(request: NextRequest) {
         }
         const senderId = userId
 
-        const body = await request.json()
-        const { receiverId, message } = body
+        // Rate limit: 10 votes per user per minute
+        const rl = rateLimit(`vote:${senderId}`, 10, 60 * 1000)
+        if (!rl.success) {
+            return NextResponse.json({ error: 'Too many requests. Please slow down.' }, { status: 429 })
+        }
 
-        // Basic validations
-        if (!receiverId || !message) {
-            return NextResponse.json({ error: 'Receiver and message are required' }, { status: 400 })
+        const body = await request.json()
+        const parsed = voteSchema.safeParse(body)
+        if (!parsed.success) {
+            return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
         }
-        if (message.length < 20) {
-            return NextResponse.json({ error: 'Message must be at least 20 characters' }, { status: 400 })
-        }
+        const { receiverId, message } = parsed.data
         if (receiverId === senderId) {
             return NextResponse.json({ error: 'Cannot vote for yourself' }, { status: 400 })
         }

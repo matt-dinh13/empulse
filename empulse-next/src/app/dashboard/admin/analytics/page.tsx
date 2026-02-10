@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
+import { handleUnauthorized } from '@/lib/clientAuth'
 
 interface Stats {
     totalUsers: number
@@ -27,13 +27,8 @@ export default function AnalyticsPage() {
     useEffect(() => {
         const fetchAnalytics = async () => {
             try {
-                const headers = buildAuthHeaders()
-                if (!headers) {
-                    handleUnauthorized()
-                    return
-                }
                 const res = await fetch('/api/admin/analytics/dashboard', {
-                    headers
+                    credentials: 'include'
                 })
                 if (res.status === 401) {
                     handleUnauthorized()

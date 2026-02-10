@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
+import { getStoredUser, handleUnauthorized } from '@/lib/clientAuth'
 
 interface CatalogItem {
     id: number
@@ -33,26 +34,37 @@ export default function CatalogPage() {
     const router = useRouter()
 
     useEffect(() => {
-        const token = localStorage.getItem('accessToken')
-        const storedUser = localStorage.getItem('user')
-        if (storedUser) setUiUser(JSON.parse(storedUser) as UiUser)
+        const checkAuth = async () => {
+            try {
+                const res = await fetch('/api/auth/me', { credentials: 'include' })
+                if (!res.ok) {
+                    router.push('/login')
+                    return
+                }
+            } catch {
+                router.push('/login')
+                return
+            }
 
-        if (!token) {
-            router.push('/login')
-            return
+            const storedUser = getStoredUser()
+            if (storedUser) setUiUser(storedUser as UiUser)
+
+            fetchData()
         }
-        const userStr = localStorage.getItem('user')
-        if (userStr) setUiUser(JSON.parse(userStr) as UiUser)
-
-        fetchData(token)
+        checkAuth()
     }, [router])
 
-    const fetchData = async (token: string) => {
+    const fetchData = async () => {
         try {
             const [catalogRes, walletRes] = await Promise.all([
-                fetch('/api/catalog', { headers: { Authorization: `Bearer ${token}` } }),
-                fetch('/api/wallets', { headers: { Authorization: `Bearer ${token}` } })
+                fetch('/api/catalog', { credentials: 'include' }),
+                fetch('/api/wallets', { credentials: 'include' })
             ])
+
+            if (catalogRes.status === 401 || walletRes.status === 401) {
+                handleUnauthorized()
+                return
+            }
 
             const catalogData = await catalogRes.json()
             const walletData = await walletRes.json()
@@ -72,13 +84,12 @@ export default function CatalogPage() {
         setSuccess('')
 
         try {
-            const token = localStorage.getItem('accessToken')
             const res = await fetch('/api/orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
                 },
+                credentials: 'include',
                 body: JSON.stringify({ catalogId: itemId })
             })
 
@@ -91,7 +102,7 @@ export default function CatalogPage() {
             setSuccess('Order placed successfully! 🎉')
             // Refresh wallet balance
             const walletRes = await fetch('/api/wallets', {
-                headers: { Authorization: `Bearer ${token}` }
+                credentials: 'include'
             })
             const walletData = await walletRes.json()
             if (walletRes.ok) setWallet(walletData.rewardWallet)

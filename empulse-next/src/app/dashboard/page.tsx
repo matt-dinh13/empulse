@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Sidebar from '@/components/Sidebar'
+import { getStoredUser, handleUnauthorized } from '@/lib/clientAuth'
 
 interface User {
     id: number
@@ -21,23 +22,32 @@ export default function DashboardPage() {
     const router = useRouter()
 
     useEffect(() => {
-        const token = localStorage.getItem('accessToken')
-        const storedUser = localStorage.getItem('user')
+        const checkAuth = async () => {
+            try {
+                const res = await fetch('/api/auth/me', { credentials: 'include' })
+                if (!res.ok) {
+                    router.push('/login')
+                    return
+                }
+            } catch {
+                router.push('/login')
+                return
+            }
 
-        if (!token || !storedUser) {
-            router.push('/login')
-            return
+            const storedUser = getStoredUser()
+            if (!storedUser) {
+                router.push('/login')
+                return
+            }
+
+            setUser(storedUser as User)
+            setLoading(false)
         }
-
-        setUser(JSON.parse(storedUser))
-        setLoading(false)
+        checkAuth()
     }, [router])
 
-    const handleLogout = () => {
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
-        localStorage.removeItem('user')
-        router.push('/login')
+    const handleLogout = async () => {
+        await handleUnauthorized()
     }
 
     if (loading) {
@@ -100,11 +110,10 @@ export default function DashboardPage() {
                         <button
                             className="btn btn-outline"
                             onClick={async () => {
-                                const token = localStorage.getItem('accessToken')
                                 try {
                                     const res = await fetch('/api/debug/promote', {
                                         method: 'POST',
-                                        headers: { Authorization: `Bearer ${token}` }
+                                        credentials: 'include'
                                     })
                                     const data = await res.json()
                                     alert(data.message || data.error)
@@ -121,11 +130,10 @@ export default function DashboardPage() {
                         <button
                             className="btn btn-outline"
                             onClick={async () => {
-                                const token = localStorage.getItem('accessToken')
                                 try {
                                     const res = await fetch('/api/debug/seed', {
                                         method: 'POST',
-                                        headers: { Authorization: `Bearer ${token}` }
+                                        credentials: 'include'
                                     })
                                     const data = await res.json()
                                     alert(data.message)

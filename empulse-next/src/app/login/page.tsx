@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { setStoredUser } from '@/lib/clientAuth'
 
 export default function LoginPage() {
     const [email, setEmail] = useState('')
@@ -20,6 +21,7 @@ export default function LoginPage() {
             const res = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ email, password }),
             })
 
@@ -29,10 +31,8 @@ export default function LoginPage() {
                 throw new Error(data.error || 'Login failed')
             }
 
-            // Store token and user data
-            localStorage.setItem('accessToken', data.accessToken)
-            localStorage.setItem('refreshToken', data.refreshToken)
-            localStorage.setItem('user', JSON.stringify(data.user))
+            // Store user data for display (auth tokens are in httpOnly cookies)
+            setStoredUser(data.user)
 
             router.push('/dashboard')
         } catch (err) {

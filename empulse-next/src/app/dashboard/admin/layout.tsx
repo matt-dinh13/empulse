@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
+import { handleUnauthorized } from '@/lib/clientAuth'
 
 interface User {
     id: number
@@ -21,9 +21,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user')
-        const headers = buildAuthHeaders()
 
-        if (!headers || !storedUser) {
+        if (!storedUser) {
             handleUnauthorized()
             return
         }
@@ -37,7 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         const validateSession = async () => {
             try {
-                const res = await fetch('/api/auth/me', { headers })
+                const res = await fetch('/api/auth/me', { credentials: 'include' })
                 if (res.status === 401) {
                     handleUnauthorized()
                     return
@@ -107,9 +106,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div style={{ marginTop: 'auto', paddingTop: 'var(--spacing-lg)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                     <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.6)', marginBottom: '0.5rem' }}>{user?.fullName}</div>
                     <button onClick={() => {
-                        localStorage.removeItem('accessToken')
-                        localStorage.removeItem('user')
-                        window.location.href = '/login'
+                        handleUnauthorized()
                     }} className="btn" style={{ width: '100%', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', marginBottom: '1.5rem' }}>
                         Logout
                     </button>

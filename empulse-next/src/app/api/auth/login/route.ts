@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
-import { generateTokens } from '@/lib/auth'
+import { generateTokens, setAuthCookies } from '@/lib/auth'
+import { rateLimit } from '@/lib/rateLimit'
 
 // Force Node.js runtime for bcryptjs and Prisma
 export const runtime = 'nodejs'
@@ -14,6 +15,12 @@ export async function POST(request: NextRequest) {
 
         if (!email || !password) {
             return NextResponse.json({ error: 'Email and password are required' }, { status: 400 })
+        }
+
+        // Rate limit: 5 attempts per email per 15 minutes
+        const rl = rateLimit(`login:${email}`, 5, 15 * 60 * 1000)
+        if (!rl.success) {
+            return NextResponse.json({ error: 'Too many login attempts. Try again later.' }, { status: 429 })
         }
 
         console.log('[Login] Attempting login for:', email)
@@ -56,10 +63,10 @@ export async function POST(request: NextRequest) {
 
         // Generate tokens
         console.log('[Login] Generating tokens')
-        const tokens = generateTokens(user.id)
+        const tokens = generateTokens(user.id, user.role)
 
         console.log('[Login] Success')
-        return NextResponse.json({
+        const response = NextResponse.json({
             message: 'Login successful',
             user: {
                 id: user.id,
@@ -71,8 +78,10 @@ export async function POST(request: NextRequest) {
                 quotaWallet: user.quotaWallet,
                 rewardWallet: user.rewardWallet,
             },
-            ...tokens,
         })
+
+        setAuthCookies(response, tokens)
+        return response
     } catch (error) {
         console.error('[Login] Error:', error)
         // Return detailed error for debugging (even in prod for this issue)

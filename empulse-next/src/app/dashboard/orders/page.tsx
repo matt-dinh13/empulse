@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Sidebar from '@/components/Sidebar'
+import { getStoredUser, handleUnauthorized } from '@/lib/clientAuth'
 
 interface Order {
     id: number
@@ -28,22 +29,35 @@ export default function OrdersPage() {
     const router = useRouter()
 
     useEffect(() => {
-        const token = localStorage.getItem('accessToken')
-        const storedUser = localStorage.getItem('user')
-        if (storedUser) setUser(JSON.parse(storedUser) as UiUser)
+        const checkAuth = async () => {
+            try {
+                const res = await fetch('/api/auth/me', { credentials: 'include' })
+                if (!res.ok) {
+                    router.push('/login')
+                    return
+                }
+            } catch {
+                router.push('/login')
+                return
+            }
 
-        if (!token) {
-            router.push('/login')
-            return
+            const storedUser = getStoredUser()
+            if (storedUser) setUser(storedUser as UiUser)
+
+            fetchOrders()
         }
-        fetchOrders(token)
+        checkAuth()
     }, [router])
 
-    const fetchOrders = async (token: string) => {
+    const fetchOrders = async () => {
         try {
             const res = await fetch('/api/orders', {
-                headers: { Authorization: `Bearer ${token}` }
+                credentials: 'include'
             })
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             const data = await res.json()
             if (res.ok) {
                 setOrders(data.orders)

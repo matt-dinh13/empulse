@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
+import { handleUnauthorized } from '@/lib/clientAuth'
 
 interface SidebarUser {
     fullName?: string
@@ -15,13 +16,9 @@ interface SidebarProps {
 
 export default function Sidebar({ user }: SidebarProps) {
     const pathname = usePathname()
-    const router = useRouter()
 
-    const handleLogout = () => {
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
-        localStorage.removeItem('user')
-        router.push('/login')
+    const handleLogout = async () => {
+        await handleUnauthorized()
     }
 
     const isActive = (path: string) => pathname === path ? 'active' : ''

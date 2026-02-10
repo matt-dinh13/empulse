@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { buildAuthHeaders, handleUnauthorized } from '@/lib/clientAuth'
+import { handleUnauthorized } from '@/lib/clientAuth'
 
 interface Order {
     id: number
@@ -27,13 +27,8 @@ export default function AdminOrdersPage() {
     const fetchOrders = async () => {
         setLoading(true)
         try {
-            const headers = buildAuthHeaders()
-            if (!headers) {
-                handleUnauthorized()
-                return
-            }
             const res = await fetch(`/api/admin/orders?status=${filter}`, {
-                headers
+                credentials: 'include'
             })
             if (res.status === 401) {
                 handleUnauthorized()
@@ -62,16 +57,11 @@ export default function AdminOrdersPage() {
             : `/api/admin/orders/${id}/reject`
 
         try {
-            const headers = buildAuthHeaders()
-            if (!headers) {
-                handleUnauthorized()
-                return
-            }
             const res = await fetch(endpoint, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    ...headers
                 },
                 body: JSON.stringify({ reason: action === 'reject' ? 'Admin rejection' : undefined })
             })

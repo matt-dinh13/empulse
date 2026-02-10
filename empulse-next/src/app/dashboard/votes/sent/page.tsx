@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Sidebar from '@/components/Sidebar'
+import { getStoredUser, handleUnauthorized } from '@/lib/clientAuth'
 
 interface Vote {
     id: number
@@ -25,22 +26,35 @@ export default function VotesSentPage() {
     const router = useRouter()
 
     useEffect(() => {
-        const token = localStorage.getItem('accessToken')
-        const storedUser = localStorage.getItem('user')
-        if (storedUser) setUser(JSON.parse(storedUser) as UiUser)
+        const checkAuth = async () => {
+            try {
+                const res = await fetch('/api/auth/me', { credentials: 'include' })
+                if (!res.ok) {
+                    router.push('/login')
+                    return
+                }
+            } catch {
+                router.push('/login')
+                return
+            }
 
-        if (!token) {
-            router.push('/login')
-            return
+            const storedUser = getStoredUser()
+            if (storedUser) setUser(storedUser as UiUser)
+
+            fetchVotes()
         }
-        fetchVotes(token)
+        checkAuth()
     }, [router])
 
-    const fetchVotes = async (token: string) => {
+    const fetchVotes = async () => {
         try {
             const res = await fetch('/api/votes?type=sent', {
-                headers: { Authorization: `Bearer ${token}` }
+                credentials: 'include'
             })
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
             const data = await res.json()
             if (res.ok) {
                 setVotes(data.votes)

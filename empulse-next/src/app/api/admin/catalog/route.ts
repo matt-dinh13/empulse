@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { Prisma } from '@prisma/client'
 import { authenticateAdminRequest } from '@/lib/auth'
+import { catalogCreateSchema } from '@/lib/validations'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -63,22 +64,18 @@ export async function POST(request: NextRequest) {
 
     try {
         const body = await request.json()
-        const { name, description, pointsRequired, rewardType, icon, displayValue, regionId, stockQuantity } = body
+        const parsed = catalogCreateSchema.safeParse(body)
+        if (!parsed.success) {
+            return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
+        }
+        const { name, description, pointsRequired, rewardType, icon, displayValue, regionId, stockQuantity } = parsed.data
         const normalizedRewardType =
             rewardType === 'voucher' ? 'digital_voucher'
             : rewardType === 'physical' ? 'physical_item'
             : rewardType
 
-        // Validation
-        if (!name || !description || !pointsRequired || !regionId) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
-        }
-        if (pointsRequired < 10 || pointsRequired % 10 !== 0) {
-            return NextResponse.json({ error: 'Points must be a multiple of 10 and at least 10' }, { status: 400 })
-        }
-
         // Region Authorization
-        const targetRegionId = Number(regionId)
+        const targetRegionId = regionId
         if (admin.role === 'hr_admin' && admin.regionId !== targetRegionId) {
             return NextResponse.json({ error: 'Cannot create items in other regions' }, { status: 403 })
         }

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
-import { generateTokens } from '@/lib/auth'
+import { generateTokens, setAuthCookies } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
     try {
@@ -88,9 +88,9 @@ export async function POST(request: NextRequest) {
         })
 
         // Generate tokens
-        const tokens = generateTokens(user.id)
+        const tokens = generateTokens(user.id, user.role)
 
-        return NextResponse.json({
+        const response = NextResponse.json({
             message: 'User registered successfully',
             user: {
                 id: user.id,
@@ -100,8 +100,10 @@ export async function POST(request: NextRequest) {
                 region: user.region,
                 team: user.team,
             },
-            ...tokens,
         }, { status: 201 })
+
+        setAuthCookies(response, tokens)
+        return response
     } catch (error) {
         console.error('Register error:', error)
         return NextResponse.json(
