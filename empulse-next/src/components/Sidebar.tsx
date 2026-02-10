@@ -123,6 +123,9 @@ export default function Sidebar({ user }: SidebarProps) {
                     <Link href="/dashboard/orders" className={`sidebar-link ${isActive('/dashboard/orders')}`}>
                         📦 My Orders
                     </Link>
+                    <Link href="/dashboard/settings" className={`sidebar-link ${isActive('/dashboard/settings')}`}>
+                        ⚙️ Settings
+                    </Link>
 
                     {hasTeam && (
                         <Link href="/dashboard/my-team" className={`sidebar-link ${isActive('/dashboard/my-team')}`}>
