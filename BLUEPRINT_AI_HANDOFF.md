@@ -1,105 +1,223 @@
-﻿# EmPulse Blueprint Guide (AI Handoff)
+# EmPulse Operational Blueprint
 
-## Context
-Project: EmPulse (P2P Reward and Recognition system).
-Primary stack decision: Next.js full-stack in `empulse-next`.
-Priority order: Demo -> Production -> Cleanup.
-Demo scope: Employee core + Admin core + Whitepaper.
-Demo timeline: 1 week.
-Deployment: deploy directly (no separate envs for concept).
+> **Last Updated**: 2026-02-10
+> **Status**: Production-Ready
+> **Primary Reference**: See [CONTEXT.md](./CONTEXT.md) for full system documentation
 
-## Goals
-- Deliver a working public demo within 1 week.
-- Keep production-readiness tasks queued after demo.
-- Cleanup redundant stacks after demo if production proceeds.
+---
 
-## Non-Goals (for demo phase)
-- Full security hardening.
-- Exhaustive test coverage.
-- Migration of Express/Vite to production.
+## System Overview
 
-## Key Decisions (Do Not Change)
-- Use Next.js app as the source of truth.
-- Keep demo scope to Employee core + Admin core + Whitepaper.
-- Deploy directly (no staging/prod split).
+EmPulse is a P2P employee recognition & reward platform for 50-200 employees across Vietnam and Czech Republic. Employees send votes with messages, earn points, and redeem real rewards (digital vouchers in VN, physical items in CZ).
 
-## Repo Map (Primary Paths)
-- Next app: `empulse-next/`
-- API routes (Next): `empulse-next/src/app/api/`
-- Auth helpers: `empulse-next/src/lib/auth.ts`
-- Prisma schema: `empulse-next/prisma/schema.prisma`
-- Seed script: `empulse-next/prisma/seed.js`
-- Whitepaper UI: `empulse-next/src/app/whitepaper/`
-- Send Vote UI: `empulse-next/src/app/dashboard/send-vote/page.tsx`
-- Legacy stacks (not for demo): `backend/`, `frontend/`
+**Stack**: Next.js 16 (App Router) + Prisma + PostgreSQL (Supabase) + Vercel
 
-## Current Known Mismatches
-- Role values mismatch: `admin` vs `super_admin`/`hr_admin`.
-- Reward type mismatch: seed uses `voucher`, schema expects `digital_voucher` or `physical_item`.
-- Debug endpoints exist and are unsafe for public deployment.
+---
 
-## Phase 1 (Demo in 1 Week)
+## Quick Start (Local Development)
 
-### Task Table
-| ID | Task | Steps | Files | Definition of Done |
-| --- | --- | --- | --- | --- |
-| D1 | Align role enums | Standardize roles to `employee`, `hr_admin`, `super_admin`. Update seed admin role and any checks. | `empulse-next/prisma/seed.js`, `empulse-next/src/lib/auth.ts`, admin pages if needed | Admin user can access admin pages, non-admin cannot. |
-| D2 | Fix rewardType enum | Update seed catalog to use `digital_voucher` and `physical_item` only. | `empulse-next/prisma/seed.js`, `empulse-next/prisma/schema.prisma` | Catalog loads without errors; redeem flow works. |
-| D3 | Protect debug endpoints | Add guard (e.g. `DEMO_DEBUG_KEY`) or disable debug routes for public deploy. | `empulse-next/src/app/api/debug/*`, `empulse-next/src/app/api/env-check/route.ts` | Debug endpoints require secret or are removed. |
-| D4 | Seed demo data | Ensure regions, teams, users, wallets, catalog, vouchers exist. | `empulse-next/prisma/seed.js` | After seed, login and demo flows succeed. |
-| D5 | Stabilize Send Vote flow | Validate quota update, weekly tracking, and UI errors. | `empulse-next/src/app/dashboard/send-vote/page.tsx`, vote APIs | Vote sends, quota decrements, UI updates. |
-| D6 | Admin core screens | Ensure users list, orders list, analytics dashboard load data. | `empulse-next/src/app/api/admin/*` | Admin screens show data without errors. |
-| D7 | Whitepaper completion | Finalize content for Overview, How it Works, Data Model tabs. | `empulse-next/src/app/whitepaper/**` | `/whitepaper` renders cleanly. |
-| D8 | Deploy demo | Deploy Next app to Vercel with direct env values. | Vercel project settings | Demo URL live and stable. |
+```bash
+cd empulse-next
+npm install
+npm run dev          # Starts at http://localhost:3000
+```
 
-### Phase 1 DoD (All Must Pass)
-1. Demo URL loads landing and whitepaper.
-2. Login works with seeded accounts.
-3. Employee can send vote, see sent/received, redeem reward.
-4. Admin can view users, orders, analytics.
+### Database Setup
+```bash
+npx prisma generate          # Generate Prisma client
+npx prisma db push            # Push schema to database
+npx prisma db seed             # Seed demo data
+```
 
-## Phase 2 (Production Hardening After Demo)
-| ID | Task | Steps | Files | Definition of Done |
-| --- | --- | --- | --- | --- |
-| P1 | Remove debug endpoints | Delete or fully lock `/api/debug/*` and `/api/env-check`. | `empulse-next/src/app/api/debug/**`, `empulse-next/src/app/api/env-check/route.ts` | No public debug access. |
-| P2 | Secret management | Rotate secrets and enforce required envs on boot. | `.env`, `empulse-next/src/lib/auth.ts` | App fails fast if secrets missing. |
-| P3 | Voucher/order integrity | Normalize voucher relations and ensure refund/rollback. | `empulse-next/prisma/schema.prisma`, order APIs | Orders never leave inventory inconsistent. |
-| P4 | Logging and monitoring | Add error logging and structured logs. | API routes | Errors are visible and traceable. |
+### Demo Accounts (Seeded)
 
-## Phase 3 (Cleanup)
-| ID | Task | Steps | Files | Definition of Done |
-| --- | --- | --- | --- | --- |
-| C1 | Archive or remove legacy stacks | Remove or move `backend/` and `frontend/` out of primary flow. | Repo root | Only Next.js remains as active stack. |
-| C2 | Single schema source | Remove duplicate schemas and document source of truth. | `empulse-next/prisma/schema.prisma` | One schema, one migration path. |
-| C3 | Docs update | Update README and deployment notes. | `README.md` | Docs reflect Next-only architecture. |
+| Role | Email | Password |
+|------|-------|----------|
+| Super Admin | admin@empulse.com | password123 |
+| HR Admin (VN) | hr.vn@empulse.com | password123 |
+| HR Admin (CZ) | hr.cz@empulse.com | password123 |
+| Employee (VN) | nguyen.van.a@empulse.com | password123 |
+| Employee (CZ) | jan.novak@empulse.com | password123 |
+| HR Admin | hr.admin@empulse.com | password123 |
 
-## Phase 4 (Optional Enhancements)
-- Add caching for catalog and analytics.
-- Improve UI polish and animations.
-- Add CI for lint and smoke tests.
+---
 
-## Demo Accounts (Seeded)
-- Admin: `admin@empulse.com` / `password123`
-- User: `nguyen.van.a@empulse.com` / `password123`
+## Environment Variables
 
-## Quick Start (Demo)
-1. Install deps: `npm install` in `empulse-next`.
-2. Seed DB: `npm run seed`.
-3. Run dev: `npm run dev`.
-4. Deploy to Vercel: connect repo and set envs directly.
+### Required
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `DATABASE_URL` | PostgreSQL connection string (pooled) | `postgresql://...?pgbouncer=true` |
+| `DIRECT_URL` | Direct PostgreSQL connection (for migrations) | `postgresql://...` |
+| `JWT_SECRET` | Secret for JWT signing (min 32 chars) | `your-secure-random-string` |
+| `CRON_SECRET` | Auth token for Vercel cron endpoints | `your-cron-secret` |
+
+### Optional
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `RESEND_API_KEY` | Resend email service API key | *(emails disabled if not set)* |
+| `EMAIL_FROM` | Sender email address | `noreply@empulse.embedit.com` |
+| `SLACK_WEBHOOK_URL` | Slack incoming webhook for vote notifications | *(Slack disabled if not set)* |
+| `ENABLE_DEBUG_ENDPOINTS` | Enable debug API routes (set to `true`) | `false` |
+| `NODE_ENV` | Runtime environment | `development` |
+
+### Production Requirements
+- `JWT_SECRET` must be set (app throws error if using fallback in production)
+- `CRON_SECRET` must be set for cron job authentication
+- `DATABASE_URL` must include `?pgbouncer=true` for Supabase Transaction Pooler
+
+---
+
+## Deployment (Vercel)
+
+### Initial Setup
+1. Connect `matt-dinh13/empulse` repo to Vercel
+2. Set root directory to `empulse-next`
+3. Add all required environment variables in Vercel project settings
+4. Deploy
+
+### Cron Jobs (Vercel Cron)
+
+Configured in `empulse-next/vercel.json`. All endpoints require `Authorization: Bearer <CRON_SECRET>`.
+
+| Job | Schedule | Endpoint | Description |
+|-----|----------|----------|-------------|
+| Quota Reset | `0 0 1 * *` | `/api/cron/quota-reset` | Reset monthly voting quotas |
+| Quarterly Reset | `0 23 28-31 3,6,9,12 *` | `/api/cron/quarterly-reset` | Reset reward wallets end of quarter |
+| Quarterly Warning | `0 9 * * *` | `/api/cron/quarterly-warning` | Email warnings before expiry |
+| FIFO Processor | `*/5 * * * *` | `/api/cron/fifo-processor` | Process backorder queue |
+| SLA Checker | `0 9 * * *` | `/api/cron/sla-checker` | Alert on overdue CZ orders |
+| Voucher Cleanup | `0 1 * * *` | `/api/cron/voucher-cleanup` | Mark expired vouchers |
+
+### Manual Cron Trigger (for testing)
+```bash
+curl -H "Authorization: Bearer YOUR_CRON_SECRET" https://your-app.vercel.app/api/cron/quota-reset
+```
+
+---
+
+## Key Operational Procedures
+
+### Adding New Users
+1. Admin Portal → Users & Teams → use the admin UI
+2. Or bulk via `prisma/seed.js` for initial setup
+
+### Managing Rewards Catalog
+- **VN (Digital Vouchers)**: Admin Portal → Reward Catalog → Add items with `digital_voucher` type. Upload voucher codes via the catalog management UI.
+- **CZ (Physical Items)**: Admin Portal → Reward Catalog → Add items with `physical_item` type. Set stock quantities.
+
+### Order Approval Flow (CZ)
+1. Employee redeems item → status: `PENDING_APPROVAL`
+2. HR Admin → Admin Portal → Order Approvals → Approve/Reject
+3. Approved orders → status: `APPROVED` → mark `COMPLETED` after delivery
+4. Rejected orders → points automatically refunded
+
+### Reviewing Flagged Votes
+- Admin Portal → Flagged Votes
+- Shows reciprocal voting patterns (A votes B, B votes A in same month)
+- Review and investigate as needed
+
+### CSV Data Export
+- Admin Portal → Analytics → Export buttons
+- Available exports: Votes, Redemptions, Engagement
+- Supports date range filtering via query parameters
+
+---
 
 ## Smoke Test Checklist
-1. Login as admin, open admin users list.
-2. Login as user, send vote to another user.
-3. Check quota decrement and points increment.
-4. Redeem catalog item and see order status.
-5. Open `/whitepaper` and verify all tabs.
 
-## Risks and Mitigations
-- Public demo with debug endpoints: lock or remove them.
-- Seed mismatch breaks UI: fix enum values first.
-- Role mismatch breaks admin access: standardize roles.
+After deployment or major changes, verify:
 
-## Handoff Notes
-- Follow Phase 1 tasks in order for demo stability.
-- Do not modify legacy stacks during demo unless needed.
+1. **Landing page** loads at `/` with all sections
+2. **Login** works with demo accounts
+3. **Employee flow**:
+   - Dashboard shows wallets and recognition feed
+   - Send Vote form works (select user, message, value tags)
+   - Votes Received/Sent pages load with data
+   - Leaderboard shows rankings
+   - Catalog loads and redemption modal works
+   - My Orders shows order history
+   - Notifications panel shows unread count
+4. **Manager flow**:
+   - My Team page loads (only for users with subordinates)
+5. **Admin flow**:
+   - Analytics dashboard loads with stats, charts, regional breakdown
+   - Users & Teams management works
+   - Order Approvals shows pending orders
+   - Reward Catalog CRUD works
+   - Flagged Votes page loads
+   - System Settings loads (super_admin only)
+   - CSV exports download correctly
+6. **Mobile**: Hamburger menu opens/closes sidebar on small screens
+7. **Health check**: `GET /api/health` returns 200
+
+---
+
+## Architecture Quick Reference
+
+```
+empulse-next/
+├── prisma/schema.prisma          # Database schema (source of truth)
+├── vercel.json                   # Cron job configuration
+├── public/manifest.json          # PWA manifest
+├── src/
+│   ├── middleware.ts              # Route protection (JWT from cookies)
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── auth/             # Login, register, me, logout
+│   │   │   ├── votes/            # Send/list votes
+│   │   │   ├── feed/             # Recognition feed
+│   │   │   ├── notifications/    # In-app notifications
+│   │   │   ├── manager/team/     # Manager team view
+│   │   │   ├── admin/            # Admin APIs (analytics, users, orders, catalog, settings, flagged-votes, export)
+│   │   │   └── cron/             # 6 scheduled job endpoints
+│   │   ├── dashboard/            # Employee pages
+│   │   │   ├── admin/            # Admin portal (nested layout with own sidebar)
+│   │   │   └── my-team/          # Manager team page
+│   │   └── login/                # Login page
+│   ├── components/               # Sidebar, Toast, Providers
+│   └── lib/                      # prisma, auth, validations, rateLimit, email, slack, cron, logger, memoryCache
+```
+
+### Security Layers
+1. **Middleware** (`middleware.ts`): Validates JWT from httpOnly cookies on all `/dashboard` and `/api` routes
+2. **Rate Limiting** (`lib/rateLimit.ts`): Token bucket per endpoint (login: 5/15min, votes: 10/min)
+3. **Zod Validation** (`lib/validations.ts`): Schema validation on all API inputs
+4. **Cron Auth** (`lib/cron.ts`): Bearer token check for scheduled job endpoints
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+| Problem | Cause | Fix |
+|---------|-------|-----|
+| 500 on all API routes | Missing `DATABASE_URL` | Set env var with `?pgbouncer=true` |
+| Login returns 401 | JWT_SECRET mismatch between deploys | Ensure same `JWT_SECRET` across all environments |
+| Cron jobs return 401 | Missing/wrong `CRON_SECRET` | Check Vercel env vars match `vercel.json` |
+| Emails not sending | Missing `RESEND_API_KEY` | Add key from Resend dashboard |
+| Slack notifications silent | Missing `SLACK_WEBHOOK_URL` | Optional — add webhook URL from Slack app |
+| Prisma errors after schema change | Client out of sync | Run `npx prisma generate` then redeploy |
+
+### Logs
+- **Vercel**: Function logs in Vercel dashboard → Deployments → Functions tab
+- **Structured logs**: All API errors log via `lib/logger.ts` with `userId`, `action`, and stack traces in development
+
+---
+
+## Services & Dependencies
+
+| Service | Purpose | Dashboard |
+|---------|---------|-----------|
+| **Vercel** | Hosting + cron jobs | vercel.com |
+| **Supabase** | PostgreSQL database | supabase.com |
+| **Resend** | Transactional emails | resend.com |
+| **Slack** | Vote notifications (optional) | Incoming webhook config |
+
+---
+
+*For full system documentation, business logic, and API reference, see [CONTEXT.md](./CONTEXT.md).*
+*For development history, see [auditlog.md](./auditlog.md).*
