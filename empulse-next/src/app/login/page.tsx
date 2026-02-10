@@ -105,6 +105,38 @@ export default function LoginPage() {
                     </button>
 
                 </form>
+
+                <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                    <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)', textAlign: 'center', marginBottom: '0.75rem' }}>
+                        Quick demo access
+                    </p>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <button
+                            className="btn"
+                            style={{ flex: 1, fontSize: '0.8rem', background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}
+                            disabled={loading}
+                            onClick={() => { setEmail('admin@empulse.com'); setPassword('password123'); }}
+                        >
+                            Admin
+                        </button>
+                        <button
+                            className="btn"
+                            style={{ flex: 1, fontSize: '0.8rem', background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}
+                            disabled={loading}
+                            onClick={() => { setEmail('nguyen@empulse.com'); setPassword('password123'); }}
+                        >
+                            Employee
+                        </button>
+                        <button
+                            className="btn"
+                            style={{ flex: 1, fontSize: '0.8rem', background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}
+                            disabled={loading}
+                            onClick={() => { setEmail('petra@empulse.com'); setPassword('password123'); }}
+                        >
+                            Manager
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     )
