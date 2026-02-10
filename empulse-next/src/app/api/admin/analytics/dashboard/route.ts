@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
 
         // Regional breakdown
         const regionVotes = await prisma.$queryRaw<{ regionId: number; code: string; name: string; voteCount: bigint }[]>`
-            SELECT r.id as "regionId", r.code, r.name, COUNT(v.id)::bigint as "voteCount"
+            SELECT r.id as "regionId", r.code, r.name, COUNT(v.id) as "voteCount"
             FROM regions r
             LEFT JOIN users u ON u.region_id = r.id
             LEFT JOIN votes v ON v.sender_id = u.id
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
         `
 
         const regionRedemptions = await prisma.$queryRaw<{ regionId: number; code: string; totalSpent: bigint }[]>`
-            SELECT r.id as "regionId", r.code, COALESCE(SUM(o.points_spent), 0)::bigint as "totalSpent"
+            SELECT r.id as "regionId", r.code, COALESCE(SUM(o.points_spent), 0) as "totalSpent"
             FROM regions r
             LEFT JOIN users u ON u.region_id = r.id
             LEFT JOIN redemption_orders o ON o.user_id = u.id AND o.status IN ('APPROVED', 'COMPLETED')
@@ -176,6 +176,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(payload, { headers: cacheHeaders })
     } catch (error) {
         console.error('Analytics error:', error)
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+        const message = error instanceof Error ? error.message : 'Unknown error'
+        return NextResponse.json({ error: 'Internal Server Error', details: message }, { status: 500 })
     }
 }
