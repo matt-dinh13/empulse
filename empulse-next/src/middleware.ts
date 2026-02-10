@@ -4,7 +4,7 @@ import { jwtVerify } from 'jose'
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret')
 
 const PUBLIC_PATHS = ['/', '/login', '/whitepaper']
-const PUBLIC_API_PATHS = ['/api/auth/', '/api/health', '/api/ping']
+const PUBLIC_API_PATHS = ['/api/auth/', '/api/health', '/api/ping', '/api/cron/']
 const ADMIN_ROLES = ['super_admin', 'hr_admin', 'admin']
 
 export async function middleware(request: NextRequest) {
