@@ -176,7 +176,6 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(payload, { headers: cacheHeaders })
     } catch (error) {
         console.error('Analytics error:', error)
-        const message = error instanceof Error ? error.message : 'Unknown error'
-        return NextResponse.json({ error: 'Internal Server Error', details: message }, { status: 500 })
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }
