@@ -12,6 +12,12 @@ interface User {
     team?: { name: string }
 }
 
+interface ValueTag {
+    id: number
+    name: string
+    emoji?: string
+}
+
 interface UiUser {
     fullName?: string
     role?: string
@@ -26,6 +32,8 @@ export default function SendVotePage() {
     const [success, setSuccess] = useState('')
     const [search, setSearch] = useState('')
     const [uiUser, setUiUser] = useState<UiUser | null>(null)
+    const [valueTags, setValueTags] = useState<ValueTag[]>([])
+    const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
     const router = useRouter()
 
     useEffect(() => {
@@ -45,9 +53,30 @@ export default function SendVotePage() {
             if (storedUser) setUiUser(storedUser as UiUser)
 
             fetchUsers()
+            fetchValueTags()
         }
         checkAuth()
     }, [router])
+
+    const fetchValueTags = async () => {
+        try {
+            const res = await fetch('/api/value-tags', { credentials: 'include' })
+            if (res.ok) {
+                const data = await res.json()
+                setValueTags(data.tags || data.valueTags || data)
+            }
+        } catch (err) {
+            console.error('Failed to fetch value tags:', err)
+        }
+    }
+
+    const toggleTagSelection = (tagId: number) => {
+        setSelectedTagIds(prev =>
+            prev.includes(tagId)
+                ? prev.filter(id => id !== tagId)
+                : [...prev, tagId]
+        )
+    }
 
     const fetchUsers = async () => {
         try {
@@ -85,7 +114,7 @@ export default function SendVotePage() {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({ receiverId: selectedUser, message })
+                body: JSON.stringify({ receiverId: selectedUser, message, valueTagIds: selectedTagIds })
             })
 
             const data = await res.json()
@@ -97,6 +126,7 @@ export default function SendVotePage() {
             setSuccess('Vote sent successfully! 🎉')
             setSelectedUser(null)
             setMessage('')
+            setSelectedTagIds([])
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to send vote')
         } finally {
@@ -162,6 +192,40 @@ export default function SendVotePage() {
                                 ))}
                             </div>
                         </div>
+
+                        {valueTags.length > 0 && (
+                            <div className="form-group">
+                                <label className="form-label">Value Tags</label>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-sm)' }}>
+                                    {valueTags.map(tag => (
+                                        <button
+                                            key={tag.id}
+                                            type="button"
+                                            onClick={() => toggleTagSelection(tag.id)}
+                                            style={{
+                                                padding: 'var(--spacing-xs) var(--spacing-md)',
+                                                borderRadius: 'var(--radius-full, 9999px)',
+                                                border: selectedTagIds.includes(tag.id)
+                                                    ? '2px solid var(--color-primary)'
+                                                    : '1px solid var(--color-border)',
+                                                background: selectedTagIds.includes(tag.id)
+                                                    ? 'var(--color-accent-light)'
+                                                    : 'var(--color-bg-subtle)',
+                                                color: selectedTagIds.includes(tag.id)
+                                                    ? 'var(--color-primary)'
+                                                    : 'var(--color-text)',
+                                                fontWeight: selectedTagIds.includes(tag.id) ? 600 : 400,
+                                                cursor: 'pointer',
+                                                fontSize: '0.875rem',
+                                                transition: 'all 0.15s ease',
+                                            }}
+                                        >
+                                            {tag.emoji ? `${tag.emoji} ` : ''}{tag.name}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         <div className="form-group">
                             <label className="form-label">

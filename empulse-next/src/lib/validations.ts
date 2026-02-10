@@ -22,6 +22,7 @@ export const registerSchema = z.object({
 export const voteSchema = z.object({
     receiverId: z.number().int().positive(),
     message: z.string().min(20).max(500),
+    valueTagIds: z.array(z.number().int().positive()).optional(),
 })
 
 // --- Orders ---

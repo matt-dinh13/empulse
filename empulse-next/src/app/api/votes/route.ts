@@ -4,6 +4,7 @@ import { authenticateRequest } from '@/lib/auth'
 import { logger } from '@/lib/logger'
 import { voteSchema } from '@/lib/validations'
 import { rateLimit } from '@/lib/rateLimit'
+import { createNotification } from '@/lib/notifications'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -93,6 +94,7 @@ export async function GET(request: NextRequest) {
                 include: {
                     sender: { select: { id: true, fullName: true, email: true, team: { select: { name: true } } } },
                     receiver: { select: { id: true, fullName: true, email: true, team: { select: { name: true } } } },
+                    valueTags: { include: { valueTag: true } },
                 },
                 orderBy: { createdAt: 'desc' },
                 skip,
@@ -137,7 +139,7 @@ export async function POST(request: NextRequest) {
         if (!parsed.success) {
             return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
         }
-        const { receiverId, message } = parsed.data
+        const { receiverId, message, valueTagIds } = parsed.data
         if (receiverId === senderId) {
             return NextResponse.json({ error: 'Cannot vote for yourself' }, { status: 400 })
         }
@@ -234,6 +236,27 @@ export async function POST(request: NextRequest) {
                     sender: { select: { id: true, fullName: true } },
                     receiver: { select: { id: true, fullName: true } }
                 }
+            })
+
+            // Create value tag associations
+            if (valueTagIds && valueTagIds.length > 0) {
+                await tx.voteValueTag.createMany({
+                    data: valueTagIds.map(tagId => ({
+                        voteId: vote.id,
+                        valueTagId: tagId,
+                    })),
+                })
+            }
+
+            // Create notification for receiver
+            await tx.inAppNotification.create({
+                data: {
+                    userId: receiverId,
+                    type: 'VOTE_RECEIVED',
+                    title: `${sender.fullName} recognized you!`,
+                    message: message.substring(0, 200),
+                    metadata: { voteId: vote.id, senderId },
+                },
             })
 
             // Update Vote Tracking (Person)

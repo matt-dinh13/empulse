@@ -31,6 +31,7 @@ export default function CatalogPage() {
     const [success, setSuccess] = useState('')
     const [error, setError] = useState('')
     const [uiUser, setUiUser] = useState<UiUser | null>(null)
+    const [confirmItem, setConfirmItem] = useState<CatalogItem | null>(null)
     const router = useRouter()
 
     useEffect(() => {
@@ -79,6 +80,7 @@ export default function CatalogPage() {
     }
 
     const handleRedeem = async (itemId: number) => {
+        setConfirmItem(null)
         setOrdering(itemId)
         setError('')
         setSuccess('')
@@ -156,13 +158,72 @@ export default function CatalogPage() {
                                     <button
                                         className="btn btn-primary"
                                         disabled={ordering === item.id || (wallet?.balance || 0) < item.pointsRequired}
-                                        onClick={() => handleRedeem(item.id)}
+                                        onClick={() => setConfirmItem(item)}
                                     >
                                         {ordering === item.id ? 'Processing...' : 'Redeem'}
                                     </button>
                                 </div>
                             </div>
                         ))}
+                    </div>
+                )}
+
+                {confirmItem && (
+                    <div
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            background: 'rgba(0, 0, 0, 0.5)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 1000,
+                        }}
+                        onClick={() => setConfirmItem(null)}
+                    >
+                        <div
+                            className="card"
+                            style={{
+                                maxWidth: '420px',
+                                width: '90%',
+                                padding: 'var(--spacing-lg)',
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <h3 style={{ marginBottom: 'var(--spacing-md)' }}>Confirm Redemption</h3>
+                            <p style={{ marginBottom: 'var(--spacing-sm)' }}>
+                                <strong>Item:</strong> {confirmItem.name}
+                            </p>
+                            <p style={{ marginBottom: 'var(--spacing-sm)' }}>
+                                <strong>Cost:</strong> {confirmItem.pointsRequired} pts
+                            </p>
+                            <p style={{ marginBottom: 'var(--spacing-sm)' }}>
+                                <strong>Current Balance:</strong> {wallet?.balance ?? 0} pts
+                            </p>
+                            <p style={{ marginBottom: 'var(--spacing-lg)' }}>
+                                <strong>Remaining Balance:</strong>{' '}
+                                {(wallet?.balance ?? 0) - confirmItem.pointsRequired} pts
+                            </p>
+                            <div className="flex justify-between" style={{ gap: 'var(--spacing-sm)' }}>
+                                <button
+                                    className="btn"
+                                    style={{ flex: 1 }}
+                                    onClick={() => setConfirmItem(null)}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className="btn btn-primary"
+                                    style={{ flex: 1 }}
+                                    onClick={() => handleRedeem(confirmItem.id)}
+                                >
+                                    Confirm
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 )}
             </main>

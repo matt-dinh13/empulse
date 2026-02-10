@@ -257,6 +257,27 @@ async function main() {
 
     console.log('✅ Reward catalog created')
 
+    // ============================================
+    // VALUE TAGS
+    // ============================================
+    const valueTags = [
+        { name: 'Helpful', icon: '🤝' },
+        { name: 'Innovative', icon: '💡' },
+        { name: 'Team Player', icon: '🏆' },
+        { name: 'Goes Above & Beyond', icon: '🚀' },
+        { name: 'Great Communication', icon: '💬' },
+    ]
+
+    for (const tag of valueTags) {
+        await prisma.valueTag.upsert({
+            where: { name: tag.name },
+            update: {},
+            create: tag,
+        })
+    }
+
+    console.log('✅ Value tags created')
+
     console.log('🎉 Seed completed successfully!')
 }
 

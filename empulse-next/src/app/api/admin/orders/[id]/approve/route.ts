@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
+import { createNotification } from '@/lib/notifications'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -32,10 +33,17 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                 approvedBy: admin.id,
                 approvedAt: new Date(),
                 adminNotes: notes || null
-            }
+            },
+            include: { catalog: { select: { name: true } } },
         })
 
-        // TODO: Trigger Email Notification here
+        await createNotification(
+            order.userId,
+            'ORDER_APPROVED',
+            'Order Approved',
+            `Your order for "${updatedOrder.catalog.name}" has been approved!`,
+            { orderId }
+        )
 
         return NextResponse.json({ order: updatedOrder, message: 'Order approved successfully' })
     } catch (error) {

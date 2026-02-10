@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -23,6 +24,26 @@ export default function Sidebar({ user }: SidebarProps) {
 
     const isActive = (path: string) => pathname === path ? 'active' : ''
 
+    const [unreadCount, setUnreadCount] = useState(0)
+
+    useEffect(() => {
+        const fetchUnreadCount = async () => {
+            try {
+                const res = await fetch('/api/notifications/count', { credentials: 'include' })
+                if (res.ok) {
+                    const data = await res.json()
+                    setUnreadCount(data.unreadCount ?? 0)
+                }
+            } catch {
+                // silently fail
+            }
+        }
+
+        fetchUnreadCount()
+        const interval = setInterval(fetchUnreadCount, 30000)
+        return () => clearInterval(interval)
+    }, [])
+
     return (
         <aside className="sidebar">
             <div className="sidebar-logo-text" style={{ fontSize: '1.5rem', fontWeight: 800, color: 'white', padding: '0 0.5rem', marginBottom: '1rem', display: 'inline-block' }}>
@@ -30,6 +51,26 @@ export default function Sidebar({ user }: SidebarProps) {
             </div>
 
             <nav className="sidebar-nav">
+                <Link href="/dashboard/notifications" className={`sidebar-link ${isActive('/dashboard/notifications')}`} style={{ position: 'relative' }}>
+                    🔔 Notifications
+                    {unreadCount > 0 && (
+                        <span style={{
+                            marginLeft: '0.5rem',
+                            fontSize: '0.7rem',
+                            fontWeight: 700,
+                            background: '#ef4444',
+                            color: '#fff',
+                            borderRadius: '9999px',
+                            padding: '0.1rem 0.45rem',
+                            minWidth: '1.2rem',
+                            textAlign: 'center',
+                            display: 'inline-block',
+                            lineHeight: '1.3',
+                        }}>
+                            {unreadCount > 99 ? '99+' : unreadCount}
+                        </span>
+                    )}
+                </Link>
                 <Link href="/dashboard" className={`sidebar-link ${isActive('/dashboard')}`}>
                     📊 Dashboard
                 </Link>

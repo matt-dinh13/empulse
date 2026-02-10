@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
+import { createNotification } from '@/lib/notifications'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -59,6 +60,19 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
             // 3. Log Audit? (Optional, skipping for now)
         })
+
+        const catalog = await prisma.rewardCatalog.findUnique({
+            where: { id: order.catalogId },
+            select: { name: true },
+        })
+
+        await createNotification(
+            order.userId,
+            'ORDER_REJECTED',
+            'Order Rejected',
+            `Your order for "${catalog?.name || 'item'}" was rejected. ${reason ? `Reason: ${reason}` : 'Points have been refunded.'}`,
+            { orderId }
+        )
 
         return NextResponse.json({ message: 'Order rejected and points refunded' })
     } catch (error) {

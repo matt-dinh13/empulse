@@ -92,6 +92,7 @@ model User {
   settingsUpdated SystemSetting[]
   auditLogs       AuditLog[]
   notifications   NotificationLog[]
+  inAppNotifications InAppNotification[]
 
   @@index([teamId])
   @@index([managerId])
@@ -149,6 +150,8 @@ model Vote {
 
   sender   User @relation("VotesSent", fields: [senderId], references: [id])
   receiver User @relation("VotesReceived", fields: [receiverId], references: [id])
+
+  valueTags VoteValueTag[]
 
   @@index([senderId])
   @@index([receiverId])
@@ -352,4 +355,53 @@ model ScheduledJobLog {
   createdAt        DateTime  @default(now()) @map("created_at")
 
   @@map("scheduled_job_log")
+}
+
+// ============================================
+// IN_APP_NOTIFICATIONS: Real-time user alerts
+// ============================================
+model InAppNotification {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  type      String   @db.VarChar(50)
+  title     String   @db.VarChar(255)
+  message   String   @db.Text
+  isRead    Boolean  @default(false) @map("is_read")
+  metadata  Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@index([createdAt])
+  @@map("in_app_notifications")
+}
+
+// ============================================
+// VALUE_TAGS: Company values for recognition
+// ============================================
+model ValueTag {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(50)
+  icon      String   @default("⭐")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  votes VoteValueTag[]
+
+  @@map("value_tags")
+}
+
+// ============================================
+// VOTE_VALUE_TAGS: Junction table for votes <-> tags
+// ============================================
+model VoteValueTag {
+  voteId     Int @map("vote_id")
+  valueTagId Int @map("value_tag_id")
+
+  vote     Vote     @relation(fields: [voteId], references: [id], onDelete: Cascade)
+  valueTag ValueTag @relation(fields: [valueTagId], references: [id])
+
+  @@id([voteId, valueTagId])
+  @@map("vote_value_tags")
 }
