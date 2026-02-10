@@ -48,7 +48,7 @@ npx prisma db seed             # Seed demo data
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `DATABASE_URL` | PostgreSQL connection string (pooled) | `postgresql://...?pgbouncer=true` |
+| `DATABASE_URL` | PostgreSQL connection string (session pooler) | `postgresql://...` |
 | `DIRECT_URL` | Direct PostgreSQL connection (for migrations) | `postgresql://...` |
 | `JWT_SECRET` | Secret for JWT signing (min 32 chars) | `your-secure-random-string` |
 | `CRON_SECRET` | Auth token for Vercel cron endpoints | `your-cron-secret` |
@@ -66,7 +66,7 @@ npx prisma db seed             # Seed demo data
 ### Production Requirements
 - `JWT_SECRET` must be set (app throws error if using fallback in production)
 - `CRON_SECRET` must be set for cron job authentication
-- `DATABASE_URL` must include `?pgbouncer=true` for Supabase Transaction Pooler
+- `DATABASE_URL` should use Supabase session pooler (port 5432), NOT transaction pooler (port 6543) — Prisma interactive transactions require session mode
 
 ---
 
@@ -140,6 +140,7 @@ After deployment or major changes, verify:
    - Catalog loads and redemption modal works
    - My Orders shows order history
    - Notifications panel shows unread count
+   - Settings page allows email preference toggle
 4. **Manager flow**:
    - My Team page loads (only for users with subordinates)
 5. **Admin flow**:
@@ -162,6 +163,7 @@ empulse-next/
 ├── prisma/schema.prisma          # Database schema (source of truth)
 ├── vercel.json                   # Cron job configuration
 ├── public/manifest.json          # PWA manifest
+├── public/sw.js                  # Service worker (offline caching)
 ├── src/
 │   ├── middleware.ts              # Route protection (JWT from cookies)
 │   ├── app/
@@ -170,10 +172,11 @@ empulse-next/
 │   │   │   ├── votes/            # Send/list votes
 │   │   │   ├── feed/             # Recognition feed
 │   │   │   ├── notifications/    # In-app notifications
+│   │   │   ├── user/preferences/ # Email notification preferences
 │   │   │   ├── manager/team/     # Manager team view
 │   │   │   ├── admin/            # Admin APIs (analytics, users, orders, catalog, settings, flagged-votes, export)
 │   │   │   └── cron/             # 6 scheduled job endpoints
-│   │   ├── dashboard/            # Employee pages
+│   │   ├── dashboard/            # Employee pages (+ settings for email preferences)
 │   │   │   ├── admin/            # Admin portal (nested layout with own sidebar)
 │   │   │   └── my-team/          # Manager team page
 │   │   └── login/                # Login page
@@ -195,7 +198,8 @@ empulse-next/
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
-| 500 on all API routes | Missing `DATABASE_URL` | Set env var with `?pgbouncer=true` |
+| 500 on all API routes | Missing `DATABASE_URL` | Set env var in Vercel |
+| 500 on vote send | PgBouncer transaction mode (port 6543) | Use session pooler (port 5432) instead |
 | Login returns 401 | JWT_SECRET mismatch between deploys | Ensure same `JWT_SECRET` across all environments |
 | Cron jobs return 401 | Missing/wrong `CRON_SECRET` | Check Vercel env vars match `vercel.json` |
 | Emails not sending | Missing `RESEND_API_KEY` | Add key from Resend dashboard |

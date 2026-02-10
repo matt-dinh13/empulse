@@ -69,7 +69,8 @@ HR sets expected delivery date when approving.
 ### 5. Notifications
 
 - **In-App**: Real-time notification panel with unread badge (sidebar)
-- **Email**: Via Resend (vote received, order updates)
+- **Email**: Via Resend (vote received, order updates) with branded HTML templates
+- **Email Preferences**: Per-user opt-in/opt-out via `/dashboard/settings`
 - **Slack**: Incoming webhook for vote notifications (configurable via `SLACK_WEBHOOK_URL`)
 - **Warning Emails**: 14, 7, 3, 2, 1 days before quarterly reset
 - **Low Stock Alert**: When stock < threshold (default 10)
@@ -179,7 +180,9 @@ HR sets expected delivery date when approving.
 - `GET /api/feed` - Recognition feed
 - `GET /api/notifications` - In-app notifications
 - `GET /api/notifications/count` - Unread count
-- `PATCH /api/notifications/[id]/read` - Mark as read
+- `PATCH /api/notifications` - Mark as read
+- `GET /api/user/preferences` - Email notification preference
+- `PATCH /api/user/preferences` - Update email preference
 
 ### Manager Features
 - `GET /api/manager/team` - Team members, stats, and feed
@@ -269,8 +272,11 @@ All cron endpoints are protected by `CRON_SECRET` authorization header.
 4. **404 page** (branded not-found)
 5. **Mobile responsive** sidebar (hamburger menu on < 768px)
 6. **PWA manifest** (standalone mode, installable)
-7. **Confirmation modals** for destructive actions (catalog redemption)
-8. **CSV export** (votes, redemptions, engagement data)
+7. **Service worker** (offline caching: network-first for API, cache-first for assets)
+8. **Confirmation modals** for destructive actions (catalog redemption)
+9. **CSV export** (votes, redemptions, engagement data)
+10. **Email preferences** (per-user opt-in/opt-out via Settings page)
+11. **Branded email templates** (em/pulse header, EmbedIT footer)
 
 ---
 
@@ -285,13 +291,14 @@ EmPulse/
 │
 ├── empulse-next/           # Next.js full-stack app (source of truth)
 │   ├── prisma/             # Schema + seed
-│   ├── public/             # Static assets + manifest.json
+│   ├── public/             # Static assets + manifest.json + sw.js
 │   ├── src/
 │   │   ├── app/
 │   │   │   ├── api/        # API routes (auth, votes, admin, cron, etc.)
 │   │   │   ├── dashboard/  # Employee dashboard pages
 │   │   │   │   ├── admin/  # Admin portal (analytics, users, orders, catalog, settings, flagged-votes)
 │   │   │   │   ├── my-team/ # Manager team view
+│   │   │   │   ├── settings/ # User email preferences
 │   │   │   │   └── ...    # votes, catalog, orders, leaderboard, notifications
 │   │   │   ├── login/
 │   │   │   ├── page.tsx    # Landing page
@@ -319,7 +326,7 @@ All 6 phases of the production readiness plan have been implemented:
 | 3 | Engagement Features (feed, notifications, email, value tags) | `af208b7` |
 | 4 | UX Polish (toast, skeletons, error boundaries, 404) | `0e91694` |
 | 5 | Analytics & Reporting (dashboard, CSV export, manager team view) | `656aebb` |
-| 6 | Integrations (Slack webhook, PWA, mobile sidebar, flagged votes) | `9561614` |
+| 6 | Integrations (Slack webhook, PWA, service worker, email preferences, branded templates) | `7bb09ee` |
 
 ---
 

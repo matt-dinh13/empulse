@@ -77,7 +77,13 @@ EmPulse is an internal Peer-to-Peer (P2P) reward and recognition platform design
 -   Dedicated notifications page with mark-read (individual + bulk).
 -   Paginated, sorted by unread-first then newest.
 
-### 5.7 Admin Portal
+### 5.7 Email Notifications
+-   Branded email templates with em/pulse header and EmbedIT footer.
+-   Per-user email notification preference (opt-in by default).
+-   Settings page at `/dashboard/settings` for users to manage preference.
+-   Skipped emails logged in NotificationLog with status "skipped".
+
+### 5.8 Admin Portal
 -   **Analytics Dashboard:** User count, vote trends, active voter %, regional breakdown, value tag distribution, popular catalog items.
 -   **Order Management:** Approve/Reject/Complete redemption requests with notifications.
 -   **User Management:** View/edit users, roles, regions, teams.
@@ -88,7 +94,8 @@ EmPulse is an internal Peer-to-Peer (P2P) reward and recognition platform design
 
 ## 6. Non-Functional Requirements
 -   **Branding:** Strong "em/pulse" identity; Dark mode aesthetic with neon green (#00D264) accent.
--   **Platform:** Web-based (Responsive), mobile-friendly with viewport meta.
+-   **Platform:** Web-based (Responsive), mobile-friendly with viewport meta, PWA-enabled with service worker.
+-   **Offline:** Service worker provides offline caching (network-first for API, cache-first for assets).
 -   **Performance:** <1s load time for dashboard feed; API response caching (30s TTL).
 -   **Security:** JWT authentication, role-based access control (RBAC), input validation (Zod).
 -   **Multi-Region:** VN + CZ with region-specific catalogs and analytics.

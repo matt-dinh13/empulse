@@ -41,6 +41,10 @@ EmPulse is a P2P employee recognition and rewards platform deployed at [empulse-
 ### G. My Orders
 - Order history with status tracking (Pending, Approved, Rejected, Completed).
 
+### H. Settings
+- Email notification preference toggle (opt-in/opt-out).
+- Accessible from sidebar via "Settings" link.
+
 ## 3. Admin Features
 
 ### A. Analytics Dashboard
@@ -87,6 +91,7 @@ EmPulse is a P2P employee recognition and rewards platform deployed at [empulse-
 | /dashboard/votes/received | Vote history (received) |
 | /dashboard/votes/sent | Vote history (sent) |
 | /dashboard/orders | Personal order history |
+| /dashboard/settings | Email notification preferences |
 | /dashboard/my-team | Manager team view |
 | /dashboard/admin/* | Admin portal (7 sub-pages) |
 | /whitepaper | Public blueprint page |
@@ -99,4 +104,7 @@ EmPulse is a P2P employee recognition and rewards platform deployed at [empulse-
 - [x] Leaderboard tabs (receivers/senders/teams) operational
 - [x] Redemption confirmation modal prevents accidental orders
 - [x] CSV exports working for all three types
-- [x] 23/23 API endpoints passing smoke test
+- [x] 27/27 API endpoints passing smoke test
+- [x] Service worker registered for offline caching
+- [x] Branded email templates with em/pulse branding
+- [x] Email notification preferences per user

@@ -32,6 +32,7 @@ graph TD
         Catalog[Rewards Catalog]
         Notifications[Notifications]
         VoteHistory[Votes Received/Sent]
+        Settings[Settings / Preferences]
         AdminPortal[Admin Portal]
     end
 
@@ -58,6 +59,7 @@ graph TD
 | teamId | Int (FK) | Team reference |
 | managerId | Int (FK, nullable) | Direct manager |
 | isActive | Boolean | Soft delete flag |
+| emailNotifications | Boolean | Email opt-in preference (default: true) |
 
 ### 4.2 Vote
 | Field | Type | Notes |
@@ -183,7 +185,13 @@ graph TD
 | PATCH | /api/notifications | Mark read (ids array or markAllRead) |
 | GET | /api/notifications/count | Get unread count |
 
-### 5.7 Admin
+### 5.7 User Preferences
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | /api/user/preferences | Get email notification preference |
+| PATCH | /api/user/preferences | Update email notification preference |
+
+### 5.8 Admin
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | /api/admin/analytics/dashboard | Full analytics payload |
@@ -202,12 +210,12 @@ graph TD
 | GET | /api/admin/flagged-votes | List flagged votes |
 | GET | /api/admin/export/[type] | CSV export (votes/redemptions/engagement) |
 
-### 5.8 Manager
+### 5.9 Manager
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | /api/manager/team | Get manager's team members |
 
-### 5.9 Infrastructure
+### 5.10 Infrastructure
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | /api/health | Health check + DB connectivity |
