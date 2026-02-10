@@ -5,12 +5,17 @@ import { useRouter } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import { getStoredUser, handleUnauthorized } from '@/lib/clientAuth'
 
+interface ValueTag {
+    valueTag: { id: number; name: string; icon: string }
+}
+
 interface Vote {
     id: number
     message: string
     pointsAwarded: number
     createdAt: string
     sender: { fullName: string; email: string }
+    valueTags?: ValueTag[]
 }
 
 interface UiUser {
@@ -90,6 +95,25 @@ export default function VotesReceivedPage() {
                                     <span className="badge badge-success">+{vote.pointsAwarded} pts</span>
                                 </div>
                                 <p style={{ marginBottom: 'var(--spacing-sm)' }}>{vote.message}</p>
+                                {vote.valueTags && vote.valueTags.length > 0 && (
+                                    <div className="flex gap-sm" style={{ marginBottom: 'var(--spacing-sm)', flexWrap: 'wrap' }}>
+                                        {vote.valueTags.map(vt => (
+                                            <span
+                                                key={vt.valueTag.id}
+                                                style={{
+                                                    fontSize: '0.7rem',
+                                                    padding: '0.15rem 0.5rem',
+                                                    borderRadius: '9999px',
+                                                    background: 'rgba(0,210,100,0.15)',
+                                                    color: '#00D264',
+                                                    border: '1px solid rgba(0,210,100,0.25)',
+                                                }}
+                                            >
+                                                {vt.valueTag.icon} {vt.valueTag.name}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
                                 <p className="text-sm text-muted">
                                     {new Date(vote.createdAt).toLocaleDateString('vi-VN')}
                                 </p>
