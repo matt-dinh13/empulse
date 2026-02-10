@@ -61,23 +61,24 @@ export default function EditCatalogItemPage({ params }: { params: Promise<{ id: 
                 return
             }
             const data = await res.json()
-            if (res.ok) {
+            if (res.ok && data.item) {
                 setFormData({
-                    name: data.item.name,
+                    name: data.item.name || '',
                     description: data.item.description || '',
-                    pointsRequired: data.item.pointsRequired,
-                    rewardType: data.item.rewardType,
+                    pointsRequired: data.item.pointsRequired || 50,
+                    rewardType: data.item.rewardType || 'digital_voucher',
                     icon: data.item.icon || '🎁',
                     displayValue: data.item.displayValue || '',
-                    regionId: String(data.item.regionId),
-                    isActive: data.item.isActive
+                    regionId: data.item.regionId != null ? String(data.item.regionId) : '',
+                    isActive: data.item.isActive ?? true
                 })
             } else {
                 showToast(data.error || 'Item not found', 'error')
                 router.push('/dashboard/admin/catalog')
             }
         } catch (error) {
-            console.error(error)
+            console.error('Failed to load catalog item:', error)
+            showToast('Failed to load item data', 'error')
         } finally {
             setLoading(false)
         }
@@ -206,7 +207,7 @@ export default function EditCatalogItemPage({ params }: { params: Promise<{ id: 
 
                     <div className="form-group">
                         <label className="form-label">Icon</label>
-                        <div className="card p-sm" style={{ background: 'var(--color-bg-base)' }}>
+                        <div className="card p-sm" style={{ background: 'var(--color-surface-hover)' }}>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(40px, 1fr))', gap: '0.5rem' }}>
                                 {Object.values(ICONS_CATEGORY).flat().map(icon => (
                                     <button

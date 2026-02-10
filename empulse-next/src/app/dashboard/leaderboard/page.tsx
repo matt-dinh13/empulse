@@ -126,7 +126,7 @@ export default function LeaderboardPage() {
                     <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead>
-                                <tr style={{ background: 'var(--color-bg-subtle)', borderBottom: '1px solid var(--color-border)' }}>
+                                <tr style={{ background: 'var(--color-surface-hover)', borderBottom: '1px solid var(--color-border)' }}>
                                     <th style={{ padding: 'var(--spacing-md)', textAlign: 'center', width: '80px' }}>Rank</th>
                                     <th style={{ padding: 'var(--spacing-md)', textAlign: 'left' }}>
                                         {type === 'teams' ? 'Team' : 'Employee'}
@@ -159,7 +159,7 @@ export default function LeaderboardPage() {
                                                     <div className="flex items-center gap-md">
                                                         <div style={{
                                                             width: '40px', height: '40px', borderRadius: '50%',
-                                                            background: 'var(--color-bg-subtle)', overflow: 'hidden',
+                                                            background: 'var(--color-surface-hover)', overflow: 'hidden',
                                                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                             fontSize: '1.2rem'
                                                         }}>

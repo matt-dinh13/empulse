@@ -108,7 +108,7 @@ export default function SettingsPage() {
                                 cursor: 'pointer',
                                 padding: 'var(--spacing-md)',
                                 borderRadius: 'var(--radius-md)',
-                                background: 'var(--color-bg-subtle)',
+                                background: 'var(--color-surface-hover)',
                             }}
                         >
                             <input

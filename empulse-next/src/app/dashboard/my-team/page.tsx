@@ -132,7 +132,7 @@ export default function MyTeamPage() {
                             </div>
                             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                 <thead>
-                                    <tr style={{ background: 'var(--color-bg-subtle, var(--color-surface-hover))', borderBottom: '1px solid var(--color-border)' }}>
+                                    <tr style={{ background: 'var(--color-surface-hover)', borderBottom: '1px solid var(--color-border)' }}>
                                         <th style={{ padding: 'var(--spacing-md)', textAlign: 'left' }}>Employee</th>
                                         <th style={{ padding: 'var(--spacing-md)', textAlign: 'left' }}>Team</th>
                                         <th style={{ padding: 'var(--spacing-md)', textAlign: 'center' }}>Sent</th>

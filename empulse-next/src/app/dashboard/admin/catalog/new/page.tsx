@@ -165,7 +165,7 @@ export default function NewCatalogItemPage() {
 
                     <div className="form-group">
                         <label className="form-label">Icon</label>
-                        <div className="card p-sm" style={{ background: 'var(--color-bg-base)' }}>
+                        <div className="card p-sm" style={{ background: 'var(--color-surface-hover)' }}>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(40px, 1fr))', gap: '0.5rem' }}>
                                 {Object.values(ICONS_CATEGORY).flat().map(icon => (
                                     <button

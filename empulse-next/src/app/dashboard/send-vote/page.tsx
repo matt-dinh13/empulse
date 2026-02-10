@@ -181,7 +181,7 @@ export default function SendVotePage() {
                                         style={{
                                             padding: 'var(--spacing-sm) var(--spacing-md)',
                                             cursor: 'pointer',
-                                            background: selectedUser === user.id ? 'var(--color-accent-light)' : 'transparent',
+                                            background: selectedUser === user.id ? 'var(--color-success-light)' : 'transparent',
                                             borderBottom: '1px solid var(--color-border-light)'
                                         }}
                                     >
@@ -208,8 +208,8 @@ export default function SendVotePage() {
                                                     ? '2px solid var(--color-primary)'
                                                     : '1px solid var(--color-border)',
                                                 background: selectedTagIds.includes(tag.id)
-                                                    ? 'var(--color-accent-light)'
-                                                    : 'var(--color-bg-subtle)',
+                                                    ? 'var(--color-success-light)'
+                                                    : 'var(--color-surface-hover)',
                                                 color: selectedTagIds.includes(tag.id)
                                                     ? 'var(--color-primary)'
                                                     : 'var(--color-text)',
