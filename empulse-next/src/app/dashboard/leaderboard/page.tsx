@@ -27,6 +27,7 @@ interface UiUser {
 export default function LeaderboardPage() {
     const [user, setUser] = useState<UiUser | null>(null)
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
     const [period, setPeriod] = useState<'month' | 'all'>('month')
     const [type, setType] = useState<LeaderboardType>('receivers')
     const [data, setData] = useState<LeaderboardEntry[]>([])
@@ -39,12 +40,19 @@ export default function LeaderboardPage() {
 
     const fetchLeaderboard = async () => {
         setLoading(true)
+        setError(null)
         try {
             const res = await fetch(`/api/leaderboard?period=${period}&type=${type}`)
+            if (!res.ok) {
+                const data = await res.json().catch(() => ({}))
+                setError(data.error || 'Failed to load leaderboard')
+                return
+            }
             const json = await res.json()
             if (json.leaderboard) setData(json.leaderboard)
-        } catch (error) {
-            console.error(error)
+        } catch (err) {
+            console.error(err)
+            setError('Failed to load leaderboard')
         } finally {
             setLoading(false)
         }
@@ -108,6 +116,11 @@ export default function LeaderboardPage() {
 
                 {loading ? (
                     <div className="flex justify-center p-xl"><div className="spinner"></div></div>
+                ) : error ? (
+                    <div className="card text-center">
+                        <p className="text-muted">{error}</p>
+                        <button className="btn btn-outline mt-md" onClick={fetchLeaderboard}>Retry</button>
+                    </div>
                 ) : (
                     <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>

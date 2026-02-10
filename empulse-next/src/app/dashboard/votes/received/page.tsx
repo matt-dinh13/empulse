@@ -27,6 +27,7 @@ export default function VotesReceivedPage() {
     const [user, setUser] = useState<UiUser | null>(null)
     const [votes, setVotes] = useState<Vote[]>([])
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
     const router = useRouter()
 
     useEffect(() => {
@@ -59,12 +60,18 @@ export default function VotesReceivedPage() {
                 handleUnauthorized()
                 return
             }
+            if (!res.ok) {
+                const data = await res.json().catch(() => ({}))
+                setError(data.error || 'Failed to load votes')
+                return
+            }
             const data = await res.json()
             if (res.ok) {
                 setVotes(data.votes)
             }
         } catch (err) {
             console.error('Failed to fetch votes:', err)
+            setError('Failed to load votes')
         } finally {
             setLoading(false)
         }
@@ -82,6 +89,11 @@ export default function VotesReceivedPage() {
 
                 {loading ? (
                     <div className="flex justify-center"><div className="spinner"></div></div>
+                ) : error ? (
+                    <div className="card text-center">
+                        <p className="text-muted">{error}</p>
+                        <button className="btn btn-outline mt-md" onClick={() => { setError(null); setLoading(true); fetchVotes() }}>Retry</button>
+                    </div>
                 ) : votes.length === 0 ? (
                     <div className="card text-center">
                         <p className="text-muted">No votes received yet. Keep up the great work! 💪</p>
