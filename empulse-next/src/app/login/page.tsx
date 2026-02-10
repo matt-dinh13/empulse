@@ -12,8 +12,7 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false)
     const router = useRouter()
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
+    const doLogin = async (loginEmail: string, loginPassword: string) => {
         setError('')
         setLoading(true)
 
@@ -22,7 +21,7 @@ export default function LoginPage() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ email: loginEmail, password: loginPassword }),
             })
 
             const data = await res.json()
@@ -31,9 +30,7 @@ export default function LoginPage() {
                 throw new Error(data.error || 'Login failed')
             }
 
-            // Store user data for display (auth tokens are in httpOnly cookies)
             setStoredUser(data.user)
-
             router.push('/dashboard')
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Login failed. Please try again.'
@@ -41,6 +38,17 @@ export default function LoginPage() {
         } finally {
             setLoading(false)
         }
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        doLogin(email, password)
+    }
+
+    const handleDemoLogin = (demoEmail: string, demoPassword: string) => {
+        setEmail(demoEmail)
+        setPassword(demoPassword)
+        doLogin(demoEmail, demoPassword)
     }
 
     return (
@@ -115,7 +123,7 @@ export default function LoginPage() {
                             className="btn"
                             style={{ flex: 1, fontSize: '0.8rem', background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}
                             disabled={loading}
-                            onClick={() => { setEmail('admin@empulse.com'); setPassword('password123'); }}
+                            onClick={() => handleDemoLogin('admin@empulse.com', 'password123')}
                         >
                             Admin
                         </button>
@@ -123,7 +131,7 @@ export default function LoginPage() {
                             className="btn"
                             style={{ flex: 1, fontSize: '0.8rem', background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}
                             disabled={loading}
-                            onClick={() => { setEmail('nguyen@empulse.com'); setPassword('password123'); }}
+                            onClick={() => handleDemoLogin('nguyen@empulse.com', 'password123')}
                         >
                             Employee
                         </button>
@@ -131,7 +139,7 @@ export default function LoginPage() {
                             className="btn"
                             style={{ flex: 1, fontSize: '0.8rem', background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}
                             disabled={loading}
-                            onClick={() => { setEmail('petra@empulse.com'); setPassword('password123'); }}
+                            onClick={() => handleDemoLogin('petra@empulse.com', 'password123')}
                         >
                             Manager
                         </button>
