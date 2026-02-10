@@ -91,20 +91,20 @@ export async function GET(request: NextRequest) {
         // Regional breakdown
         const regionVotes = await prisma.$queryRaw<{ regionId: number; code: string; name: string; voteCount: bigint }[]>`
             SELECT r.id as "regionId", r.code, r.name, COUNT(v.id)::bigint as "voteCount"
-            FROM "Region" r
-            LEFT JOIN "User" u ON u."regionId" = r.id
-            LEFT JOIN "Vote" v ON v."senderId" = u.id
-            WHERE r."isActive" = true
+            FROM regions r
+            LEFT JOIN users u ON u.region_id = r.id
+            LEFT JOIN votes v ON v.sender_id = u.id
+            WHERE r.is_active = true
             GROUP BY r.id, r.code, r.name
             ORDER BY "voteCount" DESC
         `
 
         const regionRedemptions = await prisma.$queryRaw<{ regionId: number; code: string; totalSpent: bigint }[]>`
-            SELECT r.id as "regionId", r.code, COALESCE(SUM(o."pointsSpent"), 0)::bigint as "totalSpent"
-            FROM "Region" r
-            LEFT JOIN "User" u ON u."regionId" = r.id
-            LEFT JOIN "RedemptionOrder" o ON o."userId" = u.id AND o.status IN ('APPROVED', 'COMPLETED')
-            WHERE r."isActive" = true
+            SELECT r.id as "regionId", r.code, COALESCE(SUM(o.points_spent), 0)::bigint as "totalSpent"
+            FROM regions r
+            LEFT JOIN users u ON u.region_id = r.id
+            LEFT JOIN redemption_orders o ON o.user_id = u.id AND o.status IN ('APPROVED', 'COMPLETED')
+            WHERE r.is_active = true
             GROUP BY r.id, r.code
         `
 
