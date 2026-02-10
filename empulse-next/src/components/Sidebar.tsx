@@ -25,6 +25,7 @@ export default function Sidebar({ user }: SidebarProps) {
     const isActive = (path: string) => pathname === path ? 'active' : ''
 
     const [unreadCount, setUnreadCount] = useState(0)
+    const [hasTeam, setHasTeam] = useState(false)
 
     useEffect(() => {
         const fetchUnreadCount = async () => {
@@ -39,7 +40,17 @@ export default function Sidebar({ user }: SidebarProps) {
             }
         }
 
+        const checkTeam = async () => {
+            try {
+                const res = await fetch('/api/manager/team', { credentials: 'include' })
+                if (res.ok) setHasTeam(true)
+            } catch {
+                // silently fail
+            }
+        }
+
         fetchUnreadCount()
+        checkTeam()
         const interval = setInterval(fetchUnreadCount, 30000)
         return () => clearInterval(interval)
     }, [])
@@ -92,6 +103,12 @@ export default function Sidebar({ user }: SidebarProps) {
                 <Link href="/dashboard/orders" className={`sidebar-link ${isActive('/dashboard/orders')}`}>
                     📦 My Orders
                 </Link>
+
+                {hasTeam && (
+                    <Link href="/dashboard/my-team" className={`sidebar-link ${isActive('/dashboard/my-team')}`}>
+                        👥 My Team
+                    </Link>
+                )}
 
                 {(user?.role === 'super_admin' || user?.role === 'hr_admin' || user?.role === 'admin') && (
                     <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
