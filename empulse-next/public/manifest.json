@@ -1,0 +1,16 @@
+{
+  "name": "em/pulse - P2P Recognition",
+  "short_name": "em/pulse",
+  "description": "Employee recognition and reward platform",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#00D264",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

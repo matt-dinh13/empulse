@@ -5,6 +5,7 @@ import { logger } from '@/lib/logger'
 import { voteSchema } from '@/lib/validations'
 import { rateLimit } from '@/lib/rateLimit'
 import { createNotification } from '@/lib/notifications'
+import { postToSlack } from '@/lib/slack'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -321,6 +322,11 @@ export async function POST(request: NextRequest) {
 
         // Fetch updated quota for response
         const updatedQuota = await prisma.quotaWallet.findUnique({ where: { userId: senderId } })
+
+        // Fire-and-forget Slack notification
+        postToSlack(
+            `🎉 ${result.vote.sender.fullName} recognized ${result.vote.receiver.fullName}: "${message.length > 100 ? message.slice(0, 100) + '...' : message}" +${settings.pointsPerVote} points`
+        )
 
         return NextResponse.json({
             message: 'Vote sent successfully',

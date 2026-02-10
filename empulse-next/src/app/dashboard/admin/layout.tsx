@@ -1,7 +1,6 @@
 'use client'
-/* eslint-disable react-hooks/set-state-in-effect */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -16,8 +15,11 @@ interface User {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
+    const [mobileOpen, setMobileOpen] = useState(false)
     const router = useRouter()
     const pathname = usePathname()
+
+    const closeSidebar = useCallback(() => setMobileOpen(false), [])
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user')
@@ -68,7 +70,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     return (
         <div className="dashboard-layout">
-            <aside className="sidebar">
+            {/* Mobile header */}
+            <div className="mobile-header">
+                <button className="hamburger-btn" onClick={() => setMobileOpen(true)} aria-label="Open menu">
+                    &#9776;
+                </button>
+                <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>
+                    <span style={{ color: '#00D264' }}>&lt;</span>em<span style={{ color: '#00D264' }}>/</span>pulse<span style={{ color: '#00D264' }}>&gt;</span>
+                </span>
+                <span className="badge badge-warning" style={{ marginLeft: 'auto' }}>ADMIN</span>
+            </div>
+
+            {/* Mobile overlay */}
+            <div
+                className={`sidebar-overlay ${mobileOpen ? 'sidebar-overlay-visible' : ''}`}
+                onClick={closeSidebar}
+            />
+
+            <aside className={`sidebar ${mobileOpen ? 'sidebar-open' : ''}`}>
                 <div className="sidebar-logo-text" style={{ fontSize: '1.5rem', fontWeight: 800, color: 'white', padding: '0 0.5rem', marginBottom: '1rem', display: 'inline-block' }}>
                     <span style={{ color: '#00D264' }}>&lt;</span>em<span style={{ color: '#00D264' }}>/</span>pulse<span style={{ color: '#00D264' }}>&gt;</span>
                 </div>
@@ -77,7 +96,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <span className="badge badge-warning">ADMIN PORTAL</span>
                 </div>
 
-                <nav className="sidebar-nav">
+                <nav className="sidebar-nav" onClick={closeSidebar}>
                     <Link href="/dashboard/admin/analytics" className={`sidebar-link ${pathname.includes('analytics') ? 'active' : ''}`}>
                         📈 Analytics
                     </Link>
@@ -89,6 +108,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </Link>
                     <Link href="/dashboard/admin/catalog" className={`sidebar-link ${pathname.includes('catalog') ? 'active' : ''}`}>
                         🎁 Reward Catalog
+                    </Link>
+                    <Link href="/dashboard/admin/flagged-votes" className={`sidebar-link ${pathname.includes('flagged-votes') ? 'active' : ''}`}>
+                        🚩 Flagged Votes
                     </Link>
                     {(user?.role === 'super_admin' || user?.role === 'admin') && (
                         <Link href="/dashboard/admin/settings" className={`sidebar-link ${pathname.includes('settings') ? 'active' : ''}`}>

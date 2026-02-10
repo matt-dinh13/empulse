@@ -19,6 +19,8 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#00D264" />
       </head>
       <body>
         <Providers>{children}</Providers>
