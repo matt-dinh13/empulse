@@ -11,7 +11,7 @@ import SectionTechStack from './components/SectionTechStack'
 import SectionRoles from './components/SectionRoles'
 
 type MermaidApi = {
-    initialize: (opts: { startOnLoad: boolean; theme: string; securityLevel: string }) => void
+    initialize: (opts: Record<string, unknown>) => void
     init: (config: unknown, nodes: NodeListOf<Element> | Element[]) => void
 }
 
@@ -28,7 +28,13 @@ export default function BlueprintPage() {
             const mermaid = (window as MermaidWindow).mermaid
             if (!mermaid) return
 
-            mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'loose' })
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                securityLevel: 'loose',
+                flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
+                er: { useMaxWidth: true },
+            })
 
             observerRef.current = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -119,6 +125,11 @@ export default function BlueprintPage() {
                         animation-duration: 0.01ms !important;
                         transition-duration: 0.01ms !important;
                     }
+                }
+                .mermaid svg {
+                    min-width: 500px;
+                    width: 100%;
+                    height: auto;
                 }
             `}</style>
 

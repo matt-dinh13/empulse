@@ -78,7 +78,7 @@ export default function SectionHero() {
                     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
                 }
                 .hero-desc { color: #9ca3af; font-size: 1.15rem; line-height: 1.6; max-width: 500px; margin-bottom: 2.5rem; }
-                .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+                .hero-actions { display: flex; gap: 1rem; align-items: center; }
                 .btn-hero {
                     display: inline-flex; align-items: center; gap: 0.75rem;
                     background: #00D264; color: black;
