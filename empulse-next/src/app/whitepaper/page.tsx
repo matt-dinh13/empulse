@@ -12,7 +12,7 @@ import SectionRoles from './components/SectionRoles'
 
 type MermaidApi = {
     initialize: (opts: Record<string, unknown>) => void
-    init: (config: unknown, nodes: NodeListOf<Element> | Element[]) => void
+    run: (opts: { nodes?: NodeListOf<Element> | Element[]; querySelector?: string; suppressErrors?: boolean }) => Promise<void>
 }
 
 type MermaidWindow = Window & { mermaid?: MermaidApi }
@@ -22,7 +22,7 @@ export default function BlueprintPage() {
 
     useEffect(() => {
         const script = document.createElement('script')
-        script.src = 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js'
+        script.src = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js'
         script.async = true
         script.onload = () => {
             const mermaid = (window as MermaidWindow).mermaid
@@ -36,14 +36,15 @@ export default function BlueprintPage() {
                 er: { useMaxWidth: false },
             })
 
-            // Init visible diagrams via IntersectionObserver
+            // Render visible diagrams via IntersectionObserver
             observerRef.current = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // Only init diagrams that are not inside a closed <details>
-                        const diagrams = entry.target.querySelectorAll('.mermaid:not(details:not([open]) .mermaid)')
+                        // Only render diagrams not inside a closed <details>
+                        const diagrams = Array.from(entry.target.querySelectorAll('.mermaid'))
+                            .filter(el => !el.closest('details:not([open])'))
                         if (diagrams.length > 0) {
-                            mermaid.init(undefined, diagrams)
+                            mermaid.run({ nodes: diagrams })
                         }
                         observerRef.current?.unobserve(entry.target)
                     }
@@ -54,13 +55,13 @@ export default function BlueprintPage() {
                 observerRef.current?.observe(el)
             })
 
-            // Init diagrams inside <details> when opened
+            // Render diagrams inside <details> only when opened (visible)
             document.querySelectorAll('details[data-mermaid-details]').forEach(details => {
                 details.addEventListener('toggle', () => {
                     if ((details as HTMLDetailsElement).open) {
                         const diagrams = details.querySelectorAll('.mermaid:not([data-processed])')
                         if (diagrams.length > 0) {
-                            mermaid.init(undefined, diagrams)
+                            mermaid.run({ nodes: diagrams })
                         }
                     }
                 }, { once: true })
@@ -141,7 +142,8 @@ export default function BlueprintPage() {
                     }
                 }
                 .mermaid svg {
-                    max-width: 100%;
+                    max-width: 100% !important;
+                    width: 100% !important;
                     height: auto !important;
                 }
             `}</style>
