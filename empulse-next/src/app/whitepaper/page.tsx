@@ -32,14 +32,16 @@ export default function BlueprintPage() {
                 startOnLoad: false,
                 theme: 'dark',
                 securityLevel: 'loose',
-                flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
-                er: { useMaxWidth: true },
+                flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
+                er: { useMaxWidth: false },
             })
 
+            // Init visible diagrams via IntersectionObserver
             observerRef.current = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        const diagrams = entry.target.querySelectorAll('.mermaid')
+                        // Only init diagrams that are not inside a closed <details>
+                        const diagrams = entry.target.querySelectorAll('.mermaid:not(details:not([open]) .mermaid)')
                         if (diagrams.length > 0) {
                             mermaid.init(undefined, diagrams)
                         }
@@ -50,6 +52,18 @@ export default function BlueprintPage() {
 
             document.querySelectorAll('[data-mermaid-container]').forEach(el => {
                 observerRef.current?.observe(el)
+            })
+
+            // Init diagrams inside <details> when opened
+            document.querySelectorAll('details[data-mermaid-details]').forEach(details => {
+                details.addEventListener('toggle', () => {
+                    if ((details as HTMLDetailsElement).open) {
+                        const diagrams = details.querySelectorAll('.mermaid:not([data-processed])')
+                        if (diagrams.length > 0) {
+                            mermaid.init(undefined, diagrams)
+                        }
+                    }
+                }, { once: true })
             })
         }
         document.body.appendChild(script)
@@ -127,9 +141,8 @@ export default function BlueprintPage() {
                     }
                 }
                 .mermaid svg {
-                    min-width: 500px;
-                    width: 100%;
-                    height: auto;
+                    max-width: 100%;
+                    height: auto !important;
                 }
             `}</style>
 
