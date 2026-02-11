@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
+
 const techStack = [
     { name: 'Next.js 16', cat: 'Framework' },
     { name: 'TypeScript', cat: 'Language' },
@@ -10,65 +12,100 @@ const techStack = [
     { name: 'Vercel', cat: 'Hosting' },
 ]
 
-const architectureDiagram = `graph TD
-    Client[Browser / Client] -->|HTTPS| Vercel[Vercel Edge Network]
+// Diagram definitions stored as plain strings — NOT rendered in JSX
+// because --> gets parsed as HTML comment close by SSR
+const ARCH_DIAGRAM = [
+    'graph TD',
+    '    Client[Browser / Client] -->|HTTPS| Vercel[Vercel Edge Network]',
+    '    subgraph "Vercel Infrastructure"',
+    '        Vercel -->|Router| NextApp[Next.js App Server]',
+    '        NextApp -->|API Routes| API[Backend Logic]',
+    '        NextApp -->|SSR/RSC| Pages[React Components]',
+    '    end',
+    '    API -->|Prisma Client| DB[(PostgreSQL Database)]',
+    '    subgraph "External Services"',
+    '        Auth[Auth Service / JWT]',
+    '        Mail[Email Service]',
+    '    end',
+    '    API -.-> Auth',
+    '    API -.-> Mail',
+].join('\n')
 
-    subgraph "Vercel Infrastructure"
-        Vercel -->|Router| NextApp[Next.js App Server]
-        NextApp -->|API Routes| API[Backend Logic]
-        NextApp -->|SSR/RSC| Pages[React Components]
-    end
-
-    API -->|Prisma Client| DB[(PostgreSQL Database)]
-
-    subgraph "External Services"
-        Auth[Auth Service / JWT]
-        Mail[Email Service]
-    end
-
-    API -.-> Auth
-    API -.-> Mail`
-
-const erdDiagram = `erDiagram
-    User ||--o{ Vote : sends
-    User ||--o{ Vote : receives
-    User ||--o{ RedemptionOrder : places
-    User ||--|| QuotaWallet : has
-    User ||--|| RewardWallet : has
-
-    Vote {
-        int id
-        int pointsAwarded
-        string message
-        datetime createdAt
-    }
-
-    User {
-        int id
-        string email
-        string fullName
-        string role
-        boolean isActive
-    }
-
-    RewardCatalog ||--o{ RedemptionOrder : contains
-    RewardCatalog {
-        int id
-        string name
-        int pointsRequired
-        string region
-    }
-
-    RedemptionOrder {
-        int id
-        string status
-        int pointsSpent
-        string voucherCode
-    }`
+const ERD_DIAGRAM = [
+    'erDiagram',
+    '    User ||--o{ Vote : sends',
+    '    User ||--o{ Vote : receives',
+    '    User ||--o{ RedemptionOrder : places',
+    '    User ||--|| QuotaWallet : has',
+    '    User ||--|| RewardWallet : has',
+    '    Vote {',
+    '        int id',
+    '        int pointsAwarded',
+    '        string message',
+    '        datetime createdAt',
+    '    }',
+    '    User {',
+    '        int id',
+    '        string email',
+    '        string fullName',
+    '        string role',
+    '        boolean isActive',
+    '    }',
+    '    RewardCatalog ||--o{ RedemptionOrder : contains',
+    '    RewardCatalog {',
+    '        int id',
+    '        string name',
+    '        int pointsRequired',
+    '        string region',
+    '    }',
+    '    RedemptionOrder {',
+    '        int id',
+    '        string status',
+    '        int pointsSpent',
+    '        string voucherCode',
+    '    }',
+].join('\n')
 
 export default function SectionTechStack() {
+    const archRef = useRef<HTMLDivElement>(null)
+    const erdRef = useRef<HTMLDivElement>(null)
+    const erdRendered = useRef(false)
+
+    useEffect(() => {
+        // Wait for mermaid to be available (loaded by parent page.tsx)
+        const waitForMermaid = () => {
+            const mermaid = (window as { mermaid?: { render: (id: string, def: string) => Promise<{ svg: string }> } }).mermaid
+            if (!mermaid) {
+                setTimeout(waitForMermaid, 200)
+                return
+            }
+
+            // Render architecture diagram immediately
+            if (archRef.current) {
+                mermaid.render('arch-diagram', ARCH_DIAGRAM).then(({ svg }) => {
+                    if (archRef.current) archRef.current.innerHTML = svg
+                })
+            }
+
+            // Render ERD when <details> opens
+            const details = document.querySelector('details[data-mermaid-details]')
+            if (details) {
+                details.addEventListener('toggle', () => {
+                    if ((details as HTMLDetailsElement).open && !erdRendered.current && erdRef.current) {
+                        erdRendered.current = true
+                        mermaid.render('erd-diagram', ERD_DIAGRAM).then(({ svg }) => {
+                            if (erdRef.current) erdRef.current.innerHTML = svg
+                        })
+                    }
+                })
+            }
+        }
+
+        waitForMermaid()
+    }, [])
+
     return (
-        <section className="bp-tech" data-mermaid-container>
+        <section className="bp-tech">
             <h2 className="tech-heading">Under the Hood</h2>
             <p className="tech-sub">Built with modern, production-grade technologies</p>
 
@@ -83,7 +120,7 @@ export default function SectionTechStack() {
 
             <h3 className="sub-heading">System Architecture</h3>
             <div className="diagram-box">
-                <div className="mermaid">{architectureDiagram}</div>
+                <div ref={archRef} className="diagram-render" />
             </div>
 
             <details className="erd-details" data-mermaid-details>
@@ -92,7 +129,7 @@ export default function SectionTechStack() {
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
                 </summary>
                 <div className="diagram-box" style={{ marginTop: '1rem' }}>
-                    <div className="mermaid">{erdDiagram}</div>
+                    <div ref={erdRef} className="diagram-render" />
                 </div>
             </details>
 

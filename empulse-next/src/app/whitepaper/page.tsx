@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import Link from 'next/link'
 import SectionHero from './components/SectionHero'
 import SectionProblemSolution from './components/SectionProblemSolution'
@@ -12,14 +12,12 @@ import SectionRoles from './components/SectionRoles'
 
 type MermaidApi = {
     initialize: (opts: Record<string, unknown>) => void
-    run: (opts: { nodes?: NodeListOf<Element> | Element[]; querySelector?: string; suppressErrors?: boolean }) => Promise<void>
+    render: (id: string, definition: string) => Promise<{ svg: string }>
 }
 
 type MermaidWindow = Window & { mermaid?: MermaidApi }
 
 export default function BlueprintPage() {
-    const observerRef = useRef<IntersectionObserver | null>(null)
-
     useEffect(() => {
         const script = document.createElement('script')
         script.src = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js'
@@ -35,42 +33,10 @@ export default function BlueprintPage() {
                 flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
                 er: { useMaxWidth: false },
             })
-
-            // Render visible diagrams via IntersectionObserver
-            observerRef.current = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Only render diagrams not inside a closed <details>
-                        const diagrams = Array.from(entry.target.querySelectorAll('.mermaid'))
-                            .filter(el => !el.closest('details:not([open])'))
-                        if (diagrams.length > 0) {
-                            mermaid.run({ nodes: diagrams })
-                        }
-                        observerRef.current?.unobserve(entry.target)
-                    }
-                })
-            }, { rootMargin: '200px' })
-
-            document.querySelectorAll('[data-mermaid-container]').forEach(el => {
-                observerRef.current?.observe(el)
-            })
-
-            // Render diagrams inside <details> only when opened (visible)
-            document.querySelectorAll('details[data-mermaid-details]').forEach(details => {
-                details.addEventListener('toggle', () => {
-                    if ((details as HTMLDetailsElement).open) {
-                        const diagrams = details.querySelectorAll('.mermaid:not([data-processed])')
-                        if (diagrams.length > 0) {
-                            mermaid.run({ nodes: diagrams })
-                        }
-                    }
-                }, { once: true })
-            })
         }
         document.body.appendChild(script)
 
         return () => {
-            observerRef.current?.disconnect()
             if (script.parentNode) {
                 script.parentNode.removeChild(script)
             }
@@ -141,9 +107,8 @@ export default function BlueprintPage() {
                         transition-duration: 0.01ms !important;
                     }
                 }
-                .mermaid svg {
+                .diagram-render svg {
                     max-width: 100% !important;
-                    width: 100% !important;
                     height: auto !important;
                 }
             `}</style>
