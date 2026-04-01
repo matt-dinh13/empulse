@@ -155,7 +155,35 @@ async function main() {
         },
     })
 
-    // Create Regular Users
+    // Create Manager User (for demo "Manager" quick login)
+    const managerUser = await prisma.user.upsert({
+        where: { email: 'petra.novak@empulse.com' },
+        update: {},
+        create: {
+            email: 'petra.novak@empulse.com',
+            passwordHash,
+            fullName: 'Petra Novak',
+            role: 'employee',
+            regionId: vnRegion.id,
+            teamId: engineeringTeam.id,
+            quotaWallet: {
+                create: {
+                    balance: 8,
+                    periodStart,
+                    periodEnd,
+                },
+            },
+            rewardWallet: {
+                create: {
+                    balance: 60,
+                    quarterStart,
+                    quarterEnd,
+                },
+            },
+        },
+    })
+
+    // Create Regular Users (with managerId pointing to Petra)
     await prisma.user.upsert({
         where: { email: 'nguyen.van.a@empulse.com' },
         update: {},
@@ -166,6 +194,7 @@ async function main() {
             role: 'employee',
             regionId: vnRegion.id,
             teamId: engineeringTeam.id,
+            managerId: managerUser.id,
             quotaWallet: {
                 create: {
                     balance: 8,
@@ -193,6 +222,7 @@ async function main() {
             role: 'employee',
             regionId: vnRegion.id,
             teamId: marketingTeam.id,
+            managerId: managerUser.id,
             quotaWallet: {
                 create: {
                     balance: 8,

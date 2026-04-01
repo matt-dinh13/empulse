@@ -7,8 +7,8 @@ import { setStoredUser } from '@/lib/clientAuth'
 
 const DEMO_ACCOUNTS: Record<string, { email: string; password: string }> = {
     admin: { email: 'admin@empulse.com', password: 'password123' },
-    employee: { email: 'nguyen@empulse.com', password: 'password123' },
-    manager: { email: 'petra@empulse.com', password: 'password123' },
+    employee: { email: 'nguyen.van.a@empulse.com', password: 'password123' },
+    manager: { email: 'petra.novak@empulse.com', password: 'password123' },
 }
 
 function LoginForm() {
@@ -145,7 +145,7 @@ function LoginForm() {
                         className="btn"
                         style={{ flex: 1, fontSize: '0.8rem', background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}
                         disabled={loading}
-                        onClick={() => handleDemoLogin('nguyen@empulse.com', 'password123')}
+                        onClick={() => handleDemoLogin('nguyen.van.a@empulse.com', 'password123')}
                     >
                         Employee
                     </button>
@@ -153,7 +153,7 @@ function LoginForm() {
                         className="btn"
                         style={{ flex: 1, fontSize: '0.8rem', background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}
                         disabled={loading}
-                        onClick={() => handleDemoLogin('petra@empulse.com', 'password123')}
+                        onClick={() => handleDemoLogin('petra.novak@empulse.com', 'password123')}
                     >
                         Manager
                     </button>
