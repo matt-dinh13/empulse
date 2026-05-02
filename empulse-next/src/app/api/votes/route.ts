@@ -4,7 +4,6 @@ import { authenticateRequest } from '@/lib/auth'
 import { logger } from '@/lib/logger'
 import { voteSchema } from '@/lib/validations'
 import { rateLimit } from '@/lib/rateLimit'
-import { createNotification } from '@/lib/notifications'
 import { postToSlack } from '@/lib/slack'
 
 export const runtime = 'nodejs'
@@ -114,7 +113,7 @@ export async function GET(request: NextRequest) {
             },
         })
     } catch (error) {
-        console.error('Get votes error:', error)
+        logger.error('Get votes error', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }
@@ -130,7 +129,7 @@ export async function POST(request: NextRequest) {
         const senderId = userId
 
         // Rate limit: 10 votes per user per minute
-        const rl = rateLimit(`vote:${senderId}`, 10, 60 * 1000)
+        const rl = await rateLimit(`vote:${senderId}`, 10, 60 * 1000)
         if (!rl.success) {
             return NextResponse.json({ error: 'Too many requests. Please slow down.' }, { status: 429 })
         }

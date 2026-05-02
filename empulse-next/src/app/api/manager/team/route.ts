@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateRequest } from '@/lib/auth'
+import { logger } from '@/lib/logger'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -101,7 +102,7 @@ export async function GET(request: NextRequest) {
             feed,
         })
     } catch (error) {
-        console.error('Manager team error:', error)
+        logger.error('Manager team error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }

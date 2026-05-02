@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
+import { logger } from '@/lib/logger'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -80,7 +81,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
         return NextResponse.json({ item: updatedItem })
     } catch (error) {
-        console.error('Update catalog error:', error)
+        logger.error('Update catalog error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }
@@ -108,7 +109,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
         return NextResponse.json({ message: 'Item deactivated successfully' })
     } catch (error) {
-        console.error('Delete catalog error:', error)
+        logger.error('Delete catalog error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }

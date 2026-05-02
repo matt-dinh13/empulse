@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
 import { createNotification } from '@/lib/notifications'
+import { logger } from '@/lib/logger'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -76,7 +77,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
         return NextResponse.json({ message: 'Order rejected and points refunded' })
     } catch (error) {
-        console.error('Reject order error:', error)
+        logger.error('Reject order error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }

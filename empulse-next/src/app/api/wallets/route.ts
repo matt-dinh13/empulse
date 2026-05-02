@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateRequest } from '@/lib/auth'
+import { logger } from '@/lib/logger'
 
 // GET /api/wallets - Get current user's wallets
 export async function GET(request: NextRequest) {
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
             rewardWallet,
         })
     } catch (error) {
-        console.error('Get wallets error:', error)
+        logger.error('Get wallets error', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }

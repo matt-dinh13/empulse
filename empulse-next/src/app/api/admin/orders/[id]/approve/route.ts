@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
 import { createNotification } from '@/lib/notifications'
+import { logger } from '@/lib/logger'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -47,7 +48,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
         return NextResponse.json({ order: updatedOrder, message: 'Order approved successfully' })
     } catch (error) {
-        console.error('Approve order error:', error)
+        logger.error('Approve order error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }

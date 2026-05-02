@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma'
 import { Prisma } from '@prisma/client'
 import { authenticateAdminRequest } from '@/lib/auth'
 import bcrypt from 'bcryptjs'
+import { logger } from '@/lib/logger'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -64,7 +65,7 @@ export async function GET(request: NextRequest) {
             }
         })
     } catch (error) {
-        console.error('Fetch users error:', error)
+        logger.error('Fetch users error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }
@@ -148,7 +149,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({ user: newUser }, { status: 201 })
     } catch (error) {
-        console.error('Create user error:', error)
+        logger.error('Create user error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }

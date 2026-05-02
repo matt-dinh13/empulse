@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateRequest } from '@/lib/auth'
+import { logger } from '@/lib/logger'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -24,7 +25,7 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({ emailNotifications: user.emailNotifications })
     } catch (error) {
-        console.error('Get preferences error:', error)
+        logger.error('Get preferences error', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }
@@ -54,7 +55,7 @@ export async function PATCH(request: NextRequest) {
 
         return NextResponse.json({ message: 'Preferences updated', emailNotifications })
     } catch (error) {
-        console.error('Update preferences error:', error)
+        logger.error('Update preferences error', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }

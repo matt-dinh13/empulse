@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateRequest } from '@/lib/auth'
 import { getCache, setCache } from '@/lib/memoryCache'
+import { logger } from '@/lib/logger'
 
 // GET /api/catalog - Get reward catalog for user's region
 export async function GET(request: NextRequest) {
@@ -27,7 +28,7 @@ export async function GET(request: NextRequest) {
             'Vary': 'Authorization'
         }
 
-        const cached = getCache<{ catalog: unknown[] }>(cacheKey)
+        const cached = await getCache<{ catalog: unknown[] }>(cacheKey)
         if (cached) {
             return NextResponse.json(cached, { headers: cacheHeaders })
         }
@@ -41,11 +42,11 @@ export async function GET(request: NextRequest) {
         })
 
         const payload = { catalog }
-        setCache(cacheKey, payload, 60_000)
+        await setCache(cacheKey, payload, 60_000)
 
         return NextResponse.json(payload, { headers: cacheHeaders })
     } catch (error) {
-        console.error('Get catalog error:', error)
+        logger.error('Get catalog error', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { Prisma } from '@prisma/client'
 import { authenticateAdminRequest } from '@/lib/auth'
+import { logger } from '@/lib/logger'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -35,7 +36,7 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({ orders })
     } catch (error) {
-        console.error('Fetch orders error:', error)
+        logger.error('Fetch orders error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }

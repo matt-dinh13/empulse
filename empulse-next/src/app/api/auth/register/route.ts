@@ -3,12 +3,13 @@ import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { generateTokens, setAuthCookies } from '@/lib/auth'
 import { rateLimit } from '@/lib/rateLimit'
+import { logger } from '@/lib/logger'
 
 export async function POST(request: NextRequest) {
     try {
         // Rate limit: 3 registrations per IP per hour
         const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown'
-        const rl = rateLimit(`register:${ip}`, 3, 60 * 60 * 1000)
+        const rl = await rateLimit(`register:${ip}`, 3, 60 * 60 * 1000)
         if (!rl.success) {
             return NextResponse.json({ error: 'Too many registration attempts. Try again later.' }, { status: 429 })
         }
@@ -113,7 +114,7 @@ export async function POST(request: NextRequest) {
         setAuthCookies(response, tokens)
         return response
     } catch (error) {
-        console.error('Register error:', error)
+        logger.error('Register error', error)
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
+import { logger } from '@/lib/logger'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -61,7 +62,7 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({ items })
     } catch (error) {
-        console.error('Flagged votes error:', error)
+        logger.error('Flagged votes error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }

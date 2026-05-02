@@ -67,15 +67,10 @@ export function clearAuthCookies(response: NextResponse) {
 }
 
 export function getTokenFromRequest(request: NextRequest): string | null {
-    // 1. Check httpOnly cookie first
+    // 1. Strict HttpOnly cookie-based auth
     const cookieToken = request.cookies.get('accessToken')?.value
     if (cookieToken) return cookieToken
 
-    // 2. Fallback to Authorization header (backward compat during migration)
-    const authHeader = request.headers.get('authorization')
-    if (authHeader?.startsWith('Bearer ')) {
-        return authHeader.substring(7)
-    }
     return null
 }
 

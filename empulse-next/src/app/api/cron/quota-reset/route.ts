@@ -41,7 +41,6 @@ export async function GET(request: NextRequest) {
 
         // Clear previous month's weekly vote tracking
         // Weekly format is YYYY-WNN, clear all weeks that started in previous month
-        const prevMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0)
         const weeklyResult = await prisma.weeklyVoteTracking.deleteMany({
             where: {
                 weekYear: {

@@ -1,3 +1,5 @@
+import { logger } from '@/lib/logger'
+
 const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL
 
 export async function postToSlack(text: string) {
@@ -10,6 +12,7 @@ export async function postToSlack(text: string) {
             body: JSON.stringify({ text }),
         })
     } catch (err) {
-        console.error('Slack webhook error:', err)
+        logger.error('Slack webhook error', err)
     }
 }
+

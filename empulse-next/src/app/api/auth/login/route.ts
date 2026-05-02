@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { generateTokens, setAuthCookies } from '@/lib/auth'
 import { rateLimit } from '@/lib/rateLimit'
+import { logger } from '@/lib/logger'
 
 // Force Node.js runtime for bcryptjs and Prisma
 export const runtime = 'nodejs'
@@ -18,7 +19,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Rate limit: 5 attempts per email per 15 minutes
-        const rl = rateLimit(`login:${email}`, 5, 15 * 60 * 1000)
+        const rl = await rateLimit(`login:${email}`, 5, 15 * 60 * 1000)
         if (!rl.success) {
             return NextResponse.json({ error: 'Too many login attempts. Try again later.' }, { status: 429 })
         }
@@ -74,7 +75,7 @@ export async function POST(request: NextRequest) {
         setAuthCookies(response, tokens)
         return response
     } catch (error) {
-        console.error('Login error:', error)
+        logger.error('Login error', error)
         return NextResponse.json({ error: 'Login failed' }, { status: 500 })
     }
 }

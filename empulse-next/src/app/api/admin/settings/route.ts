@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
 import { settingsUpdateSchema } from '@/lib/validations'
+import { logger } from '@/lib/logger'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -69,7 +70,7 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({ settings: mergedSettings })
     } catch (error) {
-        console.error('Fetch settings error:', error)
+        logger.error('Fetch settings error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }
@@ -134,7 +135,7 @@ export async function PUT(request: NextRequest) {
 
         return NextResponse.json({ message: 'Settings updated successfully' })
     } catch (error) {
-        console.error('Update settings error:', error)
+        logger.error('Update settings error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }

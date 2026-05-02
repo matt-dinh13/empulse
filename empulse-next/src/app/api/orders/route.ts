@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma'
 import { authenticateRequest } from '@/lib/auth'
 import { orderSchema } from '@/lib/validations'
 import { rateLimit } from '@/lib/rateLimit'
+import { logger } from '@/lib/logger'
 
 // GET /api/orders - Get user's orders
 export async function GET(request: NextRequest) {
@@ -22,7 +23,7 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({ orders })
     } catch (error) {
-        console.error('Get orders error:', error)
+        logger.error('Get orders error', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }
@@ -36,7 +37,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Rate limit: 5 orders per user per minute
-        const rl = rateLimit(`order:${userId}`, 5, 60 * 1000)
+        const rl = await rateLimit(`order:${userId}`, 5, 60 * 1000)
         if (!rl.success) {
             return NextResponse.json({ error: 'Too many requests. Please slow down.' }, { status: 429 })
         }
@@ -103,7 +104,7 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json({ error: 'Insufficient points' }, { status: 400 })
             }
         }
-        console.error('Create order error:', error)
+        logger.error('Create order error', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }

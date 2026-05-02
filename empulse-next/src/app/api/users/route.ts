@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateRequest } from '@/lib/auth'
+import { logger } from '@/lib/logger'
 
 // GET /api/users - Get all users (for voting selection)
 export async function GET(request: NextRequest) {
@@ -41,7 +42,7 @@ export async function GET(request: NextRequest) {
             }
         })
     } catch (error) {
-        console.error('Get users error:', error)
+        logger.error('Get users error', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }

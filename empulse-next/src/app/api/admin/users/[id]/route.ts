@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma'
 import { Prisma } from '@prisma/client'
 import { authenticateAdminRequest } from '@/lib/auth'
 import bcrypt from 'bcryptjs'
+import { logger } from '@/lib/logger'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -38,7 +39,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
         return NextResponse.json({ user: updatedUser })
     } catch (error) {
-        console.error('Update user error:', error)
+        logger.error('Update user error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }
@@ -58,7 +59,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
         return NextResponse.json({ message: 'User deactivated successfully' })
     } catch (error) {
-        console.error('Deactivate user error:', error)
+        logger.error('Deactivate user error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }

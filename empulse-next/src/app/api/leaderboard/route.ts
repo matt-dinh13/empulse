@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCache, setCache } from '@/lib/memoryCache'
+import { logger } from '@/lib/logger'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,7 +15,7 @@ export async function GET(request: Request) {
             'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
         }
 
-        const cached = getCache<{ period: string; type: string; leaderboard: unknown[] }>(cacheKey)
+        const cached = await getCache<{ period: string; type: string; leaderboard: unknown[] }>(cacheKey)
         if (cached) {
             return NextResponse.json(cached, { headers: cacheHeaders })
         }
@@ -129,11 +130,11 @@ export async function GET(request: Request) {
         }
 
         const payload = { period, type, leaderboard }
-        setCache(cacheKey, payload, 60_000)
+        await setCache(cacheKey, payload, 60_000)
 
         return NextResponse.json(payload, { headers: cacheHeaders })
     } catch (error) {
-        console.error('Leaderboard API Error:', error)
+        logger.error('Leaderboard API Error', error)
         return NextResponse.json({ error: 'Failed to fetch leaderboard' }, { status: 500 })
     }
 }

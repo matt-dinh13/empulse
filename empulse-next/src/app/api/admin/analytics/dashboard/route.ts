@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
 import { getCache, setCache } from '@/lib/memoryCache'
+import { logger } from '@/lib/logger'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -14,7 +15,7 @@ export async function GET(request: NextRequest) {
         const cacheKey = `admin:dashboard:v2:${admin.role}:${admin.regionId ?? 'all'}`
         const cacheHeaders = { 'Cache-Control': 'private, max-age=30' }
 
-        const cached = getCache<Record<string, unknown>>(cacheKey)
+        const cached = await getCache<Record<string, unknown>>(cacheKey)
         if (cached) {
             return NextResponse.json(cached, { headers: cacheHeaders })
         }
@@ -171,11 +172,11 @@ export async function GET(request: NextRequest) {
             popularItems: popularItemStats,
         }
 
-        setCache(cacheKey, payload, 30_000)
+        await setCache(cacheKey, payload, 30_000)
 
         return NextResponse.json(payload, { headers: cacheHeaders })
     } catch (error) {
-        console.error('Analytics error:', error)
+        logger.error('Analytics error', error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }

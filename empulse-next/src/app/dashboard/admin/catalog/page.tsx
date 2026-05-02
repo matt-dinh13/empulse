@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { handleUnauthorized } from '@/lib/clientAuth'
 import { useToast } from '@/components/Toast'
 
@@ -21,15 +20,12 @@ export default function CatalogListPage() {
     const [items, setItems] = useState<CatalogItem[]>([])
     const [loading, setLoading] = useState(true)
     const [showInactive, setShowInactive] = useState(false)
-    const [user, setUser] = useState<{ role: string; regionId?: number } | null>(null)
     const [error, setError] = useState<string | null>(null)
-    const router = useRouter()
     const { showToast } = useToast()
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user')
-        if (storedUser) setUser(JSON.parse(storedUser))
         fetchCatalog()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showInactive])
 
     const fetchCatalog = async () => {
@@ -50,8 +46,7 @@ export default function CatalogListPage() {
             } else {
                 setError(data?.error || 'Failed to fetch catalog')
             }
-        } catch (error) {
-            console.error('Failed to fetch catalog', error)
+        } catch {
             setError('Failed to fetch catalog')
         } finally {
             setLoading(false)
@@ -75,7 +70,7 @@ export default function CatalogListPage() {
             } else {
                 showToast('Failed to deactivate item', 'error')
             }
-        } catch (error) {
+        } catch {
             showToast('Error deleting item', 'error')
         }
     }

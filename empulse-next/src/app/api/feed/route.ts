@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { getCache, setCache } from '@/lib/memoryCache'
+import { logger } from '@/lib/logger'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
         const skip = (page - 1) * limit
 
         const cacheKey = `feed:${page}:${limit}`
-        const cached = getCache<{ feed: unknown[]; pagination: unknown }>(cacheKey)
+        const cached = await getCache<{ feed: unknown[]; pagination: unknown }>(cacheKey)
         if (cached) {
             return NextResponse.json(cached)
         }
@@ -80,11 +81,11 @@ export async function GET(request: NextRequest) {
             },
         }
 
-        setCache(cacheKey, result, FEED_CACHE_TTL)
+        await setCache(cacheKey, result, FEED_CACHE_TTL)
 
         return NextResponse.json(result)
     } catch (error) {
-        console.error('Feed error:', error)
+        logger.error('Feed error', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }

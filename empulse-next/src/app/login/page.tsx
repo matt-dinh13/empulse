@@ -2,7 +2,6 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import Image from 'next/image'
 import { setStoredUser } from '@/lib/clientAuth'
 
 const DEMO_ACCOUNTS: Record<string, { email: string; password: string }> = {

@@ -1,5 +1,4 @@
 const CACHE_NAME = 'empulse-v1'
-const OFFLINE_URL = '/offline'
 
 const PRECACHE_URLS = [
   '/',
