@@ -122,7 +122,12 @@ export async function POST(request: NextRequest) {
         if (error instanceof AppError) {
             return NextResponse.json(error.toJSON(), { status: error.statusCode })
         }
-        logger.error('Send vote error', error, { userId: userId ?? undefined })
-        return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+        // Surface actual error details for debugging (avoid generic "Internal server error")
+        const errMsg = error instanceof Error ? error.message : 'Unknown error'
+        logger.error('Send vote error', error, { userId: userId ?? undefined, errorMessage: errMsg })
+        return NextResponse.json(
+            { error: errMsg.includes('Record to update not found') ? 'Wallet not found — please contact admin' : errMsg },
+            { status: 500 }
+        )
     }
 }
