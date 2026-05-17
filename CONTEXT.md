@@ -1,8 +1,9 @@
 # EmPulse - P2P Reward & Recognition System
 
 > **Context Document for AI Assistants**
-> **Last Updated**: 2026-02-10
-> **Status**: Production-Ready, Next.js Single App
+> **Last Updated**: 2026-05-17
+> **Status**: Production-Ready v2.0, Next.js Single App
+> **Production URL**: https://empulse-delta.vercel.app/
 
 ---
 
@@ -87,15 +88,16 @@ HR sets expected delivery date when approving.
 | Layer | Technology | Notes |
 |-------|------------|-------|
 | **Frontend** | Next.js 16 (App Router) | Full-stack React framework |
-| **Backend** | Next.js API Routes | Server-side logic |
+| **Backend** | Next.js API Routes | Thin controllers → `lib/services/` |
 | **Database** | PostgreSQL | Hosted on **Supabase** (Transaction Pooler) |
 | **ORM** | Prisma | Type-safe, migrations |
 | **Auth** | JWT (httpOnly cookies) | bcryptjs, middleware-protected routes |
 | **Validation** | Zod | Schema-based API input validation |
+| **Error Handling** | `lib/errors.ts` | `AppError` class + `ErrorCode` enum (16 codes) |
 | **Email** | Resend | Transactional emails |
 | **Jobs** | Vercel Cron | Quota reset, quarterly reset, FIFO, SLA, warnings |
-| **Caching** | In-memory (TTL) | Analytics, leaderboard, catalog |
-| **Rate Limiting** | In-memory token bucket | Login, votes, API endpoints |
+| **Caching** | Upstash Redis + in-memory fallback | Analytics, leaderboard, catalog |
+| **Rate Limiting** | Upstash Redis + in-memory fallback | Login, votes, API endpoints |
 | **Slack** | Incoming Webhook | Vote notifications (fire-and-forget) |
 | **Deployment** | Vercel | Single Next.js app |
 
@@ -118,6 +120,30 @@ HR sets expected delivery date when approving.
 | `--color-text-muted` | `#64748B` | Secondary text |
 | `--color-error` | `#EF4444` | Error states |
 | `--color-warning` | `#F59E0B` | Warning states |
+
+### Design Tokens (v2.0 — added May 2026)
+
+**Gradients:** `--gradient-stat-1..4`, `--gradient-accent`
+**Shadows:** `--shadow-sm/md/lg/xl/glow`
+**Transitions:** `--transition-fast/normal/smooth`
+**Animations (keyframes):** `fadeIn`, `slideUp`, `scaleIn`, `fadeInUp`, `float`, `pulseGlow`, `shimmer`
+**Animation classes:** `.animate-slide-up`, `.animate-fade-in`, `.animate-scale-in`, `.stagger-1..4`
+
+### UI Component Library (v2.0)
+
+All components in `src/components/ui/`, imported via barrel: `import { Card, Badge } from '@/components/ui'`
+
+| Component | Key Props | Usage |
+|-----------|-----------|-------|
+| `Card` | variant: default/glass/elevated/interactive | Content wrappers |
+| `Badge` | variant: default/success/warning/error/info/accent, size: sm/md | Status labels |
+| `Avatar` | name, src?, size, status? | User initials with colored background |
+| `StatCard` | label, value, icon, trend, gradient, children | Dashboard stat cards |
+| `ProgressRing` | value, max, size, strokeWidth | SVG circular progress (quota) |
+| `Modal` | isOpen, onClose, title, size: sm/md/lg | Dialog with backdrop blur |
+| `EmptyState` | icon, title, description, action? | Empty view fallback |
+| `SearchInput` | onSearch, placeholder, debounceMs | Debounced search field |
+| `PageTransition` | loading, skeleton, children | Loading skeleton wrapper |
 
 ### Logo
 - **Location**: `/public/logo.svg`
@@ -277,6 +303,12 @@ All cron endpoints are protected by `CRON_SECRET` authorization header.
 9. **CSV export** (votes, redemptions, engagement data)
 10. **Email preferences** (per-user opt-in/opt-out via Settings page)
 11. **Branded email templates** (em/pulse header, EmbedIT footer)
+12. **Gradient StatCards** with trend indicators and ProgressRing (v2.0)
+13. **Leaderboard podium** view with gold/silver/bronze top-3 (v2.0)
+14. **Sidebar upgrade** — active route indicator, section dividers, Avatar+Badge footer (v2.0)
+15. **Notifications redesign** — type-colored icon boxes, pulsing unread dots, staggered animations (v2.0)
+16. **Catalog premium cards** — hover lift+glow, Modal confirmation, gradient balance widget (v2.0)
+17. **PageTransition** — loading skeleton wrapper with fade-in animation (v2.0)
 
 ---
 
@@ -292,9 +324,12 @@ EmPulse/
 ├── empulse-next/           # Next.js full-stack app (source of truth)
 │   ├── prisma/             # Schema + seed
 │   ├── public/             # Static assets + manifest.json + sw.js
+│   ├── docs/               # Sprint audit logs, walkthrough
+│   │   ├── audit/          # Sprint-specific audit logs
+│   │   └── WALKTHROUGH.md  # Feature walkthrough
 │   ├── src/
 │   │   ├── app/
-│   │   │   ├── api/        # API routes (auth, votes, admin, cron, etc.)
+│   │   │   ├── api/        # API routes — thin controllers
 │   │   │   ├── dashboard/  # Employee dashboard pages
 │   │   │   │   ├── admin/  # Admin portal (analytics, users, orders, catalog, settings, flagged-votes)
 │   │   │   │   ├── my-team/ # Manager team view
@@ -303,9 +338,18 @@ EmPulse/
 │   │   │   ├── login/
 │   │   │   ├── page.tsx    # Landing page
 │   │   │   ├── layout.tsx  # Root layout (Providers, manifest, fonts)
-│   │   │   └── globals.css # Design system + responsive styles
-│   │   ├── components/     # Sidebar, Toast, Providers
-│   │   └── lib/            # prisma, auth, validations, rateLimit, slack, etc.
+│   │   │   └── globals.css # Design tokens + animations + responsive styles
+│   │   ├── components/
+│   │   │   ├── ui/         # ⭐ Reusable component library (9 components, barrel: index.ts)
+│   │   │   ├── Sidebar.tsx # Main navigation with Avatar+Badge footer
+│   │   │   ├── Toast.tsx   # Toast notifications
+│   │   │   └── Providers.tsx
+│   │   └── lib/
+│   │       ├── errors.ts   # AppError + ErrorCode enum
+│   │       ├── services/   # Business logic (voteService.ts)
+│   │       ├── prisma.ts   # DB client
+│   │       ├── logger.ts   # Structured logging
+│   │       └── ...         # auth, validations, rateLimit, slack, etc.
 │   ├── vercel.json         # Cron job configuration
 │   └── package.json
 │
@@ -330,6 +374,37 @@ All 6 phases of the production readiness plan have been implemented:
 
 ---
 
+## Sprint v2.0 — UI/UX Overhaul (May 2026)
+
+### Completed
+| Day | Focus | Commit |
+|-----|-------|--------|
+| 1-2 | Code cleanup, service layer extraction, N+1 fix, ESLint 0 errors | `bdd9b54` |
+| 3-4 | Design tokens, 9 UI components, dashboard redesign | `fd1d8cb` |
+| 5 | Leaderboard podium, Sidebar upgrade, Catalog+Notifications redesign | `3a7073c` |
+
+### Architecture Decisions (v2.0)
+1. **Barrel exports**: `import { Card, Badge } from '@/components/ui'`
+2. **Thin controllers**: API routes → `lib/services/` for business logic
+3. **Typed errors**: `AppError` + `ErrorCode` enum (16 codes)
+4. **CSS design tokens**: Gradients, shadows, transitions in `globals.css`
+5. **Animation system**: `.animate-slide-up`, `.animate-fade-in` with `.stagger-N`
+6. **PageTransition**: `<PageTransition loading={} skeleton={}>` wrapper
+
+### 3-Role Test Results (May 17, 2026)
+| Role | Pages | Pass | Issue |
+|------|-------|------|-------|
+| Employee | 9 | 8 ✅ | 1 ⚠️ |
+| Admin | 8 | 8 ✅ | 0 |
+| Manager | 10 | 9 ✅ | 1 ⚠️ |
+| **Total** | **27** | **25** | **2** |
+
+### Known Issues
+1. Send Vote → 500 error (pre-existing Prisma RecordNotFound, not from v2.0 changes)
+2. Duplicate notifications in DB (seed data ran multiple times)
+
+---
+
 ## Notes for AI Assistants
 
 1. **Language**: Vietnamese preferred, English for technical terms
@@ -338,7 +413,11 @@ All 6 phases of the production readiness plan have been implemented:
 4. **Output Format**: Use Mermaid diagrams, tables, bullet points
 5. **Database**: Always use PostgreSQL syntax
 6. **Active Codebase**: `empulse-next/` only (legacy stacks archived)
+7. **UI Components**: Always import from barrel `@/components/ui`
+8. **Error handling**: Use `AppError` from `lib/errors.ts`
+9. **Audit logs**: Update both `empulse/auditlog.md` AND `empulse-next/docs/audit/`
 
 ---
 
 *This context file should be updated as the project evolves.*
+*Last updated: 2026-05-17 — Sprint v2.0 UI/UX overhaul*

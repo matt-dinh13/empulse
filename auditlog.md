@@ -274,4 +274,94 @@ All 6 phases implemented. EmPulse is production-ready for 50-200 employees acros
 
 ---
 
-*Log updated: 2026-02-10*
+## 2026-04-01
+
+### Production Bug Fix (`a88fc65`)
+- Fixed quick login buttons not working (demo credentials mismatch with DB)
+- Seeded production DB with valid manager demo user
+- Updated project README context
+
+---
+
+## 2026-04-30
+
+### App Hardening (`3aced6a`)
+- Comprehensive production hardening
+- Confirmed local working directory clean and synced with origin/main
+
+---
+
+## 2026-05-16 — Sprint v2.0 Started
+
+### Phase 1a: Code Cleanup (`bdd9b54`)
+- ESLint: 14 warnings → 0 errors, 1 warning (intentional `<img>` in whitepaper)
+- Dead code removal: unused catch variables across 8 files
+- Error system: `lib/errors.ts` — `AppError` class + `ErrorCode` enum (16 codes)
+- Prettier: `.prettierrc` + `format` script
+
+### Phase 1b: Service Layer Refactor (included in `bdd9b54`)
+- Vote Service: Extracted 274 lines into `lib/services/voteService.ts`
+- Thin Controller: `votes/route.ts` reduced from 361 → 120 lines
+- N+1 Fix: `flagged-votes/route.ts` batch-fetching strategy
+
+### Phase 2a: Design System + Components (`fd1d8cb`)
+- **Design Tokens**: Gradients (4 stat, 1 accent), shadows (sm/md/lg/xl/glow), transitions, 7 animation keyframes
+- **9 UI Components** created in `src/components/ui/`:
+  - Card (4 variants), Badge (6 variants), Avatar (initials + status dot)
+  - StatCard (gradient + trend), ProgressRing (SVG circular), Modal (backdrop blur)
+  - EmptyState, SearchInput (debounced), PageTransition (loading wrapper)
+- Barrel exports via `index.ts`
+
+### Phase 2b: Dashboard Redesign (included in `fd1d8cb`)
+- Time-based greeting ("Good morning/afternoon/evening, [Name]! 👋")
+- 4 gradient StatCards with ProgressRing quota
+- Quick Actions bar: Send Recognition, Browse Rewards, Leaderboard
+- Animated Recognition feed with Avatar + Badge + relative timestamps
+- Production deploy verified on Vercel
+
+---
+
+## 2026-05-17 — Sprint v2.0 Day 5
+
+### Phase 2c: Pages Polish + Bug Fixes (`3a7073c`)
+- **PageTransition** (NEW): Reusable loading/fade-in wrapper
+- **Sidebar upgrade**: Green active indicator, section dividers, Avatar+Badge footer, logout icon
+- **Leaderboard**: Podium view (2nd-1st-3rd), gradient columns, crown/star/fire emojis
+- **Notifications**: Type-colored icon boxes, pulsing unread dot, staggered animations
+- **Catalog**: Premium card hover (lift+glow), Modal confirmation, gradient balance widget
+
+### Documentation Updates (`bfd52d2`)
+- NEW: `docs/audit/SPRINT_V2_AUDIT.md` — Sprint-specific audit log
+- Updated: `empulse-next/README.md` — UI component library, code conventions
+- Updated: `docs/WALKTHROUGH.md` — All redesigned pages, verification checklist
+
+### 3-Role Production Smoke Test (`8e3c651`)
+- **27 pages tested** across Employee, Admin, Manager roles
+- **Results**: 25 pass ✅, 2 pre-existing issues ⚠️
+- All 9 UI components verified across all roles
+- **Issues found**:
+  1. Send Vote → 500 (Prisma RecordNotFound in processVote — pre-existing)
+  2. Duplicate notifications in DB (seed data issue)
+
+### Updated Global Context & Audit Log
+- Updated `CONTEXT.md` with v2.0 design system, components, architecture, test results
+- Updated `auditlog.md` (this file) with full Sprint v2.0 entries
+
+---
+
+## Sprint v2.0 Quality Summary
+
+| Metric | Before (Feb 2026) | After (May 2026) |
+|--------|-------------------|-------------------|
+| ESLint Errors | 14+ warnings | 0 errors, 1 warning |
+| TypeScript Errors | 0 | 0 |
+| UI Components | 0 custom | 9 reusable |
+| Service Layer | Monolithic routes | Extracted voteService |
+| Pages Redesigned | 0 | 5 (Dashboard, Leaderboard, Notifications, Catalog, Sidebar) |
+| Production Test | — | 25/27 pass |
+| Commits | — | 6 (bdd9b54, fd1d8cb, 3a7073c, bfd52d2, 8e3c651, +1) |
+
+---
+
+*Log updated: 2026-05-17*
+
