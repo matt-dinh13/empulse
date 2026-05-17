@@ -182,9 +182,21 @@ export async function processVote(input: VoteInput, settings: VotingSettings) {
 
     const result = await prisma.$transaction(async (tx) => {
         // Check quota inside transaction (prevent race conditions)
-        const quotaWallet = await tx.quotaWallet.findUnique({ where: { userId: senderId } })
-        if (!quotaWallet || quotaWallet.balance < 1) {
-            throw new AppError(ErrorCode.QUOTA_EXCEEDED, 'Insufficient quota')
+        // Use upsert to auto-create wallet if missing (defensive)
+        const now = new Date()
+        const periodStart = new Date(now.getFullYear(), now.getMonth(), 1)
+        const periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+        const quarterMonth = Math.floor(now.getMonth() / 3) * 3
+        const quarterStart = new Date(now.getFullYear(), quarterMonth, 1)
+        const quarterEnd = new Date(now.getFullYear(), quarterMonth + 3, 0)
+
+        const quotaWallet = await tx.quotaWallet.upsert({
+            where: { userId: senderId },
+            create: { userId: senderId, balance: settings.quotaPerMonth, periodStart, periodEnd },
+            update: {},
+        })
+        if (quotaWallet.balance < 1) {
+            throw new AppError(ErrorCode.QUOTA_EXCEEDED, 'Insufficient quota. You have used all your votes this month.')
         }
 
         // Deduct quota
@@ -193,10 +205,11 @@ export async function processVote(input: VoteInput, settings: VotingSettings) {
             data: { balance: { decrement: 1 } },
         })
 
-        // Add points to receiver
-        await tx.rewardWallet.update({
+        // Add points to receiver (upsert to auto-create wallet if missing)
+        await tx.rewardWallet.upsert({
             where: { userId: receiverId },
-            data: { balance: { increment: settings.pointsPerVote } },
+            create: { userId: receiverId, balance: settings.pointsPerVote, quarterStart, quarterEnd },
+            update: { balance: { increment: settings.pointsPerVote } },
         })
 
         // Create vote
