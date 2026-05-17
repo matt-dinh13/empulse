@@ -313,6 +313,9 @@ export async function processVote(input: VoteInput, settings: VotingSettings) {
         }
 
         return { vote, voteTags, isReciprocal: !!reciprocalVote }
+    }, {
+        maxWait: 10000,  // 10s max wait to acquire connection
+        timeout: 15000,  // 15s transaction timeout (Supabase has ~500ms per query)
     })
 
     return result
