@@ -35,7 +35,7 @@ export default function SystemSettingsPage() {
 
     useEffect(() => {
         fetchSettings()
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchSettings = async () => {
         try {
@@ -58,8 +58,7 @@ export default function SystemSettingsPage() {
             } else {
                 setError(data?.error || 'Failed to load settings')
             }
-        } catch (error) {
-            console.error('Failed to fetch settings', error)
+        } catch {
             setError('Failed to load settings')
         } finally {
             setLoading(false)
@@ -88,7 +87,7 @@ export default function SystemSettingsPage() {
             } else {
                 throw new Error('Failed to save')
             }
-        } catch (error) {
+        } catch {
             showToast('Error saving settings', 'error')
         } finally {
             setSaving(false)

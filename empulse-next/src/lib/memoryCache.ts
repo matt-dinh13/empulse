@@ -11,7 +11,7 @@ export async function getCache<T>(key: string): Promise<T | null> {
     if (redis) {
         try {
             return await redis.get<T>(key)
-        } catch (e) {
+        } catch {
             // fallback
         }
     }
@@ -30,7 +30,7 @@ export async function setCache<T>(key: string, value: T, ttlMs: number): Promise
         try {
             await redis.set(key, value, { px: ttlMs })
             return
-        } catch (e) {
+        } catch {
             // fallback
         }
     }
@@ -50,7 +50,7 @@ export async function clearCache(prefix?: string): Promise<void> {
                 }
             }
             return
-        } catch (e) {
+        } catch {
             // fallback
         }
     }

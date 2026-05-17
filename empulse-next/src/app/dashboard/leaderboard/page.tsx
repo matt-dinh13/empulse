@@ -37,7 +37,7 @@ export default function LeaderboardPage() {
         const storedUser = localStorage.getItem('user')
         if (storedUser) setUser(JSON.parse(storedUser) as UiUser)
         fetchLeaderboard()
-    }, [period, type])
+    }, [period, type]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchLeaderboard = async () => {
         setLoading(true)

@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
     if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     try {
+        // Fetch all reciprocal vote audit logs with actor info
         const logs = await prisma.auditLog.findMany({
             where: { action: 'RECIPROCAL_VOTE_DETECTED' },
             orderBy: { createdAt: 'desc' },
@@ -20,25 +21,33 @@ export async function GET(request: NextRequest) {
             },
         })
 
-        const items = await Promise.all(logs.map(async (log) => {
-            const meta = log.newValue as { voterId?: number; receiverId?: number; reciprocalVoteId?: number } | null
+        // Collect all vote IDs we need to fetch (both original and reciprocal)
+        const voteIds = new Set<number>()
+        for (const log of logs) {
+            if (log.entityId) voteIds.add(log.entityId)
+            const meta = log.newValue as { reciprocalVoteId?: number } | null
+            if (meta?.reciprocalVoteId) voteIds.add(meta.reciprocalVoteId)
+        }
 
-            const [vote, reciprocalVote] = await Promise.all([
-                log.entityId ? prisma.vote.findUnique({
-                    where: { id: log.entityId },
-                    include: {
-                        sender: { select: { fullName: true, email: true } },
-                        receiver: { select: { fullName: true, email: true } },
-                    },
-                }) : null,
-                meta?.reciprocalVoteId ? prisma.vote.findUnique({
-                    where: { id: meta.reciprocalVoteId },
-                    include: {
-                        sender: { select: { fullName: true, email: true } },
-                        receiver: { select: { fullName: true, email: true } },
-                    },
-                }) : null,
-            ])
+        // Single batch query for ALL votes (eliminates N+1)
+        const votes = voteIds.size > 0
+            ? await prisma.vote.findMany({
+                where: { id: { in: Array.from(voteIds) } },
+                include: {
+                    sender: { select: { fullName: true, email: true } },
+                    receiver: { select: { fullName: true, email: true } },
+                },
+            })
+            : []
+
+        // Index votes by ID for O(1) lookup
+        const voteMap = new Map(votes.map(v => [v.id, v]))
+
+        // Map logs to response items using the voteMap
+        const items = logs.map((log) => {
+            const meta = log.newValue as { voterId?: number; receiverId?: number; reciprocalVoteId?: number } | null
+            const vote = log.entityId ? voteMap.get(log.entityId) : null
+            const reciprocalVote = meta?.reciprocalVoteId ? voteMap.get(meta.reciprocalVoteId) : null
 
             return {
                 id: Number(log.id),
@@ -58,7 +67,7 @@ export async function GET(request: NextRequest) {
                     createdAt: reciprocalVote.createdAt,
                 } : null,
             }
-        }))
+        })
 
         return NextResponse.json({ items })
     } catch (error) {

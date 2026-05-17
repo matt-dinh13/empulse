@@ -24,7 +24,7 @@ export async function rateLimit(key: string, limit: number, windowMs: number): P
                 success: current <= limit,
                 remaining: Math.max(0, limit - current)
             }
-        } catch (e) {
+        } catch {
             // Fallback to memory on redis error silently to not break the app
         }
     }

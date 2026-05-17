@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
             orderBy: { name: 'asc' }
         })
         return NextResponse.json({ teams })
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }

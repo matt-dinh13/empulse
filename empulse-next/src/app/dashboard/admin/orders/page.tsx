@@ -28,10 +28,6 @@ export default function AdminOrdersPage() {
     const [error, setError] = useState<string | null>(null)
     const { showToast } = useToast()
 
-    useEffect(() => {
-        fetchOrders()
-    }, [filter])
-
     const fetchOrders = async () => {
         setLoading(true)
         try {
@@ -49,13 +45,16 @@ export default function AdminOrdersPage() {
             } else {
                 setError(data?.error || 'Failed to load orders')
             }
-        } catch (err) {
-            console.error(err)
+        } catch {
             setError('Failed to load orders')
         } finally {
             setLoading(false)
         }
     }
+
+    useEffect(() => {
+        fetchOrders()
+    }, [filter]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleAction = async (id: number, action: 'approve' | 'reject') => {
         if (!confirm(`Are you sure you want to ${action} this order?`)) return
@@ -81,7 +80,7 @@ export default function AdminOrdersPage() {
                 showToast(`Order ${action}d successfully`, 'success')
                 fetchOrders()
             }
-        } catch (err) {
+        } catch {
             showToast('Action failed', 'error')
         }
     }

@@ -48,41 +48,42 @@ export default function EditCatalogItemPage({ params }: { params: Promise<{ id: 
         }
         setUser(JSON.parse(storedUser))
 
-        fetchItem()
-    }, [])
-
-    const fetchItem = async () => {
-        try {
-            const res = await fetch(`/api/admin/catalog/${resolvedParams.id}`, {
-                credentials: 'include'
-            })
-            if (res.status === 401) {
-                handleUnauthorized()
-                return
-            }
-            const data = await res.json()
-            if (res.ok && data.item) {
-                setFormData({
-                    name: data.item.name || '',
-                    description: data.item.description || '',
-                    pointsRequired: data.item.pointsRequired || 50,
-                    rewardType: data.item.rewardType || 'digital_voucher',
-                    icon: data.item.icon || '🎁',
-                    displayValue: data.item.displayValue || '',
-                    regionId: data.item.regionId != null ? String(data.item.regionId) : '',
-                    isActive: data.item.isActive ?? true
+        const fetchItem = async () => {
+            try {
+                const res = await fetch(`/api/admin/catalog/${resolvedParams.id}`, {
+                    credentials: 'include'
                 })
-            } else {
-                showToast(data.error || 'Item not found', 'error')
-                router.push('/dashboard/admin/catalog')
+                if (res.status === 401) {
+                    handleUnauthorized()
+                    return
+                }
+                const data = await res.json()
+                if (res.ok && data.item) {
+                    setFormData({
+                        name: data.item.name || '',
+                        description: data.item.description || '',
+                        pointsRequired: data.item.pointsRequired || 50,
+                        rewardType: data.item.rewardType || 'digital_voucher',
+                        icon: data.item.icon || '🎁',
+                        displayValue: data.item.displayValue || '',
+                        regionId: data.item.regionId != null ? String(data.item.regionId) : '',
+                        isActive: data.item.isActive ?? true
+                    })
+                } else {
+                    showToast(data.error || 'Item not found', 'error')
+                    router.push('/dashboard/admin/catalog')
+                }
+            } catch (error) {
+                console.error('Failed to load catalog item:', error)
+                showToast('Failed to load item data', 'error')
+            } finally {
+                setLoading(false)
             }
-        } catch (error) {
-            console.error('Failed to load catalog item:', error)
-            showToast('Failed to load item data', 'error')
-        } finally {
-            setLoading(false)
         }
-    }
+        fetchItem()
+    }, [resolvedParams.id, router, showToast])
+
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()

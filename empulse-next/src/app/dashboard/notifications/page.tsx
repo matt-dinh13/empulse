@@ -69,7 +69,7 @@ export default function NotificationsPage() {
 
     useEffect(() => {
         fetchNotifications()
-    }, [page])
+    }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchNotifications = async () => {
         try {
