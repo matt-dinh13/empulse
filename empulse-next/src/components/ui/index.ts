@@ -6,3 +6,5 @@ export { default as ProgressRing } from './ProgressRing'
 export { default as Modal } from './Modal'
 export { default as EmptyState } from './EmptyState'
 export { default as SearchInput } from './SearchInput'
+export { default as PageTransition } from './PageTransition'
+

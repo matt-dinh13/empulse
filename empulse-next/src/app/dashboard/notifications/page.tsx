@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import { getStoredUser, handleUnauthorized } from '@/lib/clientAuth'
+import { Badge, EmptyState, PageTransition } from '@/components/ui'
 
 interface Notification {
     id: number
@@ -20,12 +21,12 @@ interface UiUser {
     role?: string
 }
 
-const TYPE_ICONS: Record<string, string> = {
-    VOTE_RECEIVED: '🎉',
-    ORDER_APPROVED: '✅',
-    ORDER_REJECTED: '❌',
-    ORDER_COMPLETED: '📦',
-    QUARTERLY_WARNING: '⏰',
+const TYPE_CONFIG: Record<string, { icon: string; color: string; variant: 'success' | 'warning' | 'error' | 'info' | 'accent' }> = {
+    VOTE_RECEIVED: { icon: '🎉', color: 'var(--color-success)', variant: 'success' },
+    ORDER_APPROVED: { icon: '✅', color: 'var(--color-success)', variant: 'success' },
+    ORDER_REJECTED: { icon: '❌', color: 'var(--color-error)', variant: 'error' },
+    ORDER_COMPLETED: { icon: '📦', color: 'var(--color-primary)', variant: 'info' },
+    QUARTERLY_WARNING: { icon: '⏰', color: 'var(--color-warning)', variant: 'warning' },
 }
 
 function timeAgo(dateStr: string) {
@@ -134,84 +135,153 @@ export default function NotificationsPage() {
 
             <main className="main-content">
                 <div className="page-header">
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center" style={{ width: '100%' }}>
                         <div>
-                            <h1 className="page-title">Notifications</h1>
-                            <p className="page-subtitle">Stay updated on recognition and orders</p>
+                            <h1 className="page-title">🔔 Notifications</h1>
+                            <p className="page-subtitle">
+                                Stay updated on recognition and orders
+                                {unreadCount > 0 && (
+                                    <Badge variant="error" size="sm" style={{ marginLeft: 'var(--spacing-sm)' }}>
+                                        {unreadCount} unread
+                                    </Badge>
+                                )}
+                            </p>
                         </div>
                         {unreadCount > 0 && (
-                            <button className="btn btn-outline" onClick={markAllRead}>
-                                Mark all read
+                            <button
+                                className="btn btn-outline"
+                                onClick={markAllRead}
+                                style={{ whiteSpace: 'nowrap' }}
+                            >
+                                ✓ Mark all read
                             </button>
                         )}
                     </div>
                 </div>
 
-                {loading ? (
-                    <div className="flex justify-center"><div className="spinner"></div></div>
-                ) : notifications.length === 0 ? (
-                    <div className="card text-center">
-                        <p className="text-muted">No notifications yet.</p>
+                <PageTransition loading={loading} skeleton={
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        {Array.from({ length: 5 }).map((_, i) => (
+                            <div key={i} className="card" style={{ padding: 'var(--spacing-md)' }}>
+                                <div className="skeleton-line skeleton-title" />
+                                <div className="skeleton-line" />
+                            </div>
+                        ))}
                     </div>
-                ) : (
-                    <>
-                        <div className="grid" style={{ gap: '0.5rem' }}>
-                            {notifications.map(n => (
-                                <div
-                                    key={n.id}
-                                    className="card"
-                                    style={{
-                                        opacity: n.isRead ? 0.6 : 1,
-                                        borderLeft: n.isRead ? 'none' : '3px solid var(--primary)',
-                                        cursor: n.isRead ? 'default' : 'pointer',
-                                    }}
-                                    onClick={() => !n.isRead && markOneRead(n.id)}
-                                >
-                                    <div className="flex justify-between items-center">
-                                        <div className="flex items-center gap-sm">
-                                            <span style={{ fontSize: '1.2rem' }}>
-                                                {TYPE_ICONS[n.type] || '🔔'}
-                                            </span>
-                                            <div>
-                                                <p className="font-bold" style={{ marginBottom: '0.15rem' }}>
-                                                    {n.title}
-                                                </p>
-                                                <p className="text-sm text-muted" style={{ margin: 0 }}>
-                                                    {n.message}
-                                                </p>
+                }>
+                    {notifications.length === 0 ? (
+                        <EmptyState
+                            icon="🔔"
+                            title="All caught up!"
+                            description="No notifications to show. You'll be notified when someone recognizes you."
+                        />
+                    ) : (
+                        <>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                {notifications.map((n, index) => {
+                                    const config = TYPE_CONFIG[n.type] || { icon: '🔔', color: 'var(--color-primary)', variant: 'info' as const }
+
+                                    return (
+                                        <div
+                                            key={n.id}
+                                            className={`card animate-slide-up stagger-${Math.min(index + 1, 6)}`}
+                                            style={{
+                                                opacity: 0,
+                                                padding: 'var(--spacing-md) var(--spacing-lg)',
+                                                borderLeft: n.isRead ? '3px solid transparent' : `3px solid ${config.color}`,
+                                                cursor: n.isRead ? 'default' : 'pointer',
+                                                transition: 'all 0.2s ease',
+                                                background: n.isRead ? 'var(--color-surface)' : 'var(--color-surface-hover)',
+                                            }}
+                                            onClick={() => !n.isRead && markOneRead(n.id)}
+                                            onMouseEnter={(e) => {
+                                                if (!n.isRead) {
+                                                    e.currentTarget.style.transform = 'translateX(4px)'
+                                                }
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.transform = 'translateX(0)'
+                                            }}
+                                        >
+                                            <div className="flex justify-between items-center">
+                                                <div className="flex items-center gap-md" style={{ flex: 1, minWidth: 0 }}>
+                                                    <span
+                                                        style={{
+                                                            fontSize: '1.5rem',
+                                                            width: '40px',
+                                                            height: '40px',
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                            borderRadius: 'var(--radius-md)',
+                                                            background: `${config.color}15`,
+                                                            flexShrink: 0,
+                                                        }}
+                                                    >
+                                                        {config.icon}
+                                                    </span>
+                                                    <div style={{ minWidth: 0 }}>
+                                                        <p style={{
+                                                            fontWeight: n.isRead ? 400 : 600,
+                                                            marginBottom: '0.15rem',
+                                                            fontSize: '0.9rem',
+                                                        }}>
+                                                            {n.title}
+                                                        </p>
+                                                        <p className="text-sm text-muted" style={{
+                                                            margin: 0,
+                                                            whiteSpace: 'nowrap',
+                                                            overflow: 'hidden',
+                                                            textOverflow: 'ellipsis',
+                                                        }}>
+                                                            {n.message}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', flexShrink: 0 }}>
+                                                    {!n.isRead && (
+                                                        <div style={{
+                                                            width: '8px',
+                                                            height: '8px',
+                                                            borderRadius: '50%',
+                                                            background: config.color,
+                                                            animation: 'pulse 2s infinite',
+                                                        }} />
+                                                    )}
+                                                    <span className="text-sm text-muted" style={{ whiteSpace: 'nowrap' }}>
+                                                        {timeAgo(n.createdAt)}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <span className="text-sm text-muted" style={{ whiteSpace: 'nowrap', marginLeft: '1rem' }}>
-                                            {timeAgo(n.createdAt)}
-                                        </span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        {totalPages > 1 && (
-                            <div className="flex justify-center gap-sm" style={{ marginTop: '1.5rem' }}>
-                                <button
-                                    className="btn btn-outline"
-                                    disabled={page <= 1}
-                                    onClick={() => setPage(p => p - 1)}
-                                >
-                                    Previous
-                                </button>
-                                <span className="flex items-center text-sm text-muted">
-                                    Page {page} of {totalPages}
-                                </span>
-                                <button
-                                    className="btn btn-outline"
-                                    disabled={page >= totalPages}
-                                    onClick={() => setPage(p => p + 1)}
-                                >
-                                    Next
-                                </button>
+                                    )
+                                })}
                             </div>
-                        )}
-                    </>
-                )}
+
+                            {totalPages > 1 && (
+                                <div className="flex justify-center gap-sm" style={{ marginTop: '1.5rem' }}>
+                                    <button
+                                        className="btn btn-outline"
+                                        disabled={page <= 1}
+                                        onClick={() => setPage(p => p - 1)}
+                                    >
+                                        ← Previous
+                                    </button>
+                                    <span className="flex items-center text-sm text-muted">
+                                        Page {page} of {totalPages}
+                                    </span>
+                                    <button
+                                        className="btn btn-outline"
+                                        disabled={page >= totalPages}
+                                        onClick={() => setPage(p => p + 1)}
+                                    >
+                                        Next →
+                                    </button>
+                                </div>
+                            )}
+                        </>
+                    )}
+                </PageTransition>
             </main>
         </div>
     )
