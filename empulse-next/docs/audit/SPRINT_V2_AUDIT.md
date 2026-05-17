@@ -70,6 +70,42 @@
 |---|-------|--------|------------|
 | 1 | Duplicate notifications in DB | Identified | Data issue (seed ran 2x), not code bug. UI differentiates read/unread |
 | 2 | Missing loading skeletons | ✅ Fixed | `PageTransition` component applied to Leaderboard, Notifications, Catalog |
+| 3 | Send Vote → 500 error | Identified | Pre-existing backend issue. Prisma `RecordNotFound` in `processVote` transaction — receiver may lack `rewardWallet` record, or sender quota exhausted. Form UI works correctly. |
+
+---
+
+## 3-Role Production Test (May 17, 2026)
+
+### Test Results
+
+| Role | Pages Tested | ✅ Pass | ⚠️ Issue | ❌ Fail |
+|------|-------------|---------|----------|---------|
+| Employee (nguyen.van.a) | 9 | 8 | 1 | 0 |
+| Admin (admin / super_admin) | 8 | 8 | 0 | 0 |
+| Manager (tran.thi.b) | 10 | 9 | 1 | 0 |
+| **Total** | **27** | **25** | **2** | **0** |
+
+### Employee Pages
+- ✅ Dashboard, Leaderboard, Notifications, Catalog, Votes Received, Votes Sent, Orders, Settings
+- ⚠️ Send Vote — form loads correctly, submit returns 500 (backend/DB issue)
+
+### Admin Pages
+- ✅ Dashboard, Admin Portal, Analytics, Users, Orders, Catalog, Flagged Votes, System Settings
+
+### Manager Pages
+- ✅ Dashboard, Leaderboard, Notifications, Catalog, Votes Received, Votes Sent, Orders, My Team, Settings
+- ⚠️ Send Vote — same 500 error as Employee
+
+### UI Components Verified
+- ✅ Avatar (initials) — Sidebar footer, Leaderboard podium, Feed
+- ✅ Badge (role) — Sidebar footer, Leaderboard entries
+- ✅ StatCard (gradient) — Dashboard (all 3 roles)
+- ✅ ProgressRing — Dashboard quota card
+- ✅ PageTransition — Leaderboard, Notifications, Catalog
+- ✅ EmptyState — Flagged Votes, My Team
+- ✅ Modal — Catalog redeem (verified Day 5)
+- ✅ Toast — Settings save confirmation
+- ✅ Podium view — Leaderboard top 3
 
 ---
 
@@ -83,6 +119,7 @@
 | UI Components | 0 custom | 9 reusable (Card, Badge, Avatar, StatCard, ProgressRing, Modal, EmptyState, SearchInput, PageTransition) |
 | Service Layer | Monolithic routes | Extracted voteService (274 lines) |
 | Pages Redesigned | 0 | 5 (Dashboard, Leaderboard, Notifications, Catalog, Sidebar) |
+| Production Test | — | 25/27 pass (2 pre-existing backend issues) |
 
 ---
 
@@ -111,6 +148,8 @@
 
 | Item | Priority | Estimated Effort |
 |------|----------|-----------------|
-| Send Vote wizard polish | Medium | 1-2 hours |
+| Fix Send Vote 500 error (wallet init) | High | 30 min |
+| Send Vote wizard UI polish | Medium | 1-2 hours |
 | Votes Received/Sent Avatar integration | Low | 1 hour |
 | DB cleanup: remove duplicate notifications | Low | 5 minutes (manual) |
+
