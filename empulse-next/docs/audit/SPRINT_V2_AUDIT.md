@@ -70,7 +70,7 @@
 |---|-------|--------|------------|
 | 1 | Duplicate notifications in DB | Identified | Data issue (seed ran 2x), not code bug. UI differentiates read/unread |
 | 2 | Missing loading skeletons | ✅ Fixed | `PageTransition` component applied to Leaderboard, Notifications, Catalog |
-| 3 | Send Vote → 500 error | Identified | Pre-existing backend issue. Prisma `RecordNotFound` in `processVote` transaction — receiver may lack `rewardWallet` record, or sender quota exhausted. Form UI works correctly. |
+| 3 | Send Vote → 500 error | ✅ Fixed | Root cause: Prisma transaction timeout (5s default vs ~10 queries × 500ms Supabase latency). Fix: upsert wallets + increase timeout to 15s. Commits: `2666d6f`, `166359b`, `ab10d5f` |
 
 ---
 
@@ -147,9 +147,18 @@
 ## Remaining Work
 
 | Item | Priority | Estimated Effort |
-|------|----------|-----------------|
-| Fix Send Vote 500 error (wallet init) | High | 30 min |
-| Send Vote wizard UI polish | Medium | 1-2 hours |
+|------|----------|------------------|
 | Votes Received/Sent Avatar integration | Low | 1 hour |
 | DB cleanup: remove duplicate notifications | Low | 5 minutes (manual) |
 
+---
+
+### Day 6 — Send Vote Fix + Redesign ✅
+**Commits:** `2666d6f`, `166359b`, `ab10d5f`
+
+| Change | Detail |
+|--------|--------|
+| **Send Vote 500 Fix** | Root cause: Prisma interactive transaction timeout (5s default). Fix: wallet `update` → `upsert` (auto-create missing wallets) + timeout 15s/maxWait 10s |
+| **Send Vote UI Redesign** | Multi-step card layout (1-2-3), Avatar+Badge colleague selection, character progress bar, gradient submit button, success state screen with "Send Another" CTA |
+| **Error Surfacing** | Vote API now returns actual error message instead of generic "Internal server error" |
+| **Regression Test** | ✅ Verified: vote sent successfully to Le Van C, Dashboard/Leaderboard/Catalog all load correctly |
