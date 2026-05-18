@@ -9,6 +9,9 @@
     "lint": "eslint",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "test:smoke": "npm run lint && npm run typecheck",
     "seed": "node prisma/seed.js",
     "db:push": "prisma db push",
@@ -33,9 +36,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.1.6",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "prisma": "^5.22.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.6"
   }
 }

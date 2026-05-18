@@ -3,108 +3,80 @@ import prisma from '@/lib/prisma'
 import { authenticateRequest } from '@/lib/auth'
 import { orderSchema } from '@/lib/validations'
 import { rateLimit } from '@/lib/rateLimit'
-import { logger } from '@/lib/logger'
+import { AppError, ErrorCode } from '@/lib/errors'
+import { withErrorHandler } from '@/lib/apiHandler'
 
 // GET /api/orders - Get user's orders
-export async function GET(request: NextRequest) {
-    try {
-        const userId = await authenticateRequest(request)
-        if (!userId) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-        }
-
-        const orders = await prisma.redemptionOrder.findMany({
-            where: { userId },
-            include: {
-                catalog: true,
-            },
-            orderBy: { createdAt: 'desc' },
-        })
-
-        return NextResponse.json({ orders })
-    } catch (error) {
-        logger.error('Get orders error', error)
-        return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+export const GET = withErrorHandler(async (request: NextRequest) => {
+    const userId = await authenticateRequest(request)
+    if (!userId) {
+        throw new AppError(ErrorCode.UNAUTHORIZED, 'Unauthorized')
     }
-}
+
+    const orders = await prisma.redemptionOrder.findMany({
+        where: { userId },
+        include: { catalog: true },
+        orderBy: { createdAt: 'desc' },
+    })
+
+    return NextResponse.json({ orders })
+})
 
 // POST /api/orders - Create new order (redeem reward)
-export async function POST(request: NextRequest) {
-    try {
-        const userId = await authenticateRequest(request)
-        if (!userId) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-        }
+export const POST = withErrorHandler(async (request: NextRequest) => {
+    const userId = await authenticateRequest(request)
+    if (!userId) {
+        throw new AppError(ErrorCode.UNAUTHORIZED, 'Unauthorized')
+    }
 
-        // Rate limit: 5 orders per user per minute
-        const rl = await rateLimit(`order:${userId}`, 5, 60 * 1000)
-        if (!rl.success) {
-            return NextResponse.json({ error: 'Too many requests. Please slow down.' }, { status: 429 })
-        }
+    // Rate limit: 5 orders per user per minute
+    const rl = await rateLimit(`order:${userId}`, 5, 60 * 1000)
+    if (!rl.success) {
+        throw new AppError(ErrorCode.RATE_LIMITED, 'Too many requests. Please slow down.')
+    }
 
-        const body = await request.json()
-        const parsed = orderSchema.safeParse(body)
-        if (!parsed.success) {
-            return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
-        }
-        const { catalogId } = parsed.data
+    const body = await request.json()
+    const parsed = orderSchema.safeParse(body)
+    if (!parsed.success) {
+        throw new AppError(ErrorCode.VALIDATION_ERROR, parsed.error.issues[0].message)
+    }
+    const { catalogId } = parsed.data
 
-        // Create order and deduct points (all checks inside transaction to prevent race conditions)
-        const order = await prisma.$transaction(async (tx) => {
-            // Check catalog item inside transaction
-            const catalogItem = await tx.rewardCatalog.findUnique({
-                where: { id: catalogId },
-            })
-
-            if (!catalogItem || !catalogItem.isActive) {
-                throw new Error('ITEM_NOT_FOUND')
-            }
-
-            // Check user balance inside transaction
-            const rewardWallet = await tx.rewardWallet.findUnique({
-                where: { userId },
-            })
-
-            if (!rewardWallet || rewardWallet.balance < catalogItem.pointsRequired) {
-                throw new Error('INSUFFICIENT_BALANCE')
-            }
-
-            // Deduct points
-            await tx.rewardWallet.update({
-                where: { userId },
-                data: { balance: { decrement: catalogItem.pointsRequired } },
-            })
-
-            // Create order
-            const newOrder = await tx.redemptionOrder.create({
-                data: {
-                    userId,
-                    catalogId,
-                    pointsSpent: catalogItem.pointsRequired,
-                    status: 'PENDING_APPROVAL',
-                },
-                include: {
-                    catalog: true,
-                },
-            })
-
-            return newOrder
+    // Create order and deduct points (all checks inside transaction to prevent race conditions)
+    const order = await prisma.$transaction(async (tx) => {
+        const catalogItem = await tx.rewardCatalog.findUnique({
+            where: { id: catalogId },
         })
 
-        return NextResponse.json({
-            message: 'Order created successfully',
-            order,
-        }, { status: 201 })
-    } catch (error) {
-        if (error instanceof Error) {
-            if (error.message === 'ITEM_NOT_FOUND') {
-                return NextResponse.json({ error: 'Reward not found or inactive' }, { status: 404 })
-            }
-            if (error.message === 'INSUFFICIENT_BALANCE') {
-                return NextResponse.json({ error: 'Insufficient points' }, { status: 400 })
-            }
+        if (!catalogItem || !catalogItem.isActive) {
+            throw new AppError(ErrorCode.ITEM_NOT_FOUND, 'Reward not found or inactive')
         }
-        logger.error('Create order error', error)
-        return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-    }
-}
+
+        const rewardWallet = await tx.rewardWallet.findUnique({
+            where: { userId },
+        })
+
+        if (!rewardWallet || rewardWallet.balance < catalogItem.pointsRequired) {
+            throw new AppError(ErrorCode.INSUFFICIENT_POINTS, 'Insufficient points')
+        }
+
+        // Deduct points
+        await tx.rewardWallet.update({
+            where: { userId },
+            data: { balance: { decrement: catalogItem.pointsRequired } },
+        })
+
+        // Create order
+        return tx.redemptionOrder.create({
+            data: {
+                userId,
+                catalogId,
+                pointsSpent: catalogItem.pointsRequired,
+                status: 'PENDING_APPROVAL',
+            },
+            include: { catalog: true },
+        })
+    })
+
+    return NextResponse.json({ message: 'Order created successfully', order }, { status: 201 })
+})
