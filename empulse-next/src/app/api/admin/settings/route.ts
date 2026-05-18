@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
 import { settingsUpdateSchema } from '@/lib/validations'
-import { logger } from '@/lib/logger'
+import { AppError, ErrorCode } from '@/lib/errors'
+import { withErrorHandler } from '@/lib/apiHandler'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -52,90 +53,78 @@ const SETTINGS_METADATA: Record<string, SettingMeta> = {
     'enable_public_wall': { label: 'Public Wall', description: 'Show votes publicly', type: 'boolean', default: 'true', category: 'features' },
 }
 
-export async function GET(request: NextRequest) {
+export const GET = withErrorHandler(async (request: NextRequest) => {
     const admin = await authenticateAdminRequest(request)
-    if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    // Only Super Admin should usually see this, but maybe HR admin too? Blueprint says Super Admin Only.
-    if (admin.role !== 'super_admin' && admin.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    if (!admin) throw new AppError(ErrorCode.UNAUTHORIZED, 'Unauthorized')
+    if (admin.role !== 'super_admin' && admin.role !== 'admin') throw new AppError(ErrorCode.FORBIDDEN, 'Forbidden')
 
-    try {
-        const dbSettings = await prisma.systemSetting.findMany()
-        const dbMap = new Map(dbSettings.map(s => [s.settingKey, s.settingValue]))
+    const dbSettings = await prisma.systemSetting.findMany()
+    const dbMap = new Map(dbSettings.map(s => [s.settingKey, s.settingValue]))
 
-        const mergedSettings = Object.entries(SETTINGS_METADATA).map(([key, meta]) => ({
-            key,
-            ...meta,
-            value: dbMap.get(key) || meta.default
+    const mergedSettings = Object.entries(SETTINGS_METADATA).map(([key, meta]) => ({
+        key,
+        ...meta,
+        value: dbMap.get(key) || meta.default
+    }))
+
+    return NextResponse.json({ settings: mergedSettings })
+})
+
+export const PUT = withErrorHandler(async (request: NextRequest) => {
+    const admin = await authenticateAdminRequest(request)
+    if (!admin || (admin.role !== 'super_admin' && admin.role !== 'admin')) {
+        throw new AppError(ErrorCode.FORBIDDEN, 'Forbidden')
+    }
+
+    const body = await request.json()
+    const parsed = settingsUpdateSchema.safeParse(body)
+    if (!parsed.success) {
+        throw new AppError(ErrorCode.VALIDATION_ERROR, parsed.error.issues[0].message)
+    }
+    const { settings } = parsed.data
+
+    const updates = []
+    for (const { key, value } of settings) {
+        const meta = SETTINGS_METADATA[key]
+        if (!meta) continue
+
+        let cleanValue = String(value)
+        if (meta.type === 'integer') {
+            const num = parseInt(cleanValue)
+            if (isNaN(num) || num < meta.min || num > meta.max) {
+                throw new AppError(ErrorCode.VALIDATION_ERROR, `Invalid value for ${meta.label}`)
+            }
+            cleanValue = String(num)
+        } else if (meta.type === 'boolean') {
+            cleanValue = String(value === true || value === 'true')
+        }
+
+        updates.push(prisma.systemSetting.upsert({
+            where: { settingKey: key },
+            create: {
+                settingKey: key,
+                settingValue: cleanValue,
+                dataType: meta.type,
+                description: meta.description,
+                updatedBy: admin.id
+            },
+            update: {
+                settingValue: cleanValue,
+                updatedBy: admin.id
+            }
         }))
-
-        return NextResponse.json({ settings: mergedSettings })
-    } catch (error) {
-        logger.error('Fetch settings error', error)
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
-}
 
-export async function PUT(request: NextRequest) {
-    const admin = await authenticateAdminRequest(request)
-    if (!admin || (admin.role !== 'super_admin' && admin.role !== 'admin')) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    await prisma.$transaction(updates)
 
-    try {
-        const body = await request.json()
-        const parsed = settingsUpdateSchema.safeParse(body)
-        if (!parsed.success) {
-            return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
+    await prisma.auditLog.create({
+        data: {
+            actorId: admin.id,
+            action: 'UPDATE_SYSTEM_SETTINGS',
+            entityType: 'system_setting',
+            newValue: settings
         }
-        const { settings } = parsed.data
+    })
 
-        const updates = []
-        for (const { key, value } of settings) {
-            const meta = SETTINGS_METADATA[key]
-            if (!meta) continue // Skip unknown settings
-
-            // Validate
-            let cleanValue = String(value)
-            if (meta.type === 'integer') {
-                const num = parseInt(cleanValue)
-                if (isNaN(num) || num < meta.min || num > meta.max) {
-                    return NextResponse.json({ error: `Invalid value for ${meta.label}` }, { status: 400 })
-                }
-                cleanValue = String(num)
-            } else if (meta.type === 'boolean') {
-                cleanValue = String(value === true || value === 'true')
-            }
-
-            // Update
-            updates.push(prisma.systemSetting.upsert({
-                where: { settingKey: key },
-                create: {
-                    settingKey: key,
-                    settingValue: cleanValue,
-                    dataType: meta.type,
-                    description: meta.description,
-                    updatedBy: admin.id
-                },
-                update: {
-                    settingValue: cleanValue,
-                    updatedBy: admin.id
-                }
-            }))
-        }
-
-        await prisma.$transaction(updates)
-
-        // Log Audit
-        await prisma.auditLog.create({
-            data: {
-                actorId: admin.id,
-                action: 'UPDATE_SYSTEM_SETTINGS',
-                entityType: 'system_setting',
-                newValue: settings
-            }
-        })
-
-        return NextResponse.json({ message: 'Settings updated successfully' })
-    } catch (error) {
-        logger.error('Update settings error', error)
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
-    }
-}
+    return NextResponse.json({ message: 'Settings updated successfully' })
+})

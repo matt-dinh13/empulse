@@ -2,82 +2,65 @@ import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
 import { createNotification } from '@/lib/notifications'
-import { logger } from '@/lib/logger'
+import { AppError, ErrorCode } from '@/lib/errors'
+import { withErrorHandler } from '@/lib/apiHandler'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export const POST = withErrorHandler(async (request: NextRequest, ctx) => {
     const admin = await authenticateAdminRequest(request)
-    if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!admin) throw new AppError(ErrorCode.UNAUTHORIZED, 'Unauthorized')
 
-    const { id } = await params
+    const { id } = await ctx!.params
     const orderId = parseInt(id)
 
-    try {
-        const data = await request.json().catch(() => ({}))
-        const { reason } = data
+    const data = await request.json().catch(() => ({}))
+    const { reason } = data
 
-        const order = await prisma.redemptionOrder.findUnique({ where: { id: orderId } })
-
-        if (!order) {
-            return NextResponse.json({ error: 'Order not found' }, { status: 404 })
-        }
-        if (order.status !== 'PENDING_APPROVAL') {
-            return NextResponse.json({ error: 'Can only reject pending orders' }, { status: 400 })
-        }
-
-        // Transaction: Update status AND Refund points
-        await prisma.$transaction(async (tx) => {
-            // 1. Update Order
-            await tx.redemptionOrder.update({
-                where: { id: orderId },
-                data: {
-                    status: 'REJECTED',
-                    approvedBy: admin.id,
-                    approvedAt: new Date(), // Rejection also tracked here
-                    adminNotes: reason || 'Rejected by admin'
-                }
-            })
-
-            // 2. Refund Points
-            await tx.rewardWallet.update({
-                where: { userId: order.userId },
-                data: {
-                    balance: { increment: order.pointsSpent }
-                }
-            })
-
-            // 3. Release Voucher (if any)
-            if (order.voucherId) {
-                await tx.voucherStock.updateMany({
-                    where: { assignedToOrderId: orderId },
-                    data: {
-                        status: 'available',
-                        assignedToOrderId: null
-                    }
-                })
-            }
-
-            // 3. Log Audit? (Optional, skipping for now)
-        })
-
-        const catalog = await prisma.rewardCatalog.findUnique({
-            where: { id: order.catalogId },
-            select: { name: true },
-        })
-
-        await createNotification(
-            order.userId,
-            'ORDER_REJECTED',
-            'Order Rejected',
-            `Your order for "${catalog?.name || 'item'}" was rejected. ${reason ? `Reason: ${reason}` : 'Points have been refunded.'}`,
-            { orderId }
-        )
-
-        return NextResponse.json({ message: 'Order rejected and points refunded' })
-    } catch (error) {
-        logger.error('Reject order error', error)
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    const order = await prisma.redemptionOrder.findUnique({ where: { id: orderId } })
+    if (!order) throw new AppError(ErrorCode.ORDER_NOT_FOUND, 'Order not found')
+    if (order.status !== 'PENDING_APPROVAL') {
+        throw new AppError(ErrorCode.INVALID_ORDER_STATUS, 'Can only reject pending orders')
     }
-}
+
+    // Transaction: Update status AND Refund points
+    await prisma.$transaction(async (tx) => {
+        await tx.redemptionOrder.update({
+            where: { id: orderId },
+            data: {
+                status: 'REJECTED',
+                approvedBy: admin.id,
+                approvedAt: new Date(),
+                adminNotes: reason || 'Rejected by admin'
+            }
+        })
+
+        await tx.rewardWallet.update({
+            where: { userId: order.userId },
+            data: { balance: { increment: order.pointsSpent } }
+        })
+
+        if (order.voucherId) {
+            await tx.voucherStock.updateMany({
+                where: { assignedToOrderId: orderId },
+                data: { status: 'available', assignedToOrderId: null }
+            })
+        }
+    })
+
+    const catalog = await prisma.rewardCatalog.findUnique({
+        where: { id: order.catalogId },
+        select: { name: true },
+    })
+
+    await createNotification(
+        order.userId,
+        'ORDER_REJECTED',
+        'Order Rejected',
+        `Your order for "${catalog?.name || 'item'}" was rejected. ${reason ? `Reason: ${reason}` : 'Points have been refunded.'}`,
+        { orderId }
+    )
+
+    return NextResponse.json({ message: 'Order rejected and points refunded' })
+})

@@ -1,45 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateRequest } from '@/lib/auth'
-import { logger } from '@/lib/logger'
+import { AppError, ErrorCode } from '@/lib/errors'
+import { withErrorHandler } from '@/lib/apiHandler'
 
-export async function GET(request: NextRequest) {
-    try {
-        const userId = await authenticateRequest(request)
-
-        if (!userId) {
-            return NextResponse.json(
-                { error: 'Unauthorized' },
-                { status: 401 }
-            )
-        }
-
-        const user = await prisma.user.findUnique({
-            where: { id: userId },
-            include: {
-                region: true,
-                team: true,
-                manager: {
-                    select: { id: true, fullName: true, email: true },
-                },
-                quotaWallet: true,
-                rewardWallet: true,
-            },
-        })
-
-        if (!user) {
-            return NextResponse.json(
-                { error: 'User not found' },
-                { status: 404 }
-            )
-        }
-
-        return NextResponse.json({ user })
-    } catch (error) {
-        logger.error('Get user error', error)
-        return NextResponse.json(
-            { error: 'Internal server error' },
-            { status: 500 }
-        )
+export const GET = withErrorHandler(async (request: NextRequest) => {
+    const userId = await authenticateRequest(request)
+    if (!userId) {
+        throw new AppError(ErrorCode.UNAUTHORIZED, 'Unauthorized')
     }
-}
+
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+            region: true,
+            team: true,
+            manager: {
+                select: { id: true, fullName: true, email: true },
+            },
+            quotaWallet: true,
+            rewardWallet: true,
+        },
+    })
+
+    if (!user) {
+        throw new AppError(ErrorCode.USER_NOT_FOUND, 'User not found')
+    }
+
+    return NextResponse.json({ user })
+})

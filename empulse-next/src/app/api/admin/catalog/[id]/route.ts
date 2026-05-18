@@ -1,115 +1,95 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { authenticateAdminRequest } from '@/lib/auth'
-import { logger } from '@/lib/logger'
+import { AppError, ErrorCode } from '@/lib/errors'
+import { withErrorHandler } from '@/lib/apiHandler'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export const GET = withErrorHandler(async (request: NextRequest, ctx) => {
     const admin = await authenticateAdminRequest(request)
-    if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!admin) throw new AppError(ErrorCode.UNAUTHORIZED, 'Unauthorized')
 
-    try {
-        const { id } = await params
-        const itemId = parseInt(id)
+    const { id } = await ctx!.params
+    const itemId = parseInt(id)
 
-        const item = await prisma.rewardCatalog.findUnique({ where: { id: itemId } })
-        if (!item) return NextResponse.json({ error: 'Item not found' }, { status: 404 })
+    const item = await prisma.rewardCatalog.findUnique({ where: { id: itemId } })
+    if (!item) throw new AppError(ErrorCode.ITEM_NOT_FOUND, 'Item not found')
 
-        if (admin.role === 'hr_admin' && item.regionId !== admin.regionId) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
-        }
-
-        return NextResponse.json({ item })
-    } catch {
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    if (admin.role === 'hr_admin' && item.regionId !== admin.regionId) {
+        throw new AppError(ErrorCode.FORBIDDEN, 'Unauthorized')
     }
-}
 
-export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    return NextResponse.json({ item })
+})
+
+export const PUT = withErrorHandler(async (request: NextRequest, ctx) => {
     const admin = await authenticateAdminRequest(request)
-    if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!admin) throw new AppError(ErrorCode.UNAUTHORIZED, 'Unauthorized')
 
-    try {
-        const { id } = await params
-        const itemId = parseInt(id)
+    const { id } = await ctx!.params
+    const itemId = parseInt(id)
 
-        // Fetch existing
-        const existingItem = await prisma.rewardCatalog.findUnique({ where: { id: itemId } })
-        if (!existingItem) {
-            return NextResponse.json({ error: 'Item not found' }, { status: 404 })
-        }
+    const existingItem = await prisma.rewardCatalog.findUnique({ where: { id: itemId } })
+    if (!existingItem) throw new AppError(ErrorCode.ITEM_NOT_FOUND, 'Item not found')
 
-        // Auth Check
-        if (admin.role === 'hr_admin' && existingItem.regionId !== admin.regionId) {
-            return NextResponse.json({ error: 'Unauthorized to edit this region' }, { status: 403 })
-        }
-
-        const body = await request.json()
-        const { name, description, pointsRequired, rewardType, icon, displayValue, isActive, regionId } = body
-        const normalizedRewardType =
-            rewardType === 'voucher' ? 'digital_voucher'
-            : rewardType === 'physical' ? 'physical_item'
-            : rewardType
-
-        // Region Change Check
-        if (regionId && Number(regionId) !== existingItem.regionId) {
-            if (admin.role === 'hr_admin') {
-                return NextResponse.json({ error: 'Cannot move item to another region' }, { status: 403 })
-            }
-        }
-
-        // Validate Points if changed
-        if (pointsRequired && (pointsRequired < 10 || pointsRequired % 10 !== 0)) {
-            return NextResponse.json({ error: 'Points must be a multiple of 10 and at least 10' }, { status: 400 })
-        }
-
-        const updatedItem = await prisma.rewardCatalog.update({
-            where: { id: itemId },
-            data: {
-                name,
-                description,
-                pointsRequired: pointsRequired ? Number(pointsRequired) : undefined,
-                rewardType: normalizedRewardType,
-                icon,
-                displayValue,
-                isActive,
-                regionId: regionId ? Number(regionId) : undefined
-            }
-        })
-
-        return NextResponse.json({ item: updatedItem })
-    } catch (error) {
-        logger.error('Update catalog error', error)
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    if (admin.role === 'hr_admin' && existingItem.regionId !== admin.regionId) {
+        throw new AppError(ErrorCode.FORBIDDEN, 'Unauthorized to edit this region')
     }
-}
 
-export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const body = await request.json()
+    const { name, description, pointsRequired, rewardType, icon, displayValue, isActive, regionId } = body
+    const normalizedRewardType =
+        rewardType === 'voucher' ? 'digital_voucher'
+        : rewardType === 'physical' ? 'physical_item'
+        : rewardType
+
+    if (regionId && Number(regionId) !== existingItem.regionId) {
+        if (admin.role === 'hr_admin') {
+            throw new AppError(ErrorCode.FORBIDDEN, 'Cannot move item to another region')
+        }
+    }
+
+    if (pointsRequired && (pointsRequired < 10 || pointsRequired % 10 !== 0)) {
+        throw new AppError(ErrorCode.VALIDATION_ERROR, 'Points must be a multiple of 10 and at least 10')
+    }
+
+    const updatedItem = await prisma.rewardCatalog.update({
+        where: { id: itemId },
+        data: {
+            name,
+            description,
+            pointsRequired: pointsRequired ? Number(pointsRequired) : undefined,
+            rewardType: normalizedRewardType,
+            icon,
+            displayValue,
+            isActive,
+            regionId: regionId ? Number(regionId) : undefined
+        }
+    })
+
+    return NextResponse.json({ item: updatedItem })
+})
+
+export const DELETE = withErrorHandler(async (request: NextRequest, ctx) => {
     const admin = await authenticateAdminRequest(request)
-    if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!admin) throw new AppError(ErrorCode.UNAUTHORIZED, 'Unauthorized')
 
-    try {
-        const { id } = await params
-        const itemId = parseInt(id)
+    const { id } = await ctx!.params
+    const itemId = parseInt(id)
 
-        const existingItem = await prisma.rewardCatalog.findUnique({ where: { id: itemId } })
-        if (!existingItem) return NextResponse.json({ error: 'Item not found' }, { status: 404 })
+    const existingItem = await prisma.rewardCatalog.findUnique({ where: { id: itemId } })
+    if (!existingItem) throw new AppError(ErrorCode.ITEM_NOT_FOUND, 'Item not found')
 
-        if (admin.role === 'hr_admin' && existingItem.regionId !== admin.regionId) {
-            return NextResponse.json({ error: 'Unauthorized to delete this region item' }, { status: 403 })
-        }
-
-        // Soft delete
-        await prisma.rewardCatalog.update({
-            where: { id: itemId },
-            data: { isActive: false }
-        })
-
-        return NextResponse.json({ message: 'Item deactivated successfully' })
-    } catch (error) {
-        logger.error('Delete catalog error', error)
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    if (admin.role === 'hr_admin' && existingItem.regionId !== admin.regionId) {
+        throw new AppError(ErrorCode.FORBIDDEN, 'Unauthorized to delete this region item')
     }
-}
+
+    await prisma.rewardCatalog.update({
+        where: { id: itemId },
+        data: { isActive: false }
+    })
+
+    return NextResponse.json({ message: 'Item deactivated successfully' })
+})

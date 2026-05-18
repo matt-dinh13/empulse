@@ -3,114 +3,89 @@ import prisma from '@/lib/prisma'
 import { Prisma } from '@prisma/client'
 import { authenticateAdminRequest } from '@/lib/auth'
 import { catalogCreateSchema } from '@/lib/validations'
-import { logger } from '@/lib/logger'
+import { AppError, ErrorCode } from '@/lib/errors'
+import { withErrorHandler } from '@/lib/apiHandler'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-export async function GET(request: NextRequest) {
+export const GET = withErrorHandler(async (request: NextRequest) => {
     const admin = await authenticateAdminRequest(request)
-    if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!admin) throw new AppError(ErrorCode.UNAUTHORIZED, 'Unauthorized')
 
-    try {
-        const { searchParams } = new URL(request.url)
-        const page = parseInt(searchParams.get('page') || '1')
-        const limit = parseInt(searchParams.get('limit') || '20')
-        const skip = (page - 1) * limit
-        const regionIdParam = searchParams.get('regionId')
-        const isActiveParam = searchParams.get('isActive')
+    const { searchParams } = new URL(request.url)
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '20')
+    const skip = (page - 1) * limit
+    const regionIdParam = searchParams.get('regionId')
+    const isActiveParam = searchParams.get('isActive')
 
-        const where: Prisma.RewardCatalogWhereInput = {}
+    const where: Prisma.RewardCatalogWhereInput = {}
+    if (isActiveParam === 'true') where.isActive = true
+    if (isActiveParam === 'false') where.isActive = false
 
-        // Active filter
-        if (isActiveParam === 'true') where.isActive = true
-        if (isActiveParam === 'false') where.isActive = false
-
-        // Region filter
-        if (admin.role === 'hr_admin') {
-            where.regionId = admin.regionId
-        } else if (regionIdParam) {
-            where.regionId = parseInt(regionIdParam)
-        }
-
-        const [items, total] = await Promise.all([
-            prisma.rewardCatalog.findMany({
-                where,
-                orderBy: { sortOrder: 'asc' },
-                include: { region: { select: { name: true, code: true } } },
-                skip,
-                take: limit
-            }),
-            prisma.rewardCatalog.count({ where })
-        ])
-
-        return NextResponse.json({
-            items,
-            pagination: {
-                page,
-                limit,
-                total,
-                totalPages: Math.ceil(total / limit)
-            }
-        })
-    } catch (error) {
-        logger.error('Fetch catalog error', error)
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    if (admin.role === 'hr_admin') {
+        where.regionId = admin.regionId
+    } else if (regionIdParam) {
+        where.regionId = parseInt(regionIdParam)
     }
-}
 
-export async function POST(request: NextRequest) {
+    const [items, total] = await Promise.all([
+        prisma.rewardCatalog.findMany({
+            where,
+            orderBy: { sortOrder: 'asc' },
+            include: { region: { select: { name: true, code: true } } },
+            skip,
+            take: limit
+        }),
+        prisma.rewardCatalog.count({ where })
+    ])
+
+    return NextResponse.json({
+        items,
+        pagination: { page, limit, total, totalPages: Math.ceil(total / limit) }
+    })
+})
+
+export const POST = withErrorHandler(async (request: NextRequest) => {
     const admin = await authenticateAdminRequest(request)
-    if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!admin) throw new AppError(ErrorCode.UNAUTHORIZED, 'Unauthorized')
 
-    try {
-        const body = await request.json()
-        const parsed = catalogCreateSchema.safeParse(body)
-        if (!parsed.success) {
-            return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
-        }
-        const { name, description, pointsRequired, rewardType, icon, displayValue, regionId, stockQuantity } = parsed.data
-        const normalizedRewardType =
-            rewardType === 'voucher' ? 'digital_voucher'
-            : rewardType === 'physical' ? 'physical_item'
-            : rewardType
-
-        // Region Authorization
-        const targetRegionId = regionId
-        if (admin.role === 'hr_admin' && admin.regionId !== targetRegionId) {
-            return NextResponse.json({ error: 'Cannot create items in other regions' }, { status: 403 })
-        }
-
-        const newItem = await prisma.rewardCatalog.create({
-            data: {
-                name,
-                description,
-                pointsRequired: Number(pointsRequired),
-                rewardType: normalizedRewardType || 'digital_voucher',
-                icon: icon || '🎁',
-                displayValue,
-                regionId: targetRegionId,
-                // Handle stock logic if model supports it (blueprint says stockQuantity, schema has VoucherStock relation or plain field? 
-                // Schema has PhysicalInventory table, but blueprint asked for stockQuantity field?
-                // Let's check schema again. RewardCatalog doesn't have stockQuantity field directly?
-                // Schema: voucherStock via VoucherStock[], PhysicalInventory via OneToOne.
-                // For MVP, if we want stockQuantity, we should create PhysicalInventory record if type is physical.
-                // But for now, let's just create the item. We can add inventory management later.
-            }
-        })
-
-        // If type is physical and stock provided, init inventory
-        if (newItem.rewardType === 'physical_item' && stockQuantity !== undefined) {
-            await prisma.physicalInventory.upsert({
-                where: { catalogId: newItem.id },
-                create: { catalogId: newItem.id, stockCount: Number(stockQuantity) },
-                update: { stockCount: Number(stockQuantity) }
-            })
-        }
-
-        return NextResponse.json({ item: newItem }, { status: 201 })
-    } catch (error) {
-        logger.error('Create catalog error', error)
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    const body = await request.json()
+    const parsed = catalogCreateSchema.safeParse(body)
+    if (!parsed.success) {
+        throw new AppError(ErrorCode.VALIDATION_ERROR, parsed.error.issues[0].message)
     }
-}
+    const { name, description, pointsRequired, rewardType, icon, displayValue, regionId, stockQuantity } = parsed.data
+    const normalizedRewardType =
+        rewardType === 'voucher' ? 'digital_voucher'
+        : rewardType === 'physical' ? 'physical_item'
+        : rewardType
+
+    const targetRegionId = regionId
+    if (admin.role === 'hr_admin' && admin.regionId !== targetRegionId) {
+        throw new AppError(ErrorCode.FORBIDDEN, 'Cannot create items in other regions')
+    }
+
+    const newItem = await prisma.rewardCatalog.create({
+        data: {
+            name,
+            description,
+            pointsRequired: Number(pointsRequired),
+            rewardType: normalizedRewardType || 'digital_voucher',
+            icon: icon || '🎁',
+            displayValue,
+            regionId: targetRegionId,
+        }
+    })
+
+    if (newItem.rewardType === 'physical_item' && stockQuantity !== undefined) {
+        await prisma.physicalInventory.upsert({
+            where: { catalogId: newItem.id },
+            create: { catalogId: newItem.id, stockCount: Number(stockQuantity) },
+            update: { stockCount: Number(stockQuantity) }
+        })
+    }
+
+    return NextResponse.json({ item: newItem }, { status: 201 })
+})
