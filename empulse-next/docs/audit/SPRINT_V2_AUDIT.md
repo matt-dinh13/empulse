@@ -141,15 +141,7 @@
 3. **CSS Design Tokens**: All colors/shadows/gradients as CSS custom properties in `globals.css`
 4. **Animation System**: Utility classes `.animate-slide-up`, `.animate-fade-in`, `.animate-scale-in` with `.stagger-N` delays
 5. **PageTransition Pattern**: Loading state management via `<PageTransition loading={} skeleton={}>` wrapper
-
----
-
-## Remaining Work
-
-| Item | Priority | Estimated Effort |
-|------|----------|------------------|
-| Votes Received/Sent Avatar integration | Low | 1 hour |
-| DB cleanup: remove duplicate notifications | Low | 5 minutes (manual) |
+6. **withErrorHandler**: All API routes wrapped via `lib/apiHandler.ts` — zero manual try/catch blocks
 
 ---
 
@@ -162,3 +154,36 @@
 | **Send Vote UI Redesign** | Multi-step card layout (1-2-3), Avatar+Badge colleague selection, character progress bar, gradient submit button, success state screen with "Send Another" CTA |
 | **Error Surfacing** | Vote API now returns actual error message instead of generic "Internal server error" |
 | **Regression Test** | ✅ Verified: vote sent successfully to Le Van C, Dashboard/Leaderboard/Catalog all load correctly |
+
+### Day 7 — Phase 2.5: Backend Hardening ✅
+**Commits:** `94aa881`, `2f5c827`
+
+| Change | Detail |
+|--------|--------|
+| **Votes UI Refresh** | `votes/received` + `votes/sent` — Avatar, Badge, Card, PageTransition, EmptyState, summary stats, stagger animations |
+| **`lib/apiHandler.ts`** | Central `withErrorHandler` wrapper — replaces all manual try/catch with AppError-aware middleware |
+| **Route Migration** | 23 handlers across 17 files migrated (votes, orders, wallets, notifications, catalog, feed, leaderboard, users, preferences, value-tags, auth/me, auth/register, ALL admin routes) |
+| **Vitest Setup** | `vitest.config.ts`, 3 test files, 19 tests passing: `errors.test.ts` (6), `apiHandler.test.ts` (4), `validations.test.ts` (9) |
+| **Production Smoke** | 3-role API test: Admin (11 users, 20 votes, 14 settings, 7 catalog, 6 orders), HR Admin (analytics OK), Employee (Nguyen Van A: 7 sent, 2 received, quota=4, reward=20) |
+
+---
+
+## Remaining Work
+
+| Item | Priority | Estimated Effort |
+|------|----------|------------------|
+| DB cleanup: remove duplicate notifications | Low | 5 minutes (manual) |
+| Performance optimization (N+1, caching) | Medium | Phase 3 |
+| Integration tests (Prisma mock) | Medium | Phase 3 |
+
+---
+
+## Showcase Test Accounts
+
+| Role | Email | Data Available |
+|------|-------|---------------|
+| **Super Admin** | admin@empulse.com | 11 users, 20 votes, 14 settings, 7 catalog items, 6 orders |
+| **HR Admin** | hr.admin@empulse.com | Analytics dashboard, region-scoped catalog/users |
+| **Employee** | nguyen.van.a@empulse.com | 7 votes sent, 2 received, quota=4, reward=20, 3 catalog items |
+| **Employee** | petra.novak@empulse.com | quota=8, reward=60, 3 catalog items |
+
