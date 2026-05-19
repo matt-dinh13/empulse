@@ -158,12 +158,12 @@ async function main() {
     // Create Manager User (for demo "Manager" quick login)
     const managerUser = await prisma.user.upsert({
         where: { email: 'petra.novak@empulse.com' },
-        update: {},
+        update: { role: 'manager' },
         create: {
             email: 'petra.novak@empulse.com',
             passwordHash,
             fullName: 'Petra Novak',
-            role: 'employee',
+            role: 'manager',
             regionId: vnRegion.id,
             teamId: engineeringTeam.id,
             quotaWallet: {
