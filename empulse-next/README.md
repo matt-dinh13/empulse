@@ -1,23 +1,86 @@
-# EmPulse - P2P Reward & Recognition System
+# EmPulse — P2P Reward & Recognition Platform
 
-EmPulse is a production-grade Peer-to-Peer (P2P) employee recognition and rewards platform. It allows employees to send recognition votes to their colleagues based on core value tags, driving a positive and collaborative company culture.
+> **Status**: Production-Ready v2.0  
+> **Production URL**: [empulse-delta.vercel.app](https://empulse-delta.vercel.app/)  
+> **Target**: 50–200 employees across Vietnam & Czech Republic
 
-## System Architecture
-- **Framework:** Next.js 16 (App Router, Server Actions, API Routes)
-- **Database:** Supabase PostgreSQL with Prisma ORM
-- **Authentication:** Custom JWT-based stateless auth strictly utilizing `HttpOnly` cookies (preventing XSS).
-- **Caching & Rate Limiting:** Upstash Redis for serverless-ready multi-instance caching (with an in-memory fallback mechanism).
-- **Observability:** Structured JSON Logging integrated into all API routes.
-- **Deployment:** Vercel (Edge/Serverless optimized)
+---
+
+## What is EmPulse?
+
+EmPulse is a **Peer-to-Peer Employee Recognition & Reward System** designed for cross-border teams. Employees send recognition votes to their colleagues based on core company values. Votes are converted into **real-world rewards** — digital vouchers (VN) and physical items (CZ).
+
+### Key Highlights
+- 🎯 **Anti-gaming voting rules** — weekly limits, same-team caps, reciprocal detection, manager-vote blocking
+- 💰 **Dual-wallet system** — Quota Wallet (votes to give) + Reward Wallet (points earned)
+- 🛒 **Region-aware rewards** — automated voucher delivery (VN), manual approval flow (CZ)
+- 📊 **Admin analytics** — dashboards, CSV exports, flagged vote review
+- 🔔 **Multi-channel notifications** — in-app, email (Resend), Slack webhooks
+- 📱 **PWA-ready** — installable, offline-capable with service worker
+
+---
+
+## Tech Stack
+
+| Layer | Technology | Details |
+|-------|-----------|---------|
+| **Framework** | Next.js 16 | App Router, Server Actions, API Routes |
+| **Language** | TypeScript | Full-stack type safety |
+| **Database** | PostgreSQL | Hosted on Supabase (Session Pooler) |
+| **ORM** | Prisma | Type-safe queries, migrations, seeding |
+| **Auth** | JWT + httpOnly Cookies | bcryptjs, Edge middleware route protection |
+| **Validation** | Zod | Schema-based API input validation |
+| **Caching** | Upstash Redis | In-memory fallback for local dev |
+| **Rate Limiting** | Token Bucket | Login: 5/15min, Votes: 10/min, API: 100/15min |
+| **Email** | Resend | Branded HTML transactional emails |
+| **Notifications** | Slack Webhooks | Real-time vote alerts (optional) |
+| **Scheduled Jobs** | Vercel Cron | 6 automated jobs (quota reset, FIFO, SLA, etc.) |
+| **Logging** | Structured JSON | `lib/logger.ts` with userId, action, stack traces |
+| **Deployment** | Vercel | Edge/Serverless optimized |
+
+---
 
 ## Core Features
-- **Role-Based Access Control (RBAC):** Super Admin, HR Admin, Manager, and Employee tiers.
-- **Recognition Quotas:** Monthly/Weekly dynamic quotas restricting vote spam.
-- **Rewards Catalog & Orders:** Employees can convert recognition points into physical/digital rewards.
-- **Admin Analytics:** Comprehensive reporting, user management, and configuration system.
-- **Leaderboards & Realtime Feeds:** Fast, cached API endpoints serving dynamic organizational data.
+
+### 👥 Role-Based Access Control (RBAC)
+
+| Role | Capabilities |
+|------|-------------|
+| **Employee** | Send votes, redeem rewards, view leaderboard, manage notifications |
+| **Manager** | Employee features + team view with subordinate stats |
+| **HR Admin** | Manager features + catalog management, order approvals, CSV exports |
+| **Super Admin** | Full access — system settings, analytics, user management |
+
+### 🗳️ Voting System
+
+- **Monthly quota**: 8 votes (configurable)
+- **Weekly limit**: Max 2 votes/week
+- **Per-person limit**: Max 2 votes/person/month with cooldown
+- **Same-team cap**: Max 50% of monthly quota
+- **Self-vote & manager-vote**: Blocked
+- **Reciprocal detection**: Flagged for HR review
+- **Message**: Required, min 20 characters
+
+### 🎁 Redemption
+
+| Region | Type | Flow |
+|--------|------|------|
+| **Vietnam** | Digital Vouchers | Auto-assign on order → COMPLETED (FIFO queue if out of stock) |
+| **Czech Republic** | Physical Items | PENDING → HR Approve → APPROVED → Deliver → COMPLETED |
+
+**Point Conversion**: 1 Vote received = 10 Points
+
+### 📈 Analytics & Reporting
+
+- Real-time admin dashboard with regional breakdown
+- Leaderboard with podium view (gold/silver/bronze)
+- CSV exports: votes, redemptions, engagement data
+- Reciprocal vote flagging for anti-gaming review
+
+---
 
 ## UI Component Library
+
 Custom-built reusable components in `src/components/ui/`:
 
 | Component | Description |
@@ -32,44 +95,156 @@ Custom-built reusable components in `src/components/ui/`:
 | `SearchInput` | Debounced search with icon |
 | `PageTransition` | Loading skeleton wrapper with fade-in animation |
 
-Import via barrel: `import { Card, Badge, Avatar } from '@/components/ui'`
+```tsx
+import { Card, Badge, Avatar, StatCard } from '@/components/ui';
+```
 
-## Sprint v2.0 — UI/UX Overhaul (May 2026)
+---
 
-### Phase 1: Code Quality ✅
-- Service layer extraction (`lib/services/voteService.ts` — 274 lines)
-- Typed error system (`lib/errors.ts` — `AppError` + `ErrorCode` enum)
-- ESLint 0 errors, N+1 query fix, Prettier integration
+## Getting Started
 
-### Phase 2: Design System & Redesign ✅
-- CSS design tokens (gradients, shadows, animations, transitions)
-- 9 reusable UI components
-- Dashboard redesign (gradient StatCards, ProgressRing, animated Recognition feed)
-- Leaderboard podium view (gold/silver/bronze top-3)
-- Sidebar upgrade (active indicator, Avatar+Badge footer)
-- Catalog premium cards (Modal confirmation, hover effects)
-- Notifications redesign (type-colored icons, pulsing unread dots)
+### Prerequisites
+- Node.js ≥ 20.x
+- PostgreSQL database (or [Supabase](https://supabase.com) free tier)
 
-> **Audit Logs:** `docs/audit/SPRINT_V2_AUDIT.md` (current sprint), plus historical reports in `/docs/audit/`.
+### Local Development
 
-## Getting Started Locally
-
-1. Install dependencies:
 ```bash
+cd empulse-next
 npm install
 ```
-2. Configure `.env` (requires Supabase IPv4 Pooler URL and optionally Upstash Redis).
-3. Generate Prisma client:
+
+**Configure environment** — copy `.env.example` to `.env` and fill in:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DATABASE_URL` | ✅ | PostgreSQL connection (session pooler) |
+| `DIRECT_URL` | ✅ | Direct PostgreSQL connection (migrations) |
+| `JWT_SECRET` | ✅ | Min 32 chars for JWT signing |
+| `CRON_SECRET` | ✅ | Auth token for cron endpoints |
+| `RESEND_API_KEY` | ❌ | Email service (disabled if not set) |
+| `SLACK_WEBHOOK_URL` | ❌ | Slack notifications (disabled if not set) |
+
+**Set up database:**
+
 ```bash
-npx prisma generate
-```
-4. Run development server:
-```bash
-npm run dev
+npx prisma generate        # Generate Prisma client
+npx prisma db push         # Push schema to database
+npx prisma db seed         # Seed demo data
 ```
 
+**Start dev server:**
+
+```bash
+npm run dev                # → http://localhost:3000
+```
+
+### Demo Accounts (After Seeding)
+
+| Role | Email | Password |
+|------|-------|----------|
+| Super Admin | admin@empulse.com | password123 |
+| HR Admin (VN) | hr.vn@empulse.com | password123 |
+| HR Admin (CZ) | hr.cz@empulse.com | password123 |
+| Employee (VN) | nguyen.van.a@empulse.com | password123 |
+| Employee (CZ) | jan.novak@empulse.com | password123 |
+
+---
+
+## Project Structure
+
+```
+empulse-next/
+├── prisma/
+│   ├── schema.prisma          # Database schema (source of truth)
+│   └── seed.js                # Demo data seeder
+├── vercel.json                # Cron job configuration
+├── public/                    # Static assets + PWA manifest + service worker
+├── src/
+│   ├── middleware.ts           # JWT route protection (Edge-compatible)
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── auth/          # Login, register, me, logout
+│   │   │   ├── votes/         # Send/list votes (→ voteService)
+│   │   │   ├── feed/          # Recognition feed
+│   │   │   ├── notifications/ # In-app notifications
+│   │   │   ├── admin/         # Analytics, users, orders, catalog, settings
+│   │   │   └── cron/          # 6 scheduled job endpoints
+│   │   ├── dashboard/         # Employee pages
+│   │   │   ├── admin/         # Admin portal (nested layout)
+│   │   │   └── my-team/       # Manager team view
+│   │   └── login/             # Login page
+│   ├── components/
+│   │   ├── ui/                # ⭐ Reusable component library (9 components)
+│   │   ├── Sidebar.tsx        # Main navigation
+│   │   └── Toast.tsx          # Toast notifications
+│   └── lib/
+│       ├── services/          # Business logic (voteService.ts)
+│       ├── errors.ts          # AppError + ErrorCode enum
+│       ├── prisma.ts          # Database client
+│       ├── auth.ts            # JWT utilities
+│       ├── validations.ts     # Zod schemas
+│       ├── rateLimit.ts       # Token bucket rate limiter
+│       ├── logger.ts          # Structured JSON logging
+│       └── ...                # email, slack, cron utilities
+```
+
+---
+
+## Deployment (Vercel)
+
+1. Connect repo to Vercel
+2. Set root directory to `empulse-next`
+3. Add all required environment variables
+4. Deploy
+
+### Cron Jobs
+
+Configured in `vercel.json` — all endpoints require `Authorization: Bearer <CRON_SECRET>`:
+
+| Job | Schedule | Description |
+|-----|----------|-------------|
+| Quota Reset | 1st of month | Reset monthly voting quotas |
+| Quarterly Reset | End of quarter | Reset reward wallets |
+| Quarterly Warning | Daily 9AM | Email warnings before expiry |
+| FIFO Processor | Every 5 min | Process backorder queue |
+| SLA Checker | Daily 9AM | Alert on overdue CZ orders |
+| Voucher Cleanup | Daily 1AM | Mark expired vouchers |
+
+---
+
+## Security
+
+- **httpOnly cookies** — JWT tokens never exposed to JavaScript
+- **Edge middleware** — route protection before request hits API
+- **Zod validation** — schema-based input validation on all endpoints
+- **Rate limiting** — token bucket per endpoint category
+- **CRON_SECRET** — bearer token auth for scheduled jobs
+- **Input sanitization** — XSS prevention
+- **Audit logging** — immutable action history with reciprocal vote flagging
+
+---
+
 ## Code Conventions
-- **Thin controllers**: API routes delegate to `lib/services/` — no business logic in routes
-- **Barrel exports**: UI components from `@/components/ui`
-- **Animation classes**: `.animate-slide-up`, `.animate-fade-in`, `.animate-scale-in` with `.stagger-N`
-- **Error handling**: All API errors use `AppError` from `lib/errors.ts`
+
+- **Thin controllers** — API routes delegate to `lib/services/`, no business logic in routes
+- **Barrel exports** — UI components via `@/components/ui`
+- **Typed errors** — all API errors use `AppError` from `lib/errors.ts`
+- **Animation classes** — `.animate-slide-up`, `.animate-fade-in`, `.animate-scale-in` with `.stagger-N`
+
+---
+
+## Development History
+
+| Version | Focus | Date |
+|---------|-------|------|
+| v1.0 | Production-ready (6 phases: security → integrations) | Feb 2026 |
+| v2.0 | UI/UX overhaul — design system, component library, page redesigns | May 2026 |
+
+> **Detailed logs**: See [`docs/audit/`](./docs/audit/) for sprint-specific audit reports.
+
+---
+
+## License
+
+Internal project — EmbedIT Vietnam © 2026
