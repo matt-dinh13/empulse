@@ -1,0 +1,25 @@
+---
+type: Class
+stereotype: "XSDsimpleType"
+package: "HomerSelect/BSL/Analysis Model/_Interface/Consumed services/Payment Card system/Card/Card Management/Card Management - Types"
+domain: "Analysis Model"
+element_id: 1481401
+diagrams: 1
+connections: 0
+tags:
+  - class
+  - analysis-model
+---
+
+# 🔷 ReservationCode
+
+> **Type**: Class · **Stereotype**: «XSDsimpleType»
+> **Package**: HomerSelect/BSL/Analysis Model/_Interface/Consumed services/Payment Card system/Card/Card Management/Card Management - Types
+
+## 📝 Notes
+
+Reservation identification code (e.g. account or contract number).
+
+## 📊 Appears In (1 diagrams)
+
+- Logical: Card management - Card structures - Interface diagram

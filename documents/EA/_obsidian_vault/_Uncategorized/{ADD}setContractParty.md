@@ -1,0 +1,21 @@
+---
+type: Package
+stereotype: ""
+package: ""
+domain: "_Uncategorized"
+element_id: 1858999
+diagrams: 0
+connections: 0
+tags:
+  - package
+  - _uncategorized
+---
+
+# 📁 {ADD}setContractParty
+
+> **Type**: Package
+> **Package**: N/A
+
+## 📝 Notes
+
+{ADD CLM-6660/}

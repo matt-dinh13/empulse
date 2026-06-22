@@ -1,0 +1,27 @@
+---
+type: GUIElement
+stereotype: "label"
+package: "HomerSelect/BSL/Modules/Product Catalog (PRC)/Analytical Model/Service/User Interface for Service Management/Service Type Specific Extension/Insurance Types/User Interface"
+domain: "Modules"
+element_id: 1852761
+diagrams: 1
+connections: 0
+tags:
+  - guielement
+  - modules
+---
+
+# 🖥️ Insurance Termination Offset
+
+> **Type**: GUIElement · **Stereotype**: «label»
+> **Package**: HomerSelect/BSL/Modules/Product Catalog (PRC)/Analytical Model/Service/User Interface for Service Management/Service Type Specific Extension/Insurance Types/User Interface
+
+## 📝 Notes
+
+LDM: SERVICE.InsuranceService.InsuranceTerminationOffset
+
+Localization Code: SER_InsuranceTerminationOffset
+
+## 📊 Appears In (1 diagrams)
+
+- Custom: Show Insurance Service properties

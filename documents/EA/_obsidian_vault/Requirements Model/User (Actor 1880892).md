@@ -1,0 +1,577 @@
+---
+type: Actor
+stereotype: ""
+package: "HomerSelect/BSL/Requirements Model/In process/CLM/CBL-23168 (CLM-5891) [VAS] Standalone PPI as a second loan"
+domain: "Requirements Model"
+element_id: 1880892
+diagrams: 187
+connections: 367
+tags:
+  - actor
+  - requirements-model
+---
+
+# 👤 User
+
+> **Type**: Actor
+> **Package**: HomerSelect/BSL/Requirements Model/In process/CLM/CBL-23168 (CLM-5891) [VAS] Standalone PPI as a second loan
+
+## 🔗 Connections (367)
+
+- ← Association: [[01.033 Show 2BoD filling history (UseCase 1736423)]]
+- ← Association: [[{MOD}01.020 Create contract]]
+- ← UseCase: [[01.281 Record contract package mistake v2]]
+- ← UseCase: [[{MOD}01.427 Change DDM ECS provider]]
+- ← UseCase: [[{ADD}01.368 Update closure information for refinanced contract (UseCase 1817766)]]
+- ← Association: [[01.153 Display contracts for Top Up (UseCase 1818358)]]
+- ← Association: [[{MOD}01.422 Update application DDM]]
+- ← UseCase: [[01.147 Reset consent validation (UseCase 1819574)]]
+- ← UseCase: [[01.087 Print consent (UseCase 1821366)]]
+- ← UseCase: [[01.669 Change reward payment channel (UseCase 1827890)]]
+- ← Association: [[01.330 Cancel signed contract manually (UseCase 1850502)]]
+- ← Association: [[01.590 Cancel active contract manually (UseCase 1850510)]]
+- ← UseCase: [[12.604 Show transaction history (UseCase 1878585)]]
+- ← UseCase: [[12.605 Cancel transaction]]
+- ← Association: [[{MOD}12.601 Show account detail]]
+- ← UseCase: [[12.606 Create new fee (UseCase 1878568)]]
+- → Association: [[09.090 Create address]]
+- → Association: [[{MOD}01.075 Print product offer detail]]
+- → UseCase: [[03.035 Show early repayment preview (UseCase 1879635)]]
+- → Association: [[01.126 Upload client document file]]
+- → UseCase: [[12.510 Change delivery address (UseCase 1849965)]]
+- → Association: [[01.240 Remove from contract package (UseCase 1759989)]]
+- → UseCase: [[00.050 Login system (UseCase 1571869)]]
+- → UseCase: [[01.530 Plan export of DDM for confirmation (UseCase 1876228)]]
+- → UseCase: [[08.910 Manage Collection tool service requests]]
+- → UseCase: [[08.300 Show Bundle service status (UseCase 1879701)]]
+- → UseCase: [[01.090 Generate verification code for contact validation (UseCase 1821372)]]
+- → UseCase: [[08.050 Show Partial ER preview]]
+- → Association: [[20.126 Upload client document file (UseCase 1819634)]]
+- → Association: [[Any use case]]
+- → Association: [[12.503 Replace card (UseCase 1849963)]]
+- → Association: [[{ADD}01.650 Edit Contract Commodity [CLM]]]
+- → UseCase: [[05.516 Cancel unpaid outgoing payment for refund (UseCase 1877127)]]
+- → Association: [[01.200 Add to contract package (UseCase 1759983)]]
+- → UseCase: [[09.271 Import product to salesroom assignment file (UseCase 1746870)]]
+- → UseCase: [[12.622 Transfer installment plan back request (UseCase 1575219)]]
+- → Association: [[08.510 Show RELIP service variant (UseCase 906551)]]
+- → UseCase: [[05.604 Show incoming payment created on POS (Boundary 1880910)]]
+- → Association: [[08.514 Remove RELIP service variant (UseCase 906549)]]
+- → UseCase: [[03.200 Show ER request history (UseCase 1876322)]]
+- → Association: [[02.520 Create printout template (UseCase 626961)]]
+- → Association: [[01.011 Administrate preprinted documents (UseCase 1851470)]]
+- → UseCase: [[08.400 Show parameters for loan restructuring (UseCase 1862191)]]
+- → UseCase: [[08.061 Show parameters for change due date (UseCase 1862209)]]
+- → Association: [[09.330 Show contact information]]
+- → UseCase: [[12.628 Print installment plan overview for REL]]
+- → Dependency: [[05.553 Refund overpayment (UseCase 1877244)]]
+- → UseCase: [[12.542 Change e-commerce security level]]
+- → UseCase: [[12.612 Show loyalty account detail]]
+- → Association: [[09.170 Remove contact information]]
+- → UseCase: [[05.602 Create incoming payment on POS]]
+- → UseCase: [[{MOD}01.280 Record document mistake v2]]
+- → Association: [[09.100 Update address]]
+- → UseCase: [[{MOD}06.032 Submit response on customer offer]]
+- → Association: [[09.270 Assign product to salesroom (UseCase 1746868)]]
+- → UseCase: [[08.900 Show available collection tools for client's contracts]]
+- → Association: [[05.100 Browse outgoing payments (UseCase 1459046)]]
+- → Association: [[01.077 Change product offer parameters (UseCase 1827715)]]
+- → Association: [[01.120 Delete contract document]]
+- → UseCase: [[09.200 Remove contact person (UseCase 922675)]]
+- → Association: [[05.210 Show outgoing payment file detail]]
+- → UseCase: [[05.170 Show DD statement detail (UseCase 1863196)]]
+- → UseCase: [[{ADD}01.560 Write-off contract]]
+- → Association: [[01.125 Upload contract document]]
+- → UseCase: [[13.275 Show supplement registration]]
+- → UseCase: [[{MOD}08.115 Collect insurance custom data for alternative offer]]
+- → UseCase: [[12.611 Show interests (UseCase 1878577)]]
+- → UseCase: [[01.490 Plan pay-off of contracts from file (UseCase 1878647)]]
+- → UseCase: [[{DEL}09.010 Create partner]]
+- → UseCase: [[08.503 Update eligible commodity data]]
+- → UseCase: [[01.801 Import sold contracts file (UseCase 1839171)]]
+- → UseCase: [[01.272 Check presence of document with barcode reader]]
+- → UseCase: [[07.030 Show detail of communication (UseCase 1879992)]]
+- → UseCase: [[{MOD}01.300 Search for contract]]
+- → UseCase: [[{MOD}08.095 Cancel contract service manually]]
+- → Association: [[02.330 Show document container detail (UseCase 876486)]]
+- → UseCase: [[{MOD}08.257 Create Cooling-off period request]]
+- → UseCase: [[{MOD} 00.160 Create bank]]
+- → Association: [[09.150 Create contact information]]
+- → UseCase: [[08.600 Show CEL Rewards preview (UseCase 1850693)]]
+- → UseCase: [[01.426 Cancel DDM (UseCase 1782314)]]
+- → Association: [[13.190 Reprint supplement documentation (UseCase 1879361)]]
+- → UseCase: [[{MOD}13.122 Show Transaction Supplement detail]]
+- → UseCase: [[05.512 Show contract refund items (UseCase 1877128)]]
+- → UseCase: [[01.190 Reprint credit documentation (UseCase 1815936)]]
+- → UseCase: [[{MOD}07.020 Show list of communication]]
+- → UseCase: [[05.215 Print outgoing file for signing]]
+- → UseCase: [[{MOD}01.160 Search client]]
+- → UseCase: [[12.608 Show Unconfirmed transactions (UseCase 1878579)]]
+- → UseCase: [[{ADD}13.290 Preview Contract Supplement Document]]
+- → UseCase: [[01.088 Upload file (UseCase 1819817)]]
+- → UseCase: [[03.040 Print selected version of IS (UseCase 1879436)]]
+- → Association: [[05.190 Browse outgoing payment files]]
+- → Association: [[00.000 Manage Privileges (UseCase 1571868)]]
+- → UseCase: [[09.340 Show contact person (UseCase 922674)]]
+- → Association: [[09.250 Find salesroom (UseCase 1387407)]]
+- → Association: [[01.305 Inform client (UseCase 626513)]]
+- → Association: [[09.290 Assign Sales Agent (UseCase 1746941)]]
+- → Association: [[01.663 Edit refunds disbursement channel]]
+- → UseCase: [[01.129 Take and upload client document photo (UseCase 1880234)]]
+- → UseCase: [[01.092 Cancel contact validation (UseCase 1821369)]]
+- → UseCase: [[01.640 Edit delinquency direct debit]]
+- → Association: [[{ADD} 01.136 Verify card on Application detail]]
+- → UseCase: [[08.402 Create request for loan restructuring (UseCase 1862199)]]
+- → UseCase: [[08.053 Create PER request manually]]
+- → UseCase: [[08.359 Print service request document (UseCase 1879711)]]
+- → Association: [[01.220 Search for contract package (UseCase 1759984)]]
+- → UseCase: [[{MOD}01.366 Update bank account for refinanced contract]]
+- → Association: [[20.133 Delete document content (UseCase 1819632)]]
+- → Association: [[01.103 Add client document (UseCase 1880236)]]
+- → UseCase: [[{MOD}01.105 Set document proof check]]
+- → UseCase: [[{MOD}01.081 Fill in application - 1SP]]
+- → UseCase: [[{MOD}06.040 Search Clients]]
+- → UseCase: [[00.070 Show inbox (UseCase 626939)]]
+- → UseCase: [[08.330 Update Bundle service status]]
+- → Association: [[Confirm DDM via RMQ]]
+- → UseCase: [[06.060 Show client's password (UseCase 1813899)]]
+- → Association: [[01.340 Cancel contract with generated offers manually (UseCase 1850505)]]
+- → UseCase: [[{MOD}01.473 Show debt catalogue detail]]
+- → UseCase: [[05.141 Import DD statements (UseCase 1863207)]]
+- → Association: [[01.157 Save adjusted offer (UseCase 1827705)]]
+- → UseCase: [[09.215 Set payment status for Salesroom manually (UseCase 1387405)]]
+- → UseCase: [[05.280 Browse incoming payment files (Boundary 1880941)]]
+- → Association: [[20.127 Take and upload contract document photo (UseCase 1819578)]]
+- → Association: [[{MOD}01.076 Display preliminary installment schedule]]
+- → UseCase: [[05.515 Generate outgoing payment for refund items (UseCase 1877126)]]
+- → UseCase: [[{MOD}03.202 Extend or Reactivate ER request]]
+- → UseCase: [[04.100 Add charging requests]]
+- → Association: [[01.112 Edit DDM document (UseCase 1880248)]]
+- → UseCase: [[12.602 Show balance detail (UseCase 1878567)]]
+- → UseCase: [[01.275 Show registration tab]]
+- → UseCase: [[{MOD}05.094 Block payments for a contract]]
+- → UseCase: [[08.345 Add Insurance on Contract (UseCase 1879841)]]
+- → UseCase: [[01.061 Send information to client by sms to process application form (UseCase 1821364)]]
+- → UseCase: [[12.607 Show account blocking overview]]
+- → Association: [[02.320 Create document container (UseCase 876485)]]
+- → Association: [[09.310 Show address]]
+- → UseCase: [[01.421 Create application DDM (UseCase 1818674)]]
+- → Association: [[09.206 Remove notice]]
+- → UseCase: [[09.040 Change status of partner manually]]
+- → UseCase: [[{MOD}10.020 Create ticket manually]]
+- → Association: [[01.156 Adjust credit limit (UseCase 1827721)]]
+- → UseCase: [[{MOD}07.050 Update communication record (UseCase 1880001)]]
+- → Association: [[{MOD}01.100 Add contract document]]
+- → UseCase: [[01.270 Register contract manually]]
+- → Association: [[12.505 Unblock card (UseCase 1849989)]]
+- → Association: [[{MOD}01.110 Edit contract document]]
+- → Association: [[{MOD}01.159 Reject offer]]
+- → UseCase: [[05.292 Remove incoming payment file (Boundary 1880933)]]
+- → Association: [[01.592 Cancel paid-off contract manually (UseCase 1850504)]]
+- → Association: [[{MOD}08.060 Change Due Date]]
+- → Association: [[01.250 Print contract package (UseCase 1759990)]]
+- → UseCase: [[01.675 Verify card data in external module for contract]]
+- → UseCase: [[03.050 Create Full Early repayment request manually]]
+- → Association: [[01.031 Release assigned contract (UseCase 1736431)]]
+- → Association: [[01.260 Send contract package to central office (UseCase 1759981)]]
+- → UseCase: [[01.478 Show supposed debt for CEL contract (UseCase 1876077)]]
+- → UseCase: [[08.255 Show Cooling-off period repayment preview (UseCase 1862255)]]
+- → Association: [[{MOD}01.113 Edit client document]]
+- → UseCase: [[{MOD}08.062 Create request for change due date]]
+- → Association: [[12.509 Change emboss name (UseCase 1849990)]]
+- → UseCase: [[08.110 Select insurance services (UseCase 1819535)]]
+- → UseCase: [[08.353 Browse requests for services]]
+- → UseCase: [[00.110 Find bank (UseCase 1300665)]]
+- → UseCase: [[Create Collection tool service request]]
+- → UseCase: [[01.287 Report registration mistakes (Boundary 1880926)]]
+- → Association: [[01.659 Change application repayment payment channel (UseCase 1833499)]]
+- → Association: [[12.501 Show card detail (UseCase 1627282)]]
+- → Association: [[{DEL}09.020 Update partner (UseCase 1637263)]]
+- → UseCase: [[01.149 Generate verification code for client's documentation]]
+- → UseCase: [[01.365 Add bank account for refinanced contract (UseCase 1817767)]]
+- → Association: [[01.320 Cancel approved contract manually (UseCase 1850514)]]
+- → UseCase: [[08.072 Change insurance operation status (UseCase 1875614)]]
+- → UseCase: [[01.420 Create DDM on the contract]]
+- → UseCase: [[{MOD}01.165 Display contracts to consolidate]]
+- → UseCase: [[12.626 Cancel installment plan in cooling-off period (UseCase 1575228)]]
+- → UseCase: [[12.609 Block account (UseCase 1849946)]]
+- → UseCase: [[06.041 Show clients safe guaranty]]
+- → UseCase: [[01.660 Change repayment channel (UseCase 1673777)]]
+- → Association: [[{DEL}02.906 Marketing Offers Management (UseCase 1727569)]]
+- → UseCase: [[09.240 Show salesroom (UseCase 1387392)]]
+- → UseCase: [[05.511 Browse refund items (UseCase 1877130)]]
+- → Dependency: [[05.552 Transfer overpayment (UseCase 1877238)]]
+- → UseCase: [[01.146 Validate verification code for consent (UseCase 1819572)]]
+- → Association: [[{MOD}12.506 Internal card activation]]
+- → UseCase: [[{MOD}07.040 Create communication record manually]]
+- → UseCase: [[{MOD}01.289 Show registration queue management]]
+- → UseCase: [[08.355 Create request for payment holiday (UseCase 1862152)]]
+- → Association: [[{MOD}01.662 Change disbursement channel]]
+- → UseCase: [[05.142 Import DDS confirmations (UseCase 1863202)]]
+- → Association: [[08.020 Display status of service on contract (UseCase 1879718)]]
+- → UseCase: [[01.552 Set business event on WO contact (UseCase 1878681)]]
+- → UseCase: [[05.513 Process outgoing payment for refund items (UseCase 1877129)]]
+- → Association: [[01.102 Add DDM document (UseCase 1880252)]]
+- → Association: [[09.050 Find partner]]
+- → UseCase: [[08.030 Show service operation status (UseCase 1879674)]]
+- → Association: [[01.185 Validate card number (UseCase 1878505)]]
+- → Association: [[02.340 Update document container (UseCase 876488)]]
+- → Association: [[20.125 Upload application document]]
+- → Association: [[01.181 Collect data before sign (UseCase 1351141)]]
+- → Association: [[{MOD}01.082 Fill in application - 1BoD]]
+- → UseCase: [[01.730 Finish contract manually (UseCase 1852803)]]
+- → Association: [[09.296 Set GSN for user (UseCase 1746942)]]
+- → UseCase: [[05.290 Confirm incoming payment file (Boundary 1880947)]]
+- → UseCase: [[06.011 Open de-duplication console (UseCase 830629)]]
+- → Association: [[09.260 Change salesroom status manually (UseCase 1387397)]]
+- → UseCase: [[01.127 Take and upload contract document photo (UseCase 1880243)]]
+- → Association: [[01.116 Set client document security level (UseCase 1880226)]]
+- → UseCase: [[{MOD} 00.120 Create bank branch]]
+- → Association: [[{MOD}01.655 Validate contract Commodity]]
+- → UseCase: [[08.080 Add new available Service on Contract]]
+- → UseCase: [[00.020 Show list of extended properties (UseCase 1879941)]]
+- → Association: [[01.861 Import contract securitization file]]
+- → UseCase: [[08.404 Confirm offer for loan restructuring (UseCase 1862186)]]
+- → UseCase: [[{MOD} 00.170 Update bank]]
+- → UseCase: [[12.624 Cancel installment plan (UseCase 1575227)]]
+- → UseCase: [[{ADD}01.561 Write-off contracts from file]]
+- → UseCase: [[12.540 Card blocking overview (UseCase 1849969)]]
+- → Association: [[02.510 Find printout templates (UseCase 626963)]]
+- → UseCase: [[01.665 Approve disbursement channel change request (UseCase 1846346)]]
+- → Association: [[05.060 Decouple incoming payment manually (UseCase 1854319)]]
+- → Association: [[02.550 Deactivate printout template (UseCase 626965)]]
+- → UseCase: [[01.133 Delete document content (UseCase 1880251)]]
+- → Association: [[{MOD}01.114 Set contract document security level]]
+- → Dependency: [[05.551 Manage overpayment (UseCase 1877223)]]
+- → Association: [[01.012 Show preprinted documents (UseCase 824821)]]
+- → UseCase: [[05.514 Cancel refund item (UseCase 1877125)]]
+- → Association: [[{MOD}01.661 Change application disbursement payment channel]]
+- → Association: [[01.032 Reschedule 2BoD call (UseCase 1736428)]]
+- → UseCase: [[{MOD} 00.130 Update bank branch]]
+- → UseCase: [[08.357 Cancel request for loan service (UseCase 1879719)]]
+- → UseCase: [[{MOD}01.183 Print documents for contract sign]]
+- → UseCase: [[05.092 {MOD}Disburse outgoing payments manually]]
+- → UseCase: [[03.020 Show installment schedule (UseCase 1879461)]]
+- → Association: [[01.083 Fill in application - 2BoD (UseCase 1811345)]]
+- → Association: [[01.230 Show contract package detail (UseCase 1759985)]]
+- → UseCase: [[01.135 Get information about document from document archive (UseCase 1880247)]]
+- → UseCase: [[05.605 Print incoming payment on POS (Boundary 1880906)]]
+- → Association: [[09.275 Remove Product from Salesroom (UseCase 1746866)]]
+- → UseCase: [[11.121 Terminate insurance contract manually (UseCase 1878971)]]
+- → Association: [[08.271 Create CET repayment request (UseCase 1862246)]]
+- → UseCase: [[05.603 Cancel incoming payment on POS (Boundary 1880914)]]
+- → Association: [[02.350 Deactivate document container (UseCase 876489)]]
+- → UseCase: [[{MOD}01.128 Preview document]]
+- → UseCase: [[08.340 Show Insurance offers for loan contract (UseCase 1879847)]]
+- → Association: [[09.110 Remove address]]
+- → Association: [[09.130 Update SN bank account]]
+- → Association: [[{MOD}05.110 Generate payment orders]]
+- → UseCase: [[01.182 Prepare documentation manually]]
+- → Association: [[08.090 Terminate Contract Service manually]]
+- → Association: [[20.129 Take and upload client document photo (UseCase 1819633)]]
+- → UseCase: [[05.080 Create incoming payment manually (Boundary 1880920)]]
+- → Association: [[02.540 Update printout template (UseCase 626960)]]
+- → UseCase: [[01.570 Plan import of DDM confirmation results (UseCase 1876227)]]
+- → Association: [[01.423 Change ECS provider for application DDM (UseCase 1818672)]]
+- → Association: [[01.435 Print DDM (UseCase 1876225)]]
+- → UseCase: [[05.505 Create refund from incoming payment]]
+- → Association: [[01.158 Accept offer (UseCase 1827719)]]
+- → UseCase: [[01.171 Create REL contract termination request (UseCase 1852809)]]
+- → Association: [[05.101 Export outgoing payments (UseCase 1459045)]]
+- → UseCase: [[01.148 Validate verification code for client's documentation]]
+- → Association: [[05.115 Export outgoing payment order file]]
+- → Association: [[01.015 Manage application cancellation configurations (UseCase 1590830)]]
+- → Association: [[02.310 Find document containers (UseCase 876490)]]
+- → Association: [[03.021 Show REL installment schedule (UseCase 1878580)]]
+- → UseCase: [[{MOD}01.430 Receive DDM]]
+- → UseCase: [[{MOD PAYM-6304} 01.676 Verify bank account data for contract disb. channel]]
+- → UseCase: [[{MOD}06.030 Show Client Data]]
+- → UseCase: [[13.060 Create change credit limit request manually (UseCase 1877196)]]
+- → UseCase: [[05.150 Browse DD statements (UseCase 1863200)]]
+- → UseCase: [[09.030 Show partner (UseCase 1637262)]]
+- → UseCase: [[{MOD}01.070 Show product offer detail]]
+- → Association: [[01.154 Postpone decision about optional offers (UseCase 1827709)]]
+- → UseCase: [[08.070 Switch service on_off manually (UseCase 1879702)]]
+- → Association: [[09.242 Assign_Unassign Commodity to Salesroom (UseCase 530312)]]
+- → Association: [[07.022 Show list of communication for application (UseCase 1736405)]]
+- → Association: [[{MOD}09.140 Remove SN bank account]]
+- → UseCase: [[00.010 Set user options]]
+- → Association: [[08.610 Show Interest Back preview (UseCase 1876354)]]
+- → UseCase: [[08.354 Show parameters of payment holiday (UseCase 1862151)]]
+- → UseCase: [[{MOD}00.040 Remove extended property]]
+- → UseCase: [[07.110 Assign ticket to communication v2 (UseCase 1879987)]]
+- → Association: [[09.295 Remove sales agent from salesroom (UseCase 1746939)]]
+- → UseCase: [[01.010 Choose product offer (UseCase 1827711)]]
+- → UseCase: [[05.010 Import incoming payments file (Boundary 1880944)]]
+- → Association: [[08.512 Set RELIP service variant (UseCase 906550)]]
+- → UseCase: [[12.603 Print or send statement]]
+- → Association: [[01.091 Validate verification code for contact (UseCase 1821371)]]
+- → UseCase: [[01.664 Show disbursement channel change request (UseCase 1846352)]]
+- → UseCase: [[{MOD}12.539 Internal PIN request]]
+- → Association: [[01.325 Cancel In Pre-Process or In Process contract manually (UseCase 1850515)]]
+- → UseCase: [[13.270 Register Contract supplement]]
+- → Association: [[09.350 Move salesroom (UseCase 1387391)]]
+- → UseCase: [[13.062 Show credit limit change history (UseCase 1877209)]]
+- → UseCase: [[{MOD}05.093 Allow payments for a contract]]
+- → UseCase: [[08.408 Set terms of loan fulfillment]]
+- → UseCase: [[{MOD}01.425 Update DDM]]
+- → UseCase: [[{MOD}01.666 Reject disbursement channel change request]]
+- → Association: [[01.072 Redirect to client center (UseCase 1827706)]]
+- → UseCase: [[12.632 Create request for POS transaction without card]]
+- → UseCase: [[00.180 Show bank detail]]
+- → Association: [[01.282 Edit client or contract document]]
+- → UseCase: [[00.060 Logout system (UseCase 1571867)]]
+- → UseCase: [[05.300 Import disbursement confirmations]]
+- → UseCase: [[{MOD}11.111 Cancel insurance contract manually]]
+- → Association: [[01.265 Receive contract package (UseCase 1759980)]]
+- → Association: [[01.085 Capture Photo]]
+- → Association: [[12.504 Block card (UseCase 1849982)]]
+- → UseCase: [[13.061 Show credit limit change request detail]]
+- → UseCase: [[00.150 Find bank branch (UseCase 1300670)]]
+- → Association: [[{MOD} 01.139 Verify card data]]
+- → UseCase: [[01.410 Pay-off contract manually (UseCase 1878655)]]
+- → UseCase: [[01.172 Cancel REL contract termination request manually (UseCase 1852812)]]
+- → UseCase: [[12.610 Unblock account (UseCase 1849947)]]
+- → UseCase: [[{MOD}00.030 Add extended property]]
+- → Association: [[08.010 Show service information (UseCase 1879687)]]
+- → UseCase: [[09.190 Update contact person (UseCase 922677)]]
+- → Association: [[01.027 Switch contract 2BoD queue type (UseCase 1736424)]]
+- → Association: [[01.123 Delete client document (UseCase 1880237)]]
+- → UseCase: [[01.145 Generate verification code for consent validation (UseCase 1819571)]]
+- → Association: [[{MOD}01.210 Show contract detail]]
+- → Association: [[01.122 Delete DDM document (UseCase 1880249)]]
+- → Association: [[09.230 Update salesroom (UseCase 1387396)]]
+- → UseCase: [[{DEL}12.615 Cancel initial transaction]]
+- → UseCase: [[{MOD}01.667 Revoke disbursement channel change request]]
+- → UseCase: [[09.180 Create contact person (UseCase 922676)]]
+- → Association: [[01.650 Edit Contract Commodity (UseCase 1852203)]]
+- → Association: [[01.180 Sign contract manually (UseCase 1878503)]]
+- → Association: [[01.479 Show supposed debt for REL contract (UseCase 1876083)]]
+- → Association: [[{ADD}09.276 Assign sales package to salesroom (UseCase 1274812)]]
+- → UseCase: [[12.620 Show installment plan for REL (UseCase 1575225)]]
+- → Association: [[08.270 Show CET repayment preview (UseCase 1862238)]]
+- → UseCase: [[03.090 Remove installment manually (UseCase 1879458)]]
+- → UseCase: [[12.613 Show account detail in AM]]
+- → Association: [[09.160 Update contact information]]
+- → Association: [[09.220 Create salesroom (UseCase 1387390)]]
+- → UseCase: [[{MOD}13.360 Cancel unprocessed contract supplement manually]]
+- → UseCase: [[01.199 Display public verification panel for consent (UseCase 1819573)]]
+- → Association: [[05.030 Couple incoming payment manually]]
+- → Association: [[09.205 Create notice]]
+- → Association: [[{ADD}09.277 Remove sales package from salesroom (UseCase 1274811)]]
+- → UseCase: [[00.140 Show bank branch detail]]
+- → UseCase: [[09.210 Set payment status for Partner manually (UseCase 1637268)]]
+- → Association: [[05.125 Export dispatch note file (UseCase 867416)]]
+- → Association: [[09.320 Show SN bank account]]
+- → UseCase: [[12.630 Create request for CASH transaction without card]]
+- → Association: [[{MOD}09.120 Create SN bank account]]
+- → UseCase: [[01.910 Change Client on Contract v2]]
+- → UseCase: [[07.010 Import communication list (UseCase 1757642)]]
+- → UseCase: [[01.050 Change insurance prolongation (UseCase 1879780)]]
+- → Association: [[05.040 Cancel incoming payment manually (Boundary 1880904)]]
+- → Association: [[08.506 Set Custom Data Definition for Insurance Program (UseCase 894493)]]
+- → Association: [[08.550 Set main Insurance Program properties (UseCase 1517627)]]
+- → Association: [[08.540 Cancel Insurance Program version (UseCase 1517625)]]
+- → Association: [[05.050 Show incoming payment detail (Boundary 1880937)]]
+- → Association: [[05.020 Browse incoming payments (Boundary 1880950)]]
+- → Association: [[08.504 Assign Ineligible Professions for Insurance Program (UseCase 894464)]]
+- → Association: [[08.580 Activate Insurance Program version manually (UseCase 1517629)]]
+- → Association: [[08.560 Show Insurance Program version detail (UseCase 1517628)]]
+- → Association: [[08.502 Assign Eligible Commodities for Insurance Program]]
+- → Association: [[08.508 Remove Custom Data Definition from Insurance program (UseCase 894492)]]
+- → Association: [[05.070 Divide incoming payment (Boundary 1880936)]]
+- → Association: [[08.525 Create Insurance Program by copy (UseCase 1517634)]]
+- → Association: [[08.520 Create Insurance Program (UseCase 1517632)]]
+- → Association: [[08.530 Create Insurance Program version (UseCase 1517624)]]
+- → Association: [[External Reference (Boundary 1873881)]]
+- → Association: [[08.570 Search for Insurance Program (UseCase 1517626)]]
+
+## 📊 Appears In (187 diagrams)
+
+- Custom: CBL-23168 (CLM-5891) [VAS] Standalone PPI as a second loan
+- Custom: CBL-6545 (CLM-2086) New maintenance function for Change client on contract
+- Custom: CLM-3826 - New SAI - Contract cancellation
+- Use Case: 2BoD processing
+- Use Case: Accept/Reject optional offers
+- Use Case: Access control
+- Use Case: Account Blockage use case model
+- Use Case: Account detail
+- Use Case: Actors
+- Use Case: Adding Insurance Service on CEL contract
+- Use Case: Adding Insurance Service on REL contract
+- Use Case: Adding Insurance Service on REL contract method
+- Use Case: Application documents
+- Use Case: Assign & Update Eligible Commodities
+- Use Case: Assign Ineligible Professions
+- Use Case: Automatic import DD statements and confirmations
+- Use Case: Bank Management
+- Use Case: Blocking & Unblocking card
+- Use Case: Browse Outgoing Payments
+- Use Case: Cancel contract after sign
+- Use Case: Cancel contract manually
+- Use Case: Cancel contract supplement manually
+- Use Case: Cancellation of Insurance contract options
+- Use Case: Card activation
+- Use Case: Card detail - Use case
+- Use Case: Card evidence
+- Use Case: Cardless transaction request - Use case model
+- Use Case: CEL Rewards 
+- Use Case: Change credit limit manually
+- Use Case: Change disbursement channel
+- Use Case: Change Due Date processing
+- Use Case: Change of Client on contract
+- Use Case: Change Partner status
+- Use Case: Change refunds disbursement channel
+- Use Case: Change repayment channel
+- Use Case: Change Salesroom status
+- Use Case: Charging request
+- Use Case: CHDDR request creation - via GUI
+- Use Case: Checking Terms of Loan Service
+- Use Case: Choose product offer
+- Use Case: Client deduplication solving
+- Use Case: Client documents
+- Use Case: Client management
+- Use Case: Client search
+- Use Case: CLM-5981 Termination of the SAI with installments
+- Use Case: CLM-6021 Cancellation of SAI with installments
+- Use Case: CLM-6027 Update COP processing for Standalone PPI
+- Use Case: CLM-6072 Cancel/Terminate Service update for SAI
+- Use Case: Collect data before sign
+- Use Case: Collection tool requests management
+- Use Case: Collection tools request
+- Use Case: Communication records
+- Use Case: Consolidation Use case
+- Use Case: Contact verification
+- Use Case: Contract debt tracking
+- Use Case: Contract detail
+- Use Case: Contract Early Termination processing
+- Use Case: Contract Early Termination request creation
+- Use Case: Contract finishing manually
+- Use Case: Contract insurance cancellation
+- Use Case: Contract insurance termination
+- Use Case: Contract origination
+- Use Case: Contract registration
+- Use Case: Contract search
+- Use Case: Contract securitization
+- Use Case: Contract Service replacement (flip)
+- Use Case: Contract signing
+- Use Case: Contract supplement registration
+- Use Case: Contract tracking
+- Use Case: ContractServiceCanceledNotification message variant
+- Use Case: ContractServiceCreatedNotification message variant
+- Use Case: ContractServiceTerminatedNotification message variant
+- Use Case: Cooling-off period request
+- Use Case: Create and Sign Insurance contract
+- Use Case: Create/Update/Receive DDM
+- Use Case: CSI-1122 Use DMS in Contract Supplement registration functions
+- Use Case: CSI-1256 Use DMS in UC13.190 Reprint supplement documentation
+- Use Case: CSI-2287 Replace LoanServiceRequest sending for Operation Status change
+- Use Case: CSI-2848 KZ - LOP support in BSL update
+- Use Case: DDM confirmation
+- Use Case: DDM confirmation via RMQ
+- Use Case: Debt calculator
+- Use Case: Direct debit mandates
+- Use Case: Direct Debit statements
+- Use Case: Disbursement channel change request processing
+- Use Case: Disbursement confirmations
+- Use Case: Document checking within contract registration
+- Use Case: Document copy management
+- Use Case: Document proof check - use case model
+- Use Case: Edit client documents
+- Use Case: Edit contract documents
+- Use Case: Edit DDM documents
+- Use Case: Extended properties
+- Use Case: Fess-back service immediate processing
+- Use Case: File upload - use case
+- Use Case: Fill in application
+- Use Case: Financial partnership
+- Use Case: Full early repayment processing
+- Use Case: Full early repayment request - via GUI
+- Use Case: Getting Commodity Data from Manufacturer
+- Use Case: Import list of communication
+- Use Case: Import sold contracts file
+- Use Case: Inform client
+- Use Case: Installment plan for REL management
+- Use Case: Installment schedule management
+- Use Case: Installment Schedule management
+- Use Case: Insurance Contract Management
+- Use Case: Insurance on REL Contract management
+- Use Case: Insurance prolongation
+- Use Case: Insurance Service Offers UI - Use Case Model
+- Use Case: Interest Back
+- Use Case: List of communication
+- Use Case: Loan restructuring request creation - via GUI
+- Use Case: Loan Service - Add a Service to Contract
+- Use Case: Loan service request management
+- Use Case: Manage addresses
+- Use Case: Manage Commodities on Salesroom
+- Use Case: Manage communication tickets - Use Case
+- Use Case: Manage contact information
+- Use Case: Manage contact persons
+- Use Case: Manage Container
+- Use Case: Manage contract commodities
+- Use Case: Manage Insurance Program
+- Use Case: Manage Notices
+- Use Case: Manage overpayment
+- Use Case: Manage partner
+- Use Case: Manage Printout Templates
+- Use Case: Manage Privileges
+- Use Case: Manage Products on Salesroom
+- Use Case: Manage Sales agents on Salesroom 
+- Use Case: Manage Sales Packages on Salesroom
+- Use Case: Manage salesroom
+- Use Case: Manage service REL transaction Installment Plan
+- Use Case: Manage SN Bank Accounts
+- Use Case: Manual pairing of incoming payment with contract
+- Use Case: Manual unpairing incoming payment from contract
+- Use Case: Offer detail
+- Use Case: Operations with an outgoing payments from the contract detail
+- Use Case: Other Card operations - Use case
+- Use Case: Outgoing payment files management
+- Use Case: Payment channels
+- Use Case: Payment holiday request creation - via GUI
+- Use Case: Payment holiday requests management
+- Use Case: Payment holiday rollback
+- Use Case: Pay-off contract manually
+- Use Case: Pay-off contracts from file
+- Use Case: PER request creation - via GUI
+- Use Case: Photo component
+- Use Case: PIN request
+- Use Case: Prepare documentation to sign
+- Use Case: Process outgoing payments
+- Use Case: Processing outgoing payments for refunds
+- Use Case: Refunds management
+- Use Case: REL contract termination request
+- Use Case: Reprint credit documentation use cases
+- Use Case: Rewards payment channel management
+- Use Case: Select insurance services
+- Use Case: Service - contract detail
+- Use Case: Service - Contract Service management via UI
+- Use Case: Service - show or update Bundle service status
+- Use Case: Service - switch on/off
+- Use Case: Set Custom Data Item
+- Use Case: Set document security level
+- Use Case: Setting an Business Event on WO contract
+- Use Case: Show credit limit change history
+- Use Case: Show credit limit change request
+- Use Case: Show ER request history
+- Use Case: Show Insurance commodity
+- Use Case: Showing Insurance Contract info
+- Use Case: Status of Fees-back evaluation on user request
+- Use Case: Status of Gift payment
+- Use Case: Status of Grace Period
+- Use Case: Supplement document management
+- Use Case: Switch contract to front office
+- Use Case: System login
+- Use Case: System notifications
+- Use Case: Take document photo - use case overview
+- Use Case: Termination of Insurance contract options
+- Use Case: Transaction Supplement user interface
+- Use Case: Use Case Model
+- Use Case: Use Case Model
+- Use Case: Use Case Model
+- Use Case: Use case model
+- Use Case: Use Case Model
+- Use Case: Use Case Model - consent verification
+- Use Case: Use DMS in UC08.359 Print service request document
+- Use Case: User settings

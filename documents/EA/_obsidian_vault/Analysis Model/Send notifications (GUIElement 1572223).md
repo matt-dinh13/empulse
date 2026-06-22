@@ -1,0 +1,29 @@
+---
+type: GUIElement
+stereotype: "lcheckbox"
+package: "HomerSelect/BSL/Analysis Model/Sales Network Management/Salesroom/COMMON for Salesroom/User Interface"
+domain: "Analysis Model"
+element_id: 1572223
+diagrams: 1
+connections: 0
+tags:
+  - guielement
+  - analysis-model
+---
+
+# 🖥️ Send notifications
+
+> **Type**: GUIElement · **Stereotype**: «lcheckbox»
+> **Package**: HomerSelect/BSL/Analysis Model/Sales Network Management/Salesroom/COMMON for Salesroom/User Interface
+
+## 📝 Notes
+
+This field shows if contact notification should be sent or not.
+Disabled.
+LDM: Salesroom.Send notifications
+
+Localization code: SAL_Notifications
+
+## 📊 Appears In (1 diagrams)
+
+- Custom: Show salesroom detail

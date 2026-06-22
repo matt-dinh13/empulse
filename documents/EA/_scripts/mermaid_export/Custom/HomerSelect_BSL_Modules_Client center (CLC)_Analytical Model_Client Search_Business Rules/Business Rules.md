@@ -1,0 +1,17 @@
+# Business Rules
+
+- **Diagram Type**: Custom
+- **Package**: HomerSelect/BSL/Modules/Client center (CLC)/Analytical Model/Client Search/Business Rules
+- **Diagram ID**: 156134
+- **Elements**: 4
+- **Connectors**: 2
+
+```mermaid
+graph TD
+    Get_alias_number_instead_of_original_for_Unique_Id_document["Get alias number instead of original for Unique Id document"]
+    MOD_Search_criteria_rule_for_PH["{MOD}Search criteria rule for PH"]
+    Search_criteria_rule_for_KZ["Search criteria rule for KZ"]
+    Rules_for_Search_criteria_has_to_be_filled_in["Rules for Search criteria has to be filled in "]
+    MOD_Search_criteria_rule_for_PH -->|unnamed| Rules_for_Search_criteria_has_to_be_filled_in
+    Search_criteria_rule_for_KZ -->|unnamed| Rules_for_Search_criteria_has_to_be_filled_in
+```

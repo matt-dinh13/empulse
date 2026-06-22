@@ -1,0 +1,25 @@
+---
+type: Object
+stereotype: ""
+package: "HomerSelect/BSL/Requirements Model/Finished/CSI/CBL-22777 (CSI-3042) SME Project - Additional Cards for SME account/SME Object Model"
+domain: "Requirements Model"
+element_id: 1810065
+diagrams: 1
+connections: 1
+tags:
+  - object
+  - requirements-model
+---
+
+# 🔸 CARD_1
+
+> **Type**: Object
+> **Package**: HomerSelect/BSL/Requirements Model/Finished/CSI/CBL-22777 (CSI-3042) SME Project - Additional Cards for SME account/SME Object Model
+
+## 🔗 Connections (1)
+
+- → Association: [[CARD_HOLDER]]
+
+## 📊 Appears In (1 diagrams)
+
+- Object: SME Object Model

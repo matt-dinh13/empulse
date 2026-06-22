@@ -1,0 +1,28 @@
+---
+type: Sequence
+stereotype: "boundary"
+package: "HomerSelect/BSL/Analysis Model/Contract Supplements/Transaction Supplement support/Use case model/Transaction Supplement refunding"
+domain: "Analysis Model"
+element_id: 1876482
+diagrams: 1
+connections: 4
+tags:
+  - sequence
+  - analysis-model
+---
+
+# 📄 Message bus
+
+> **Type**: Sequence · **Stereotype**: «boundary»
+> **Package**: HomerSelect/BSL/Analysis Model/Contract Supplements/Transaction Supplement support/Use case model/Transaction Supplement refunding
+
+## 🔗 Connections (4)
+
+- → Sequence: [[Account Management (Sequence 1876484)]]
+- → Sequence: [[CSI_Transaction Supplement (Sequence 1876483)]]
+- ← Sequence: [[Account Management (Sequence 1876484)]]
+- ← Sequence: [[CSI_Transaction Supplement (Sequence 1876483)]]
+
+## 📊 Appears In (1 diagrams)
+
+- Sequence: Transaction Supplement refunding

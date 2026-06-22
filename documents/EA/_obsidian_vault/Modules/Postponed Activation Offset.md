@@ -1,0 +1,34 @@
+---
+type: GUIElement
+stereotype: "text"
+package: "HomerSelect/BSL/Modules/Product Catalog (PRC)/Analytical Model/Service/User Interface for Service Management/Service Type Specific Extension/CRDPST/User Interface"
+domain: "Modules"
+element_id: 1377991
+diagrams: 1
+connections: 2
+tags:
+  - guielement
+  - modules
+---
+
+# 🖥️ Postponed Activation Offset
+
+> **Type**: GUIElement · **Stereotype**: «text»
+> **Package**: HomerSelect/BSL/Modules/Product Catalog (PRC)/Analytical Model/Service/User Interface for Service Management/Service Type Specific Extension/CRDPST/User Interface
+
+## 📝 Notes
+
+LDM:
+StandardPaymentCardService.PostponedActivationOffset
+
+Localization:
+SER_PostponedCardActivationOffset
+
+## 🔗 Connections (2)
+
+- → Dependency: [[Mandatory (Requirement 1789779)]]
+- → Dependency: [[Integer _= 0]]
+
+## 📊 Appears In (1 diagrams)
+
+- Custom: Set Standard Payment Card properties

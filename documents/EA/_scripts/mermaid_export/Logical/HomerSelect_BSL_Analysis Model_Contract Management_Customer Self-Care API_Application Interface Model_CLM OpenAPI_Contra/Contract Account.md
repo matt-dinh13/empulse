@@ -1,0 +1,20 @@
+# Contract Account
+
+- **Diagram Type**: Logical
+- **Package**: HomerSelect/BSL/Analysis Model/Contract Management/Customer Self-Care API/Application Interface Model/CLM OpenAPI/Contract Account/v1.0/Contract Account
+- **Diagram ID**: 159602
+- **Elements**: 5
+- **Connectors**: 4
+
+```mermaid
+classDiagram
+    class contractaccount["contractaccount"]
+    class contractaccounts["contractaccounts"]
+    class BSL_OpenAPI["BSL OpenAPI"]
+    class n_01_793_Get_contract_account_overview["01.793 Get contract account overview"]
+    class ContractAccountOverview["ContractAccountOverview"]
+    BSL_OpenAPI ..> contractaccounts : /contractaccount
+    contractaccounts ..> contractaccount : /{contractNumber}
+    contractaccount --> ContractAccountOverview : unnamed
+    contractaccount ..> n_01_793_Get_contract_account_overview : unnamed
+```

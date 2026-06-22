@@ -1,0 +1,39 @@
+---
+type: Class
+stereotype: ""
+package: "HomerSelect/BSL/Modules/Document management (DMS_NG)/Analytical Model/Document Type Definition/Logical Data Model"
+domain: "Modules"
+element_id: 1856903
+diagrams: 1
+connections: 3
+tags:
+  - class
+  - modules
+---
+
+# 🔷 Behavior Rule
+
+> **Type**: Class
+> **Package**: HomerSelect/BSL/Modules/Document management (DMS_NG)/Analytical Model/Document Type Definition/Logical Data Model
+
+## 📝 Notes
+
+This class represents rule which determines how attributes ("owner" attribute of the rule) is affected based on value of different attribute ("trigger" attribute).
+
+## 🔗 Connections (3)
+
+- → Association: [[Document Type Attribute]]
+- → Association: [[Document Type Attribute]]
+- → Dependency: [[State Type]]
+
+## 📊 Appears In (1 diagrams)
+
+- Logical: Document Type - Logical Data Model
+
+## 📋 Attributes
+
+| Name | Type | Default |
+|------|------|---------|
+| Condition | string |  |
+| State | State Type |  |
+| Active Flag | boolean |  |

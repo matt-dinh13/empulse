@@ -1,0 +1,16 @@
+# Contracts Status Revert
+
+```mermaid
+classDiagram
+    class MOD_15_109_Contract_Status_Revert_on_external_request["{MOD}15.109 Contract Status Revert on external request"]
+    class contracts_status_revert["contracts-status-revert"]
+    class contracts_maintenance["contracts-maintenance"]
+    class Contract_Management["Contract Management"]
+    class Contract["Contract"]
+    class ContractsStatusRevertRequest["ContractsStatusRevertRequest"]
+    contracts_status_revert --> ContractsStatusRevertRequest : unnamed
+    ContractsStatusRevertRequest --> Contract : unnamed
+    Contract_Management --> contracts_maintenance : /contracts-maintenance
+    contracts_maintenance --> contracts_status_revert : /contracts-status-revert
+    contracts_status_revert --> MOD_15_109_Contract_Status_Revert_on_external_request : unnamed
+```

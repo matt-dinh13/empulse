@@ -1,0 +1,32 @@
+---
+type: Class
+stereotype: "XSDcomplexType"
+package: "HomerSelect/BSL/Analysis Model/_Interface/Consumed services/Collections system interfaces"
+domain: "Analysis Model"
+element_id: 735967
+diagrams: 1
+connections: 2
+tags:
+  - class
+  - analysis-model
+---
+
+# 🔷 ContractPropertyRQ
+
+> **Type**: Class · **Stereotype**: «XSDcomplexType»
+> **Package**: HomerSelect/BSL/Analysis Model/_Interface/Consumed services/Collections system interfaces
+
+## 🔗 Connections (2)
+
+- → Dependency: [[ContractPropertyItem]]
+- ← Dependency: [[setContractProperty]]
+
+## 📊 Appears In (1 diagrams)
+
+- Logical: LCS interface - Contract Property Service
+
+## 📋 Attributes
+
+| Name | Type | Default |
+|------|------|---------|
+| contractPropertyItem | ContractPropertyItem |  |

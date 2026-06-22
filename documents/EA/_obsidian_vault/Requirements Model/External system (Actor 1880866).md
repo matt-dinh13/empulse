@@ -1,0 +1,286 @@
+---
+type: Actor
+stereotype: ""
+package: "HomerSelect/BSL/Requirements Model/In process/LOR/LOR-8421 LOR - remove KZ custom behavior of BSL/LOR-8989 - Remove InitiateEvaluationRequest functionality"
+domain: "Requirements Model"
+element_id: 1880866
+diagrams: 95
+connections: 165
+tags:
+  - actor
+  - requirements-model
+---
+
+# 👤 External system
+
+> **Type**: Actor
+> **Package**: HomerSelect/BSL/Requirements Model/In process/LOR/LOR-8421 LOR - remove KZ custom behavior of BSL/LOR-8989 - Remove InitiateEvaluationRequest functionality
+
+## 📝 Notes
+
+External system  out of Homer Select Suite
+
+## 🔗 Connections (164)
+
+- ← UseCase: [[01.464 Get payment channels]]
+- ← Association: [[14.434 PUT DDMOrDraft (Update direct debit mandate or direct debit mandate draft) (UseCase 1817867)]]
+- ← UseCase: [[01.797 Create ContractPayholRequest service]]
+- ← UseCase: [[01.796 Get ContractPayholRequest preview service]]
+- ← UseCase: [[01.794 Get ContractCHDDRequest preview service (UseCase 1869814)]]
+- ← Association: [[{ADD} 01.820 Get ContractREWServiceStatus]]
+- ← UseCase: [[01.791 Set Document File service (UseCase 1869810)]]
+- ← UseCase: [[08.390 Get Refinanced Contracts service (UseCase 1869798)]]
+- ← UseCase: [[01.812 Confirm ContractLRESRequest offer service (UseCase 1869797)]]
+- ← UseCase: [[08.392 Set Refinanced Contract Closure service (UseCase 1869796)]]
+- ← UseCase: [[01.810 Create ContractLRESRequest service (UseCase 1869794)]]
+- ← UseCase: [[01.795 Create ContractCHDDRequest service (UseCase 1869792)]]
+- ← UseCase: [[01.792 Set Document ProofCheck service]]
+- ← UseCase: [[01.811 Get ContractLRESRequest offer service]]
+- ← Association: [[{ADD}13.076 Accept credit limit change documents (UseCase 1877207)]]
+- ← UseCase: [[08.455 Reactivate contract insurance service (UseCase 1878990)]]
+- ← Association: [[01.385 Assign card to application externally (UseCase 1879300)]]
+- ← Association: [[{MOD}01.774 Create Contract Service]]
+- → Association: [[05.222 Clear overpayment (UseCase 1879069)]]
+- → UseCase: [[01.950 Process request for Contract notification]]
+- → UseCase: [[01.101 Provide CodeLists]]
+- → Association: [[08.411 Stream loan service data service]]
+- → UseCase: [[01.196 Get Fullpaths For Party Scoring (UseCase 1796344)]]
+- → UseCase: [[01.761 Get contract service requests for self-care (UseCase 1869802)]]
+- → UseCase: [[{MOD}01.763 Get Contract Documents for self-care]]
+- → Usage: [[{ADD}00.193 Get Bank Branch data via Rest API]]
+- → UseCase: [[01.512 Receive notification about data prepared (UseCase 1853932)]]
+- → UseCase: [[{MOD}01.758 Get contract commodities for self-care]]
+- → UseCase: [[01.311 Update offer to application and evaluate (UseCase 1879293)]]
+- → UseCase: [[01.778 Cancel contract DDM service]]
+- → Usage: [[{ADD}00.192 Get Bank data via Rest API]]
+- → UseCase: [[05.112 Generate payment orders on external request]]
+- → Association: [[{DEL}02.840 Provide Offer CodeLists for External system (UseCase 1820898)]]
+- → UseCase: [[{DEL}01.174 Update document]]
+- → UseCase: [[{MOD}01.772 Get contract list insurances for self-care]]
+- → UseCase: [[{MOD}01.462 Get DDM by application]]
+- → Association: [[{ADD} 01.830 Get ContractIBACkSeviceStatus]]
+- → UseCase: [[13.112 Refund Transaction Supplement]]
+- → UseCase: [[01.762 Get contract payment channels for self-care (UseCase 1869795)]]
+- → Association: [[01.471 Get debt catalogue for external system (UseCase 1876068)]]
+- → Association: [[02.820 Calculate Product Offers for External system (UseCase 1820901)]]
+- → UseCase: [[{ADD}15.000 Recieve Contracts Status Revert Request]]
+- → Association: [[14.432 POST DDM (Create and validate direct debit mandate) (UseCase 1817863)]]
+- → Association: [[Process Refund Outgoing Payment via API]]
+- → Association: [[{MOD} 01.139 Verify card data]]
+- → UseCase: [[01.522 Get prepared data from external system (UseCase 1853931)]]
+- → UseCase: [[01.759 Get contract services for self-care (UseCase 1869812)]]
+- → UseCase: [[01.767 Get contracts created on salesroom (UseCase 1631401)]]
+- → UseCase: [[{MOD}07.065 Create communication on external request]]
+- → UseCase: [[08.451 Get Contract insurance Cancel preview service (UseCase 1878961)]]
+- → UseCase: [[{DEL}01.276 Get documents for registration checking service]]
+- → UseCase: [[{MOD}13.100 Create Transaction Supplement service]]
+- → UseCase: [[01.313 Evaluate application (UseCase 1879292)]]
+- → UseCase: [[{DEL}01.765 Get early repayment preview for self-care]]
+- → UseCase: [[{ADD}01.781 Change contract DDM status service (UseCase 1325273)]]
+- → UseCase: [[{MOD}01.753 Get contract list]]
+- → UseCase: [[01.168 Refuse offers externally]]
+- → Association: [[{ADD} 00.190 Provide Bank Data (UseCase 1861967)]]
+- → UseCase: [[01.674 Delete card data in external module for contract]]
+- → UseCase: [[01.777 Update contract DDM service]]
+- → UseCase: [[01.195 Get Party Scoring Input Data (UseCase 1796346)]]
+- → UseCase: [[13.120 Get Contract Supplements of Customer service (UseCase 1881428)]]
+- → UseCase: [[01.167 Accept offer externally (UseCase 1827726)]]
+- → UseCase: [[{ADD}13.500 Find Supplement setting service (UseCase 1750148)]]
+- → Association: [[05.251 Automatic Import DD statements (UseCase 1863205)]]
+- → Association: [[14.433 POST Draft (Create direct debit mandate draft) (UseCase 1817866)]]
+- → UseCase: [[01.335 Get agreement documentation externally (UseCase 1819522)]]
+- → UseCase: [[13.204 Accept Account Renewal Supplement]]
+- → UseCase: [[{DEL}01.169 Get document content]]
+- → UseCase: [[08.495 Cancel Contract Service externally]]
+- → Association: [[14.431 GET DDM (Get direct debit mandates based on filters) (UseCase 1817862)]]
+- → Association: [[08.067 Calculate FER on virtual IS (Boundary 1877800)]]
+- → Association: [[GET ContractDataSource]]
+- → UseCase: [[{DEL}01.166 Get application offers (UseCase 1827729)]]
+- → UseCase: [[08.452 Cancel contract insurance service (UseCase 1878962)]]
+- → Association: [[01.768 Get Contract Service Request Overview (UseCase 1869800)]]
+- → UseCase: [[13.230 Cancel Account Renewal Supplement]]
+- → UseCase: [[01.461 Update DDM externally (UseCase 1817774)]]
+- → Association: [[{MOD}01.465 Set payment channel]]
+- → UseCase: [[08.342 Get contract insurance offers service (UseCase 1879829)]]
+- → UseCase: [[01.821 Rollback Loan Service Request service (UseCase 1869815)]]
+- → UseCase: [[{MOD}01.098 Update and evaluate application v9]]
+- → UseCase: [[{MOD}01.754 Get contract detail]]
+- → UseCase: [[External Reference (Boundary 1855318)]]
+- → UseCase: [[01.764 Get loan account overview for self-care (UseCase 1869806)]]
+- → UseCase: [[01.164 Search for application (UseCase 1879288)]]
+- → UseCase: [[{MOD}01.170 Update offer externally]]
+- → UseCase: [[{DEL}01.176 Create document]]
+- → Association: [[{ADD}13.420 Cancel Card Balance Transfer request (UseCase 1816916)]]
+- → UseCase: [[13.104 Cancel Transaction Supplement service]]
+- → UseCase: [[{MOD}08.347 Add Insurance service on Contract service]]
+- → UseCase: [[01.787 Get ContractPERRequest preview service (UseCase 1869808)]]
+- → Association: [[05.263 Get DDS export status]]
+- → UseCase: [[13.116 Add Sales Quote to Transaction Supplement (UseCase 1881439)]]
+- → UseCase: [[01.675 Verify card data in external module for contract]]
+- → UseCase: [[08.454 Terminate contract insurance service (UseCase 1878981)]]
+- → UseCase: [[01.271 Register contract remotely]]
+- → Association: [[05.261 Automatic Import DD confirmations (UseCase 1863190)]]
+- → UseCase: [[{MOD}01.310 Update application v9]]
+- → UseCase: [[01.040 Get application data (UseCase 1879289)]]
+- → UseCase: [[{MOD}05.350 Process disbursement confirmation message]]
+- → Association: [[{ADD} 00.200 Provide Bank Branch Data (UseCase 1861960)]]
+- → UseCase: [[01.095 Create and evaluate application]]
+- → Association: [[{DEL}09.273 Get List of Salesrooms by product code]]
+- → Association: [[{ADD}13.600 Process contract service replacement request]]
+- → UseCase: [[01.776 Create contract DDM service]]
+- → UseCase: [[01.786 Create ContractFERRequest service (UseCase 1869805)]]
+- → UseCase: [[01.097 Cancel application externally]]
+- → Association: [[Get Refund Item via API]]
+- → UseCase: [[01.785 Get ContractFERRequest preview (UseCase 1869811)]]
+- → UseCase: [[01.312 Update approved application (UseCase 1879295)]]
+- → UseCase: [[13.118 Authorize transactions in Transaction Supplement (UseCase 1881427)]]
+- → UseCase: [[01.096 Prepare documentation externally (UseCase 1879294)]]
+- → UseCase: [[01.784 Create ContractCETRequest service]]
+- → UseCase: [[01.756 Get client by contract and phone]]
+- → Association: [[07.061 Automatic import communication list (UseCase 1757635)]]
+- → UseCase: [[01.790 Get Contract Documents detail service (UseCase 1869820)]]
+- → Association: [[01.585 Automatic import DDM confirmation result (UseCase 1876221)]]
+- → UseCase: [[05.702 Get outgoing payments for contract - service]]
+- → UseCase: [[08.360 Accept Loan Service Request Supplement document]]
+- → Association: [[{MOD}02.830 Recalculate Product Offers for External system]]
+- → UseCase: [[01.780 Change contract repayment channel service]]
+- → UseCase: [[13.106 Get Transaction Supplement detail service]]
+- → UseCase: [[{DEL}01.277 Set document registration check service]]
+- → UseCase: [[08.453 Get Contract insurance Terminate preview service (UseCase 1878969)]]
+- → UseCase: [[{MOD}01.771 Get contracts for disbursement service]]
+- → Association: [[Edit Refund Disbursement Method via API]]
+- → UseCase: [[01.769 Set Contract Service status (UseCase 1879716)]]
+- → Association: [[01.333 Cancel active contract service]]
+- → Association: [[02.835 Provide Product Offers for External system (UseCase 1820900)]]
+- → UseCase: [[13.124 Reject Transaction supplement service]]
+- → UseCase: [[01.463 Change repayment channel externally (UseCase 1817775)]]
+- → UseCase: [[13.070 Process Credit limit change request via messaging (UseCase 1877206)]]
+- → Usage: [[00.194 Validate Bank Account for HSIS]]
+- → UseCase: [[08.490 Terminate Contract Service externally]]
+- → UseCase: [[01.483 Calculate debt on external request (UseCase 1876070)]]
+- → UseCase: [[External Reference (Boundary 1855317)]]
+- → UseCase: [[01.783 Get ContractCETRequest preview]]
+- → Association: [[{DEL}09.297 Assign or remove Sales Agent on salesroom from external systems]]
+- → UseCase: [[{MOD}01.757 Get contracts for self-care]]
+- → Association: [[{DEL}13.414 Accept Card Balance Transfer Supplement document (UseCase 1816918)]]
+- → UseCase: [[{MOD}08.350 Accept Contract Insurance Service]]
+- → UseCase: [[13.108 Accept Transaction Supplement documents]]
+- → UseCase: [[{MOD}08.349 Generate Insurance offer preview]]
+- → Association: [[01.332 Cancel signed contract service (UseCase 1850503)]]
+- → Association: [[Confirm DDM via RMQ]]
+- → Association: [[Cancel Refund Item via API]]
+- → UseCase: [[13.200 Create Account Renewal Supplement]]
+- → UseCase: [[{MOD}01.460 Create DDM externally]]
+- → Dependency: [[Get actual installment for contract]]
+- → Association: [[14.435 POST ValidateDDM (Validate direct debit mandate data) (UseCase 1817864)]]
+- → UseCase: [[01.788 Create ContractPERRequest service (UseCase 1869817)]]
+- → UseCase: [[01.779 Get contract DDM service]]
+- → UseCase: [[01.673 Save card data to external module for contract]]
+- → Association: [[{DEL}02.845 Provide Products for Finacing of Commodity for External system (UseCase 1820896)]]
+- → Association: [[04.123 Automatic add charging requests (UseCase 1857224)]]
+- → UseCase: [[01.773 Get contract financial partnership service (UseCase 1869818)]]
+- → UseCase: [[{MOD}01.099 Sign contract externally]]
+- → Dependency: [[Calculate Installment to pay]]
+- → Association: [[{ADD}13.410 Create Card Balance Transfer Supplement (UseCase 1816915)]]
+- → Association: [[08.608 Calculate CELREW fee amount on external request]]
+- → Association: [[05.012 Automatic import incoming payments (Boundary 1880930)]]
+- ← Sequence: [[BSL (Actor 1880871)]]
+- → Sequence: [[BSL (Actor 1880871)]]
+
+## 📊 Appears In (95 diagrams)
+
+- Custom: LOR-8989 - Remove InitiateEvaluationRequest functionality
+- Logical: ContractWS - GetContractDetail method
+- Logical: ContractWS - GetContractList method
+- Logical: ContractWS - GetCUIDByContractPhone
+- Logical: OnlineDebt
+- Logical: OnlineDebtWS
+- Sequence: Import of Product OfferLimits - communication scheme
+- Use Case: {DEL}Manage Sales agents on Salesroom from external systems
+- Use Case: Acceptation Insurance Service on CEL contract
+- Use Case: Actors
+- Use Case: Actual installment
+- Use Case: Adding Insurance Service on CEL contract
+- Use Case: Adding Insurance Service on REL contract
+- Use Case: Adding Insurance Service on REL contract method
+- Use Case: Automatic import DD statements and confirmations
+- Use Case: Bank Management Rest API
+- Use Case: Calculate debt on external request
+- Use Case: Cancel contract after sign
+- Use Case: Cancel contract on external request
+- Use Case: Cancellation of Insurance contract options
+- Use Case: Card Balance Transfer request processing - Use Case Model
+- Use Case: Card evidence
+- Use Case: Change disbursement channel
+- Use Case: Charging request
+- Use Case: CHDDR request creation - externally
+- Use Case: Clear overpayment
+- Use Case: CLM-5981 Termination of the SAI with installments
+- Use Case: CLM-6021 Cancellation of SAI with installments
+- Use Case: CLM-6072 Cancel/Terminate Service update for SAI
+- Use Case: Contract DDM operations
+- Use Case: Contract document services
+- Use Case: Contract Early Termination request creation
+- Use Case: Contract insurance cancellation
+- Use Case: Contract insurance reactivation
+- Use Case: Contract Insurance Service finishing - Use Case Model
+- Use Case: Contract insurance termination
+- Use Case: Contract registration
+- Use Case: Contract Service replacement (flip)
+- Use Case: Contract service replacement request processing
+- Use Case: Contract Service Requests - Use Case Model
+- Use Case: ContractServiceActivatedNotification message variant
+- Use Case: ContractServiceCreatedNotification message variant
+- Use Case: Create communication on external request
+- Use Case: Credit Limit Change via messaging - Use Case model
+- Use Case: CSI-1740 - Update method for TransactionSupplement creation
+- Use Case: CSI-2287 Replace LoanServiceRequest sending for Operation Status change
+- Use Case: Customer Self-Care API - Use Case Model
+- Use Case: Data prepared notification - UC model
+- Use Case: DDM confirmation
+- Use Case: DDM confirmation via RMQ
+- Use Case: DDM processing via REST API - UseCase Model
+- Use Case: DDS requests from external systems
+- Use Case: Direct Debit statements
+- Use Case: Disbursement channel change request processing
+- Use Case: Edit client documents
+- Use Case: Edit DDM documents
+- Use Case: Financial partnership
+- Use Case: Full early repayment request - externally
+- Use Case: Get List of Salesrooms by product code
+- Use Case: Get outgoing payments for contract - service
+- Use Case: Import list of communication
+- Use Case: Installment to pay
+- Use Case: Insurance Service Offers API - Use Case Model
+- Use Case: Loan restructuring request creation - externally
+- Use Case: Loan Service - Add a Service to Contract
+- Use Case: Loan Service - Data streaming
+- Use Case: Payment holiday request creation - externally
+- Use Case: Payment holiday rollback
+- Use Case: PER request creation - externally
+- Use Case: Process outgoing payments
+- Use Case: Processing disbursement confirmation message
+- Use Case: Product Calculator for External system - Calculate/Recalculate
+- Use Case: Product Calculator for External system - Provide Data
+- Use Case: Provide contract information
+- Use Case: Refinanced Contract
+- Use Case: Refund Service Rest API
+- Use Case: REL Account renewal support - Use Case Model
+- Use Case: Sending Contract notification on request
+- Use Case: Service - Contract Service management via API
+- Use Case: Supplement - Getting Supplement setting
+- Use Case: Synchronization
+- Use Case: Transaction Supplement authorization method
+- Use Case: Transaction Supplement documents - Use case model 
+- Use Case: Transaction Supplement refunding - Use case model
+- Use Case: Transaction Supplement rejection - Use case model
+- Use Case: Transaction Supplement request creation - Use case model
+- Use Case: Transaction Supplement Sales Quote adding
+- Use Case: Transaction Supplements management services - Use case model
+- Use Case: Use Case
+- Use Case: Use Case
+- Use Case: Use Case
+- Use Case: Use Case
+- Use Case: Use Case
+- Use Case: Use Case
+- Use Case: Use Case

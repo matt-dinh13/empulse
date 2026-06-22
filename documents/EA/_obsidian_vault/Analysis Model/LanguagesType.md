@@ -1,0 +1,37 @@
+---
+type: Class
+stereotype: "XSDcomplexType"
+package: "HomerSelect/BSL/Analysis Model/_Interface/Provided Data sources/Logical Data Model/Common/HO_CONTRACT_DATA"
+domain: "Analysis Model"
+element_id: 1878234
+diagrams: 2
+connections: 2
+tags:
+  - class
+  - analysis-model
+---
+
+# 🔷 LanguagesType
+
+> **Type**: Class · **Stereotype**: «XSDcomplexType»
+> **Package**: HomerSelect/BSL/Analysis Model/_Interface/Provided Data sources/Logical Data Model/Common/HO_CONTRACT_DATA
+
+## 📝 Notes
+
+Object representing a list of some particular languages (wrapping elements).
+
+## 🔗 Connections (2)
+
+- ← Dependency «use»: [[{MOD}DocumentData (Class 1821417)]]
+- → Dependency «use»: [[FullLanguageType]]
+
+## 📊 Appears In (2 diagrams)
+
+- Logical: HO_CONTRACT_DATA - client data
+- Logical: HO_GENERAL_TYPES
+
+## 📋 Attributes
+
+| Name | Type | Default |
+|------|------|---------|
+| language | FullLanguageType |  |

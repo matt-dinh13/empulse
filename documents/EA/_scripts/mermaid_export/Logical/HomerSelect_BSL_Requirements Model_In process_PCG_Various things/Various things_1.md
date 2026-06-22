@@ -1,0 +1,13 @@
+# Various things
+
+```mermaid
+classDiagram
+    class End_of_Deferred_Period_calculation["End of Deferred Period calculation"]
+    class MOD_Standard_STND["{MOD}Standard (STND)"]
+    class MOD_Evaluate_basic_financial_parameters_of_Product_Offer["{MOD}Evaluate basic financial parameters of Product Offer "]
+    class Annuity_calculation["Annuity calculation"]
+    class Recalculate_Annuity_in_OFP["Recalculate Annuity in OFP"]
+    MOD_Evaluate_basic_financial_parameters_of_Product_Offer --> Annuity_calculation : unnamed
+    Annuity_calculation --> End_of_Deferred_Period_calculation : unnamed
+    MOD_Standard_STND --> Annuity_calculation : unnamed
+```

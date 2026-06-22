@@ -1,0 +1,30 @@
+---
+type: Class
+stereotype: "XSDcomplexType"
+package: "HomerSelect/BSL/Requirements Model/Finished/CSI/CBL-22680 Service Management Modules for REL (KZ)/CSI-3088 VAS - Deal (Insurance) Prolongation notification"
+domain: "Requirements Model"
+element_id: 1796846
+diagrams: 1
+connections: 1
+tags:
+  - class
+  - requirements-model
+---
+
+# 🔷 {ADD}InsuranceProlongationFailed
+
+> **Type**: Class · **Stereotype**: «XSDcomplexType»
+> **Package**: HomerSelect/BSL/Requirements Model/Finished/CSI/CBL-22680 Service Management Modules for REL (KZ)/CSI-3088 VAS - Deal (Insurance) Prolongation notification
+
+## 📝 Notes
+
+{ADD CSI-3088 /}
+A notification generated on automatic insurance prolongation failed
+
+## 🔗 Connections (1)
+
+- → Generalization «XSDextension»: [[{ADD}InsuranceProlongationNotification]]
+
+## 📊 Appears In (1 diagrams)
+
+- Logical: Insurance Prolongation notification

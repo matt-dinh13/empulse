@@ -1,0 +1,14 @@
+# EA Explorer local gitignore
+_bsl_app/data/
+BSL_Explorer_Share.zip
+_scripts/explore_output.txt
+_scripts/explore_output_utf8.txt
+_scripts/error_diagnosis.json
+_scripts/_check_connectors.py
+_scripts/_check_features.py
+_scripts/_check_scenarios.py
+_scripts/_debug_mermaid.txt
+_scripts/_debug_notes.js
+_scripts/_patch_unnamed.py
+_scripts/check_mermaid_version.js
+_scripts/diagnose_errors.py

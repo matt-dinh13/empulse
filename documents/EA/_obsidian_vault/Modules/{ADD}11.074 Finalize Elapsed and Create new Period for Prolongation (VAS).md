@@ -1,0 +1,43 @@
+---
+type: UseCase
+stereotype: ""
+package: "HomerSelect/BSL/Modules/Value Added Services (VAS)/Analytical Model/VAS Deal/Use Case Model"
+domain: "Modules"
+element_id: 1829614
+diagrams: 3
+connections: 5
+tags:
+  - usecase
+  - modules
+---
+
+# 🎯 {ADD}11.074 Finalize Elapsed and Create new Period for Prolongation (VAS)
+
+> **Type**: UseCase
+> **Package**: HomerSelect/BSL/Modules/Value Added Services (VAS)/Analytical Model/VAS Deal/Use Case Model
+
+## 📝 Notes
+
+{ADD CSI-2967 /}
+The use case presents a function for the Deal Period (insurance Period) prolongation. 
+There are three basic steps of this process:
+
+	
+- Finalizing the last passed period including outgoing payment for an Insurance company
+	
+- Check the insurance and insured client for eligibility
+	
+- Establishing a new insurance period
+
+## 🔗 Connections (4)
+
+- → Dependency: [[Check INSR Insurance Program eligibility]]
+- → UseCase «include»: [[{ADD}11.076 Finalize Deal Period]]
+- → Dependency: [[{ADD}Check Deal Period limit passed]]
+- ← UseCase «include»: [[{ADD}11.070 Prolong Deal Period (VAS) (UseCase 1829611)]]
+
+## 📊 Appears In (3 diagrams)
+
+- Use Case: Deal Period prolongation - Use Case Model
+- Use Case: Deal prolongation method
+- Use Case: VAS - Deal (Insurance) Prolongation notification

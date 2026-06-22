@@ -1,0 +1,26 @@
+---
+type: Object
+stereotype: ""
+package: "HomerSelect/BSL/Modules/Service Interpreter (SIR_NG)/Requirement Model/CBL-27126 BREIT-82 - COMA, SUP, COS, SIR MVP Functionalities/ACCOUNT_CREATION Sales Quote mapping"
+domain: "Modules"
+element_id: 1851850
+diagrams: 1
+connections: 2
+tags:
+  - object
+  - modules
+---
+
+# 🔸 Purchase_app
+
+> **Type**: Object
+> **Package**: HomerSelect/BSL/Modules/Service Interpreter (SIR_NG)/Requirement Model/CBL-27126 BREIT-82 - COMA, SUP, COS, SIR MVP Functionalities/ACCOUNT_CREATION Sales Quote mapping
+
+## 🔗 Connections (2)
+
+- → Association: [[TRANSACTION_2]]
+- → Association: [[TRANSACTION_1]]
+
+## 📊 Appears In (1 diagrams)
+
+- Object: ACCOUNT_CREATION Sales Quote mapping

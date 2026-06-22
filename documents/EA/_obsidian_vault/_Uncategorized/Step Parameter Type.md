@@ -1,0 +1,21 @@
+---
+type: Boundary
+stereotype: ""
+package: ""
+domain: "_Uncategorized"
+element_id: 1193134
+diagrams: 0
+connections: 0
+tags:
+  - boundary
+  - _uncategorized
+---
+
+# 🔲 Step Parameter Type
+
+> **Type**: Boundary
+> **Package**: N/A
+
+## 📝 Notes
+
+Name=Step Parameter Type;Type=Class;

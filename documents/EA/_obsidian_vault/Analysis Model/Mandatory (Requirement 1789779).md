@@ -1,0 +1,426 @@
+---
+type: Requirement
+stereotype: "Validate"
+package: "HomerSelect/BSL/Analysis Model/Contract Origination/Fill in application/COMMON for Fill in application/Validation Rules/VN/Personal information/Additional data"
+domain: "Analysis Model"
+element_id: 1789779
+diagrams: 62
+connections: 336
+tags:
+  - requirement
+  - analysis-model
+---
+
+# 📋 Mandatory
+
+> **Type**: Requirement · **Stereotype**: «Validate»
+> **Package**: HomerSelect/BSL/Analysis Model/Contract Origination/Fill in application/COMMON for Fill in application/Validation Rules/VN/Personal information/Additional data
+
+## 📝 Notes
+
+Value must be filled.
+If any mandatory field is missing (not filled in) MSG_REQUIRED will be displayed.
+
+## 🔗 Connections (336)
+
+- ← Dependency: [[Other loans]]
+- ← Dependency: [[Ecomonical status]]
+- ← Dependency: [[Photo result VN]]
+- ← Dependency: [[House number]]
+- ← Dependency: [[Province]]
+- ← Dependency: [[District]]
+- ← Dependency: [[Ward]]
+- ← Dependency: [[Street]]
+- ← Dependency: [[Partner name (Action 682621)]]
+- ← Dependency: [[Card number]]
+- ← Dependency: [[PER client repayment validation]]
+- ← Dependency: [[Legal Form]]
+- ← Dependency: [[Length of Deferred period in months]]
+- ← Dependency: [[PAN Number]]
+- ← Dependency: [[Description]]
+- ← Dependency: [[Type (GUIElement 924403)]]
+- ← Dependency: [[Communication channel (Action 825902)]]
+- ← Dependency: [[Note (Action 825901)]]
+- ← Dependency: [[Blocking reason (Action 825900)]]
+- ← Dependency: [[Number of copies (GUIElement 872561)]]
+- ← Dependency: [[Printout template]]
+- ← Dependency: [[Document type (GUIElement 872550)]]
+- ← Dependency: [[Label]]
+- ← Dependency: [[Code]]
+- ← Dependency: [[Execution date]]
+- ← Dependency: [[Day for execution]]
+- ← Dependency: [[Transfer back reason]]
+- ← Dependency: [[Payment channel on pair payment]]
+- ← Dependency: [[Charging date on pair payment]]
+- ← Dependency: [[Sort Order]]
+- ← Dependency: [[Tax identification number (Action 919023)]]
+- ← Dependency: [[Birth date]]
+- ← Dependency: [[Registration date]]
+- ← Dependency: [[Type (GUIElement 924300)]]
+- ← Dependency: [[Required Next Due Date]]
+- ← Dependency: [[{ADD}New fee amount for CHDD]]
+- ← Dependency: [[Internal code]]
+- ← Dependency: [[X-sell offer code (Action 995498)]]
+- ← Dependency: [[Number of Gift Payments]]
+- ← Dependency: [[Security question (Action 1011866)]]
+- ← Dependency: [[Accompaniment of client]]
+- ← Dependency: [[Number of children (Action 1011864)]]
+- ← Dependency: [[Marital status (Action 1011863)]]
+- ← Dependency: [[Security answer (Action 1011862)]]
+- ← Dependency: [[Education (Action 1011861)]]
+- ← Dependency: [[Delivery option]]
+- ← Dependency: [[Validation rules for Transfer installment plan back]]
+- ← Dependency: [[Bank branch]]
+- ← Dependency: [[Account number - KZ]]
+- ← Dependency: [[Bank]]
+- ← Dependency: [[SSS_GSIS]]
+- ← Dependency: [[TIN]]
+- ← Dependency: [[Automatic Refund Generation]]
+- ← Dependency: [[X-sell offer code (Action 1127584)]]
+- ← Dependency: [[Mobile phone]]
+- ← Dependency: [[Reward Scheme (GUIElement 1145685)]]
+- ← Dependency: [[Pairing reason]]
+- ← Dependency: [[ZIP code (Action 1246356)]]
+- ← Dependency: [[District (Action 1246355)]]
+- ← Dependency: [[Bank name (Action 1245068)]]
+- ← Dependency: [[Bank branch name]]
+- ← Dependency: [[Subdistrict (Action 1246357)]]
+- ← Dependency: [[Street number]]
+- ← Dependency: [[Street name, block and number]]
+- ← Dependency: [[Street name (Action 1246349)]]
+- ← Dependency: [[Town (Action 1246348)]]
+- ← Dependency: [[DDM regular payment amount]]
+- ← Dependency: [[DDM regular payment type]]
+- ← Dependency: [[Manufacturer (Action 1255587)]]
+- ← Dependency: [[VIN Number]]
+- ← Dependency: [[Service relation type]]
+- ← Dependency: [[Blood type]]
+- ← Dependency: [[Interest and Fee Calculation Method (GUIElement 1275191)]]
+- ← Dependency: [[Expiration Period Days]]
+- ← Dependency: [[FER Service (GUIElement 1275185)]]
+- ← Dependency: [[Consolidation Type]]
+- ← Dependency: [[Maximal number of next installments (GUIElement 1276976)]]
+- ← Dependency: [[Minimum days before next due date]]
+- ← Dependency: [[{DEL}Selected SMS Notification Types]]
+- ← Dependency: [[Bank code (GUIElement 1309554)]]
+- ← Dependency: [[Security answer (Action 1311963)]]
+- ← Dependency: [[First name (Action 1311958)]]
+- ← Dependency: [[Photo result ID]]
+- ← Dependency: [[Accept small underpayment (GUIElement 1330235)]]
+- ← Dependency: [[COP length (days)]]
+- ← Dependency: [[Accepted due date shift (GUIElement 1330230)]]
+- ← Dependency: [[ER algorithm (GUIElement 1330228)]]
+- ← Dependency: [[Bank name (Action 1351116)]]
+- ← Dependency: [[Account type]]
+- ← Dependency: [[Bank branch name (Action 1351113)]]
+- ← Dependency: [[Account number - PH]]
+- ← Dependency: [[Enterprise Category (Action 1351154)]]
+- ← Dependency: [[Enterprise Subcategory (Action 1351153)]]
+- ← Dependency: [[Investment Amount (Action 1351152)]]
+- ← Dependency: [[Phone (Action 1351171)]]
+- ← Dependency: [[First name (Action 1351170)]]
+- ← Dependency: [[Channel (Action 1351169)]]
+- ← Dependency: [[Proof]]
+- ← Dependency: [[Received from]]
+- ← Dependency: [[Occupation]]
+- ← Dependency: [[Remitter's phone]]
+- ← Dependency: [[Periodicity]]
+- ← Dependency: [[Amount (Action 1351163)]]
+- ← Dependency: [[Country]]
+- ← Dependency: [[Last name (Action 1351160)]]
+- ← Dependency: [[Loan purpose]]
+- ← Dependency: [[Disbursement method (Action 1351990)]]
+- ← Dependency: [[Card delivery type]]
+- ← Dependency: [[Card pickup salesroom]]
+- ← Dependency: [[Disbursement method (Action 1356061)]]
+- ← Dependency: [[Limit (Action 1356060)]]
+- ← Dependency: [[Repayment method]]
+- ← Dependency: [[DDM Account holder name]]
+- ← Dependency: [[Card Delivery type]]
+- ← Dependency: [[Loan purpose (Action 1356056)]]
+- ← Dependency: [[Card pick-up area]]
+- ← Dependency: [[Card issue method]]
+- ← Dependency: [[Statement channel]]
+- ← Dependency: [[Number of days after service activation to evaluation]]
+- ← Dependency: [[Checked document type (GUIElement 1373330)]]
+- ← Dependency: [[Penalty due date related installment]]
+- ← Dependency: [[Postponed Activation Months (GUIElement 1377999)]]
+- ← Dependency: [[Postponed Activation Offset]]
+- ← Dependency: [[First name (Action 1471738)]]
+- ← Dependency: [[Mother maiden name (Action 1463980)]]
+- ← Dependency: [[Gender (Action 1463979)]]
+- ← Dependency: [[Date of birth (Action 1463978)]]
+- ← Dependency: [[Preferred language (Action 1463977)]]
+- ← Dependency: [[Place of birth (Action 1463976)]]
+- ← Dependency: [[First name (Action 1463973)]]
+- ← Dependency: [[Last name (Action 1463972)]]
+- ← Dependency: [[E-mail (Action 1465205)]]
+- ← Dependency: [[Mobile phone 1 (Action 1465204)]]
+- ← Dependency: [[Phone number (Action 1471737)]]
+- ← Dependency: [[Middle name (Action 1471736)]]
+- ← Dependency: [[Family name (Action 1471735)]]
+- ← Dependency: [[Preffered date and time]]
+- ← Dependency: [[Date of birth (Action 1471855)]]
+- ← Dependency: [[Middle name (Action 1471854)]]
+- ← Dependency: [[Preffered mode]]
+- ← Dependency: [[First name (Action 1471852)]]
+- ← Dependency: [[Gender (Action 1471851)]]
+- ← Dependency: [[Family name (Action 1471850)]]
+- ← Dependency: [[National identification number]]
+- ← Dependency: [[Primary mobile (GUIElement 1478503)]]
+- ← Dependency: [[Income (GUIElement 1478502)]]
+- ← Dependency: [[Client repayment]]
+- ← Dependency: [[Unit, floor, building name and no., street name (Action 1501295)]]
+- ← Dependency: [[Sub-disctrict]]
+- ← Dependency: [[Street name (Action 1501293)]]
+- ← Dependency: [[Town (Action 1501290)]]
+- ← Dependency: [[District (Action 1501289)]]
+- ← Dependency: [[Floor]]
+- ← Dependency: [[Zip code (Action 1501287)]]
+- ← Dependency: [[House number (Action 1501285)]]
+- ← Dependency: [[Industry]]
+- ← Dependency: [[Profession (Action 1513077)]]
+- ← Dependency: [[Length of empl (YY) (Action 1513060)]]
+- ← Dependency: [[Monthly amount of other debts (Action 1513075)]]
+- ← Dependency: [[Economical status (Action 1513073)]]
+- ← Dependency: [[Name (Action 1513072)]]
+- ← Dependency: [[Employment phone (Action 1513071)]]
+- ← Dependency: [[Length of empl (MM) (Action 1513069)]]
+- ← Dependency: [[Net income (Action 1513068)]]
+- ← Dependency: [[Salary frequency (Action 1513067)]]
+- ← Dependency: [[Description (GUIElement 1516824)]]
+- ← Dependency: [[Revenue share rounding (GUIElement 1516814)]]
+- ← Dependency: [[Register inclusion date offset (GUIElement 1516813)]]
+- ← Dependency: [[Revenue share base (GUIElement 1516800)]]
+- ← Dependency: [[Revenue share frequency]]
+- ← Dependency: [[Valid from]]
+- ← Dependency: [[Revenue share]]
+- ← Dependency: [[{DEL}Insured subject type]]
+- ← Dependency: [[Insurance contract type]]
+- ← Dependency: [[Name (GUIElement 1516753)]]
+- ← Dependency: [[Revenue share rounding scale]]
+- ← Dependency: [[Salesroom (GUIElement 1516745)]]
+- ← Dependency: [[Register inclusion date (GUIElement 1516744)]]
+- ← Dependency: [[Contract numbering (GUIElement 1516743)]]
+- ← Dependency: [[Register inclusion date frequency]]
+- ← Dependency: [[Bonus Services Impact]]
+- ← Dependency: [[Expiration Period Days (GUIElement 1530466)]]
+- ← Dependency: [[Min Days Before Installment (GUIElement 1530465)]]
+- ← Dependency: [[Bank code (GUIElement 1561663)]]
+- ← Dependency: [[DPD Scope (GUIElement 1562077)]]
+- ← Dependency: [[DPD Delay Tolerance (GUIElement 1562076)]]
+- ← Dependency: [[DPD Amount Tolerance]]
+- ← Dependency: [[Region (Action 1572572)]]
+- ← Dependency: [[Type of settlement (Action 1572570)]]
+- ← Dependency: [[ZIP code (Action 1572569)]]
+- ← Dependency: [[Country (Action 1572568)]]
+- ← Dependency: [[Town (Action 1572567)]]
+- ← Dependency: [[Street name (Action 1572566)]]
+- ← Dependency: [[House number (Action 1572565)]]
+- ← Dependency: [[ER Algorithm]]
+- ← Dependency: [[Accepted due date shift (GUIElement 1586783)]]
+- ← Dependency: [[Expiration Date Max Limit (GUIElement 1586782)]]
+- ← Dependency: [[Expiration Date Min Limit (GUIElement 1586779)]]
+- ← Dependency: [[Immediate ER available]]
+- ← Dependency: [[Early Repayment due date]]
+- ← Dependency: [[Income (GUIElement 1621935)]]
+- ← Dependency: [[Vodafone Number]]
+- ← Dependency: [[Income (GUIElement 1621954)]]
+- ← Dependency: [[Primary mobile (GUIElement 1621953)]]
+- ← Dependency: [[Supposed payment date validation]]
+- ← Dependency: [[Model (Action 1638621)]]
+- ← Dependency: [[Delivery type]]
+- ← Dependency: [[Color (Action 1638619)]]
+- ← Dependency: [[Engine number (Action 1638618)]]
+- ← Dependency: [[IMEI (Action 1638616)]]
+- ← Dependency: [[Manufacturer (Action 1638614)]]
+- ← Dependency: [[Statement channel (Action 1639478)]]
+- ← Dependency: [[Bank Branch]]
+- ← Dependency: [[Loan purpose (Action 1639476)]]
+- ← Dependency: [[Bank (Action 1639475)]]
+- ← Dependency: [[Province (Action 1639474)]]
+- ← Dependency: [[Card issue method (Action 1639472)]]
+- ← Dependency: [[Repayment channel (Action 1639471)]]
+- ← Dependency: [[New security level]]
+- ← Dependency: [[Emboss name (GUIElement 1651316)]]
+- ← Dependency: [[Required credit limit for CLDP]]
+- ← Dependency: [[Required credit limit for CLIP]]
+- ← Dependency: [[Expiration Period Days (GUIElement 1666756)]]
+- ← Dependency: [[Bonus Services Impact (GUIElement 1666755)]]
+- ← Dependency: [[Min Days Before Installment (GUIElement 1666749)]]
+- ← Dependency: [[Max Number of Deferred Periods]]
+- ← Dependency: [[Adjusted credit limit]]
+- ← Dependency: [[Selected Financing Package Purposes]]
+- ← Dependency: [[Reason (GUIElement 1701751)]]
+- ← Dependency: [[Variant]]
+- ← Dependency: [[Decisive Date]]
+- ← Dependency: [[Expiration Date]]
+- ← Dependency: [[Check result]]
+- ← Dependency: [[{MOD}Emboss name]]
+- ← Dependency: [[House type (Action 1732530)]]
+- ← Dependency: [[Number of dependent persons (Action 1732529)]]
+- ← Dependency: [[Marital status (Action 1732528)]]
+- ← Dependency: [[Citizenship (Action 1732527)]]
+- ← Dependency: [[Education (Action 1732526)]]
+- ← Dependency: [[Response (GUIElement 1732684)]]
+- ← Dependency: [[New due date]]
+- ← Dependency: [[Account number (GUIElement 1747201)]]
+- ← Dependency: [[Account holder name (GUIElement 1747195)]]
+- ← Dependency: [[Bank name (GUIElement 1747188)]]
+- ← Dependency: [[Bank code (GUIElement 1761476)]]
+- ← Dependency: [[Preferred monthly installment validation]]
+- ← Dependency: [[Economical status (GUIElement 1770673)]]
+- ← Dependency: [[Vodafone Number (GUIElement 1770668)]]
+- ← Dependency: [[Photo result IN]]
+- ← Dependency: [[Name (Action 1770803)]]
+- ← Dependency: [[Employer industry (Action 1770802)]]
+- ← Dependency: [[Department (Action 1770801)]]
+- ← Dependency: [[University course (Action 1770800)]]
+- ← Dependency: [[Residence cum office (Action 1770799)]]
+- ← Dependency: [[Profession (Action 1770796)]]
+- ← Dependency: [[Type of employment (Action 1770791)]]
+- ← Dependency: [[Salary payment method (Action 1772612)]]
+- ← Dependency: [[Salary day (Action 1772611)]]
+- ← Dependency: [[Main source of income (Action 1772609)]]
+- ← Dependency: [[Transaction amount validation rule]]
+- ← Dependency: [[Validation rules for Cardless POS transaction]]
+- ← Dependency: [[Commodity category (GUIElement 1776543)]]
+- ← Dependency: [[Commodity type (GUIElement 1776536)]]
+- ← Dependency: [[Transaction amount]]
+- ← Dependency: [[Price (GUIElement 1776519)]]
+- ← Dependency: [[Preffered contact type]]
+- ← Dependency: [[Regular payment (Action 1787174)]]
+- ← Dependency: [[Preferred contact date (Action 1787171)]]
+- ← Dependency: [[Preferred minutes]]
+- ← Dependency: [[Preferred hours]]
+- ← Dependency: [[Regular payment amount (Action 1787161)]]
+- ← Dependency: [[Mandatory (Action 1789793)]]
+- ← Dependency: [[Re-entered IMEI (Action 1789790)]]
+- ← Dependency: [[ER Algorithm (GUIElement 1795471)]]
+- ← Dependency: [[Length in months (GUIElement 1795470)]]
+- ← Dependency: [[Premium interest rate (GUIElement 1795469)]]
+- ← Dependency: [[Moratorium in months]]
+- ← Dependency: [[Length of Grace period in days]]
+- ← Dependency: [[Selected Tariff Item Types]]
+- ← Dependency: [[Debt Tolerance]]
+- ← Dependency: [[Min Instalment Fixed Amount]]
+- ← Dependency: [[Min Instalment rate]]
+- ← Dependency: [[Min Instalment Base]]
+- ← Dependency: [[Installment Prescription Min Limit]]
+- ← Dependency: [[Statement Printout Template (GUIElement 1803440)]]
+- ← Dependency: [[Moratorium Length]]
+- ← Dependency: [[ER Algorithm (GUIElement 1808586)]]
+- ← Dependency: [[DPD maximal limit (GUIElement 1808583)]]
+- ← Dependency: [[Accept small underpayment (GUIElement 1808571)]]
+- ← Dependency: [[Accepted due date shift (GUIElement 1808564)]]
+- ← Dependency: [[{DEL}Immediate ER available]]
+- ← Dependency: [[Minimum days before ER]]
+- ← Dependency: [[Number of days for repayment (GUIElement 1815141)]]
+- ← Dependency: [[{DEL}Minimum days before due date]]
+- ← Dependency: [[PIN code]]
+- ← Dependency: [[Region (Action 1819349)]]
+- ← Dependency: [[District (Action 1819348)]]
+- ← Dependency: [[Floor No]]
+- ← Dependency: [[Town (Action 1819342)]]
+- ← Dependency: [[SearchApplicationCriteria validation - IN]]
+- ← Dependency: [[SearchApplicationEvent validation -IN]]
+- ← Dependency: [[Reason for using HoSel - code]]
+- ← Dependency: [[Internal code (Action 1822294)]]
+- ← Dependency: [[Lead ID (Action 1822293)]]
+- ← Dependency: [[Reason for using HoSel - description]]
+- ← Dependency: [[Allocation to client (GUIElement 1825339)]]
+- ← Dependency: [[Participant]]
+- ← Dependency: [[Approval Document]]
+- ← Dependency: [[Length of Evaluation Period]]
+- ← Dependency: [[Vodafone Number (GUIElement 1836404)]]
+- ← Dependency: [[{DEL}Income (GUIElement 1836399)]]
+- ← Dependency: [[Income (GUIElement 1836423)]]
+- ← Dependency: [[Primary mobile (GUIElement 1836421)]]
+- ← Dependency: [[First Period Trigger (GUIElement 1852777)]]
+- ← Dependency: [[First Period Trigger Offset (GUIElement 1852771)]]
+- ← Dependency: [[Terminate on full loan repayment (GUIElement 1852768)]]
+- ← Abstraction «trace»: [[Refund option (GUIElement 1852767)]]
+- ← Dependency: [[Early Termination Term]]
+- ← Dependency: [[First Period Duration Offset (GUIElement 1852743)]]
+- ← Dependency: [[Cut Off Days Count]]
+- ← Dependency: [[Insurance program (GUIElement 1852728)]]
+- ← Dependency: [[First Period Duration]]
+- ← Dependency: [[Eligibility Container]]
+- ← Dependency: [[Cancellation reason (Action 1863573)]]
+- ← Dependency: [[Approval Document (GUIElement 1867419)]]
+- ← Dependency: [[Accepted due date shift (GUIElement 1869547)]]
+- ← Dependency: [[Minimal PER Amount Rate (GUIElement 1869545)]]
+- ← Dependency: [[Validation rules for PER setting panel]]
+- ← Dependency: [[Minimum days before PER (GUIElement 1869544)]]
+- ← Dependency: [[PER type]]
+- ← Dependency: [[Minimal Last Installment Amount]]
+- ← Dependency: [[Moratorium in months (GUIElement 1869528)]]
+- ← Dependency: [[DPD maximal limit (GUIElement 1869522)]]
+- ← Dependency: [[Max. goods number (GUIElement 1872085)]]
+- ← Dependency: [[Installment Due Day Shift (GUIElement 1872035)]]
+- ← Dependency: [[Approval Document (GUIElement 1872023)]]
+
+## 📊 Appears In (62 diagrams)
+
+- Custom: Additional data
+- Custom: Additional personal data
+- Custom: Address validation rules - VN
+- Custom: Adress validation rules - ID
+- Custom: Adress validation rules - IN
+- Custom: Adress validation rules - PH
+- Custom: Attributes necessity - KZ
+- Custom: Business Rules
+- Custom: Cardless cash transaction request - User Interface
+- Custom: Cardless POS transaction request - User Interface
+- Custom: Client search form - KZ
+- Custom: Commodities
+- Custom: Commodity
+- Custom: Common for AF
+- Custom: COMMON for Card management - Validations
+- Custom: Contact information
+- Custom: Contact information
+- Custom: Contact to client
+- Custom: Contact to client
+- Custom: Create DDM
+- Custom: Create Notice
+- Custom: Documents
+- Custom: E-commerce security level change
+- Custom: Employment
+- Custom: Employment data validation
+- Custom: Employment information
+- Custom: Financial data
+- Custom: General rule tasks
+- Custom: Income
+- Custom: KZ specific rules
+- Custom: KZ specific rules
+- Custom: LOP - Validation rules
+- Custom: LOR-8935 CBL-18691 MFI Changes - Telesales (fields removal)
+- Custom: Other
+- Custom: Other
+- Custom: Other information
+- Custom: Payment
+- Custom: Payment information
+- Custom: Payments data validation
+- Custom: Personal data
+- Custom: Personal data
+- Custom: Personal data
+- Custom: Personal data validation
+- Custom: Photo
+- Custom: Product validation
+- Custom: Search Validation Rules
+- Custom: Transfer installment plan back
+- Custom: Validation rules
+- Custom: Validation rules
+- Custom: Validation rules
+- Custom: Validation Rules
+- Custom: Validation rules
+- Custom: Validation rules
+- Custom: Validation rules
+- Custom: Validation rules
+- Custom: Validation rules - ID
+- Custom: Validation Rules - IN
+- Custom: Validation rules KZ
+- Custom: Validation rules PH
+- Custom: Validation: Account blockage
+- Custom: Validations
+- Custom: Validations

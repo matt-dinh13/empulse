@@ -1,0 +1,21 @@
+---
+type: Boundary
+stereotype: ""
+package: ""
+domain: "_Uncategorized"
+element_id: 1880138
+diagrams: 0
+connections: 0
+tags:
+  - boundary
+  - _uncategorized
+---
+
+# 🔲 PersonRoleType
+
+> **Type**: Boundary
+> **Package**: N/A
+
+## 📝 Notes
+
+Name=PersonRoleType;Type=Enumeration;

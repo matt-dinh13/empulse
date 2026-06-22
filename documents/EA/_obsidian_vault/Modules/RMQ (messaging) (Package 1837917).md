@@ -1,0 +1,21 @@
+---
+type: Package
+stereotype: ""
+package: "HomerSelect/BSL/Modules/Contract Services (COS_NG)/BSL integration proposal - Component model"
+domain: "Modules"
+element_id: 1837917
+diagrams: 1
+connections: 0
+tags:
+  - package
+  - modules
+---
+
+# 📁 RMQ (messaging)
+
+> **Type**: Package
+> **Package**: HomerSelect/BSL/Modules/Contract Services (COS_NG)/BSL integration proposal - Component model
+
+## 📊 Appears In (1 diagrams)
+
+- Component: BSL integration proposal - impacted components

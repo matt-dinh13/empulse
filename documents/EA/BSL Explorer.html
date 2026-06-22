@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSL Explorer — Enterprise Architecture Viewer</title>
+    <meta name="description"
+        content="Interactive browser for BSL Enterprise Architect diagrams with search and element inspection">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="_bsl_app/css/style.css">
+</head>
+
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div id="loading-card">
+            <div id="loading-spinner"></div>
+            <div id="loading-title">BSL Explorer</div>
+            <div id="loading-text">Initializing...</div>
+            <div id="loading-bar-container">
+                <div id="loading-bar"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- App Layout -->
+    <div id="app" style="display:none">
+        <!-- Sidebar -->
+        <aside id="app-sidebar">
+            <div id="sidebar-header">
+                <div id="app-logo">
+                    <svg class="logo-svg" viewBox="0 0 720 210" xmlns="http://www.w3.org/2000/svg" width="100"
+                        height="28">
+                        <path fill="currentColor" d="M491.36,148.74l34.88-89.33h14.65l-35,89.33h-14.53Z" />
+                        <path fill="currentColor"
+                            d="M178.16,148.74v-59.32h13.45l1.2,6.97c3-4.92,9.01-8.77,17.53-8.77,9,0,15.25,4.44,18.37,11.29,3-6.85,9.97-11.29,18.97-11.29,14.41,0,22.33,8.65,22.33,22.33v38.78h-14.53v-34.94c0-8.52-4.56-12.97-11.53-12.97s-12.49,4.56-12.49,14.29v33.62h-14.65v-35.06c0-8.28-4.44-12.73-11.41-12.73s-12.61,4.56-12.61,14.17v33.62h-14.65Z" />
+                        <path fill="currentColor"
+                            d="M283.45,148.74V59.41h14.65v38.66c3.84-6.6,11.77-10.57,20.77-10.57,16.93,0,27.25,13.21,27.25,31.94s-11.17,30.86-28.21,30.86c-8.89,0-16.45-3.96-19.93-10.81l-.96,9.25h-13.57ZM314.91,136.86c10.33,0,16.45-7.44,16.45-18.01s-6.12-18.13-16.45-18.13-16.69,7.44-16.69,18.13,6.6,18.01,16.69,18.01Z" />
+                        <path fill="currentColor"
+                            d="M109.54,119.09c0-18.61,12.13-31.46,29.54-31.46,2.54,0,12.07-.07,19.78,6.89,7.79,7.03,8.87,16.83,9.35,21.1.29,2.59.26,4.78.17,6.35h-45.01c-.02.96-.09,8.3,5.75,13.01,4.29,3.46,9.11,3.31,10.69,3.31,8.04,0,13.33-3.12,15.01-8.76h13.57c-2.52,12.97-13.33,20.77-28.82,20.77-17.65,0-30.02-12.85-30.02-31.22ZM153.6,112.55c-.04-1.37-.32-5.06-3.03-8.27-3.83-4.54-9.55-4.62-11.37-4.65-1.81-.02-6.06-.02-9.92,3.06-4.52,3.6-5.21,8.76-5.33,9.85h29.65Z" />
+                        <path fill="currentColor"
+                            d="M353.97,119.09c0-18.61,12.13-31.46,29.54-31.46,2.54,0,12.07-.07,19.78,6.89,7.79,7.03,8.87,16.83,9.35,21.1.29,2.59.26,4.78.17,6.35h-45.01c-.02.96-.09,8.3,5.75,13.01,4.29,3.46,9.11,3.31,10.69,3.31,8.04,0,13.33-3.12,15.01-8.76h13.57c-2.52,12.97-13.33,20.77-28.82,20.77-17.65,0-30.02-12.85-30.02-31.22ZM398.03,112.55c-.04-1.37-.32-5.06-3.03-8.27-3.83-4.54-9.55-4.62-11.37-4.65-1.81-.02-6.06-.02-9.92,3.06-4.52,3.6-5.21,8.76-5.33,9.85h29.65Z" />
+                        <path fill="currentColor"
+                            d="M421.14,119.33c0-18.49,10.81-31.7,28.7-31.7,8.28,0,15.61,3.48,19.33,9.37v-37.58h14.53v89.33h-13.45l-.96-9.25c-3.6,6.84-11.29,10.81-20.29,10.81-17.17,0-27.86-12.61-27.86-30.98ZM469.05,118.85c0-10.69-6.6-18.13-16.81-18.13s-16.45,7.56-16.45,18.13,6.24,18.01,16.45,18.01,16.81-7.32,16.81-18.01Z" />
+                        <path fill="currentColor"
+                            d="M546.11,68.18c0-4.92,3.96-8.77,9-8.77s8.77,3.84,8.77,8.77-3.96,8.89-8.77,8.89c-5.04,0-9-3.96-9-8.89ZM547.79,89.43h14.65v59.32h-14.65v-59.32Z" />
+                        <path fill="currentColor"
+                            d="M610.46,147.9c-3.24,1.44-7.09,2.16-11.29,2.16-11.29,0-18.37-5.76-18.37-19.93v-28.46h-9.13v-12.25h9.13v-18.49h14.53v18.49h13.57v12.25h-13.57v25.94c0,7.09,3.12,9.48,7.56,9.48,1.68,0,3.72-.36,5.88-1.08l1.68,11.88Z" />
+                        <polygon fill="currentColor"
+                            points="631.39 150.59 621.97 141.17 645.87 117.27 621.97 93.37 631.39 83.95 660 112.56 660 121.98 631.39 150.59" />
+                        <polygon fill="currentColor"
+                            points="88.61 83.95 98.03 93.37 74.13 117.26 98.03 141.17 88.61 150.59 60 121.97 60 112.55 88.61 83.95" />
+                    </svg>
+                    <span class="logo-divider">|</span>
+                    <span class="logo-text">BSL Explorer</span>
+                </div>
+                <button id="theme-toggle" title="Toggle theme">☀️</button>
+            </div>
+
+            <div id="search-box">
+                <div class="search-input-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input id="search-input" type="text" placeholder="Search everything... (/)">
+                    <span id="search-clear" class="search-clear" style="display:none">×</span>
+                </div>
+                <div id="search-results" style="display:none"></div>
+            </div>
+
+            <div id="sidebar-tabs">
+                <button class="tab-btn active" data-tab="tree">Packages</button>
+                <button class="tab-btn" data-tab="recent">Recent</button>
+                <button class="tab-btn" data-tab="glossary">Glossary</button>
+                <button class="tab-btn" data-tab="bookmarks">⭐</button>
+            </div>
+
+            <div id="package-tree" class="sidebar-content active"></div>
+            <div id="recent-list" class="sidebar-content"></div>
+            <div id="glossary-panel" class="sidebar-content"></div>
+            <div id="bookmark-list" class="sidebar-content"></div>
+        </aside>
+
+        <!-- Resize Handle -->
+        <div id="sidebar-resize" class="resize-handle"></div>
+
+        <!-- Main Content -->
+        <main id="app-main">
+            <!-- Welcome Screen (inside main, not blocking sidebar) -->
+            <div id="welcome-screen" style="display:none">
+                <div class="welcome-icon">🏛</div>
+                <h1>BSL Explorer</h1>
+                <p class="welcome-subtitle">Enterprise Architecture Diagram Viewer</p>
+                <div id="welcome-stats"></div>
+                <p class="welcome-hint">Select a diagram from the package tree, or press <kbd>/</kbd> to search.</p>
+            </div>
+
+            <div id="diagram-header" style="display:none">
+                <nav id="breadcrumb"></nav>
+                <div id="diagram-title-row">
+                    <h1 id="diagram-title"></h1>
+                    <span id="diagram-type-badge"></span>
+                    <button id="copy-mermaid-btn" title="Copy Mermaid source to clipboard">
+                        <span class="copy-icon">📋</span>
+                        <span class="copy-label">Copy Mermaid</span>
+                    </button>
+                    <button id="export-svg-btn" title="Download diagram as SVG">
+                        <span class="copy-icon">🖼️</span>
+                        <span class="copy-label">SVG</span>
+                    </button>
+                    <button id="export-png-btn" title="Download diagram as PNG">
+                        <span class="copy-icon">📸</span>
+                        <span class="copy-label">PNG</span>
+                    </button>
+                </div>
+                <div id="diagram-meta"></div>
+            </div>
+
+            <div id="diagram-container"></div>
+
+            <!-- Floating Minimap + Zoom Controls (bottom-right) -->
+            <div id="minimap-panel" style="display:none">
+                <button id="minimap-toggle" class="minimap-toggle-btn" title="Toggle minimap (M)">▼</button>
+                <div id="minimap-collapsible">
+                    <div id="minimap-container">
+                        <canvas id="minimap-canvas"></canvas>
+                        <div id="minimap-viewport"></div>
+                    </div>
+                </div>
+                <div id="zoom-toolbar">
+                    <button id="zoom-in" title="Zoom in (Ctrl+Scroll)">＋</button>
+                    <span id="zoom-level">100%</span>
+                    <button id="zoom-out" title="Zoom out">−</button>
+                    <button id="zoom-fit" title="Fit to screen">⊡</button>
+                    <button id="zoom-reset" title="Reset 1:1">1:1</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Detail Panel -->
+        <div id="app-detail" class="hidden">
+            <div id="detail-resize" class="resize-handle"></div>
+            <div id="detail-inner">
+                <div id="detail-header">
+                    <div id="detail-title-row">
+                        <span id="detail-type-icon"></span>
+                        <h2 id="detail-title"></h2>
+                    </div>
+                    <button id="detail-close" title="Close panel">×</button>
+                </div>
+                <div id="detail-content">
+                    <div id="detail-type" class="detail-section"></div>
+                    <div id="detail-stereotype" class="detail-section"></div>
+                    <div id="detail-note" class="detail-section"></div>
+                    <div id="detail-attributes" class="detail-section"></div>
+                    <div id="detail-operations" class="detail-section"></div>
+                    <div id="detail-tagged-values" class="detail-section"></div>
+                    <div id="detail-scenarios" class="detail-section"></div>
+                    <div id="detail-appears-in" class="detail-section"></div>
+                    <div id="detail-impact" class="detail-section"></div>
+                    <div id="detail-annotations" class="detail-section"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="copy-toast" class="copy-toast">✅ Mermaid source copied to clipboard!</div>
+
+    <!-- Confidentiality Footer -->
+    <div id="confidentiality-bar">
+        <span class="conf-icon">🔒</span>
+        <span>CONFIDENTIAL — This document is proprietary to EmbedIT s.r.o. Unauthorized distribution is strictly
+            prohibited.</span>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Data (loaded as JS globals — works from file:// without server) -->
+    <script src="_bsl_app/data/catalog.js"></script>
+    <script src="_bsl_app/data/elements.js"></script>
+    <script src="_bsl_app/data/connectors.js"></script>
+    <script src="_bsl_app/data/scenarios.js"></script>
+    <!-- Mermaid (bundled for offline use) -->
+    <script src="_bsl_app/js/mermaid.min.js"></script>
+    <!-- App -->
+    <script src="_bsl_app/js/data-loader.js"></script>
+    <script src="_bsl_app/js/package-tree.js"></script>
+    <script src="_bsl_app/js/diagram-renderer.js"></script>
+    <script src="_bsl_app/js/detail-panel.js"></script>
+
+    <script>
+        // ─── App Initialization ────────────────────────────────
+        (async function initApp() {
+            const loadingText = document.getElementById('loading-text');
+            const loadingBar = document.getElementById('loading-bar');
+
+            function setProgress(msg, pct) {
+                loadingText.textContent = msg;
+                loadingBar.style.width = pct + '%';
+            }
+
+            try {
+                setProgress('Loading catalog...', 10);
+                await DataLoader.loadCatalog();
+                setProgress('Loading elements...', 40);
+                await DataLoader.loadElements();
+                setProgress('Loading connectors...', 70);
+                await DataLoader.loadConnectors();
+                setProgress('Initializing UI...', 90);
+
+                // Hide loading, show app
+                document.getElementById('loading-overlay').style.display = 'none';
+                document.getElementById('app').style.display = 'flex';
+                document.getElementById('welcome-screen').style.display = 'flex';
+
+                // Show stats on welcome
+                const meta = DataLoader.getMeta();
+                const cs = DataLoader.getCoverageStats();
+                const pct = (a, b) => b > 0 ? Math.round(a / b * 100) : 0;
+
+                document.getElementById('welcome-stats').innerHTML = `
+                <div class="stat-grid">
+                    <div class="stat-card"><div class="stat-num">${meta.total_diagrams.toLocaleString()}</div><div class="stat-label">Diagrams</div></div>
+                    <div class="stat-card"><div class="stat-num">${meta.total_elements.toLocaleString()}</div><div class="stat-label">Elements</div></div>
+                    <div class="stat-card"><div class="stat-num">${meta.total_connectors.toLocaleString()}</div><div class="stat-label">Connectors</div></div>
+                    <div class="stat-card"><div class="stat-num">${meta.total_packages.toLocaleString()}</div><div class="stat-label">Packages</div></div>
+                </div>
+                ${cs ? `
+                <div class="coverage-dashboard">
+                    <h3 class="coverage-title">📋 Requirement Coverage</h3>
+                    <div class="coverage-grid">
+                        <div class="coverage-card">
+                            <div class="coverage-card__header">
+                                <span>Requirements → UseCase</span>
+                                <span class="coverage-pct">${pct(cs.requirements.linkedToUC, cs.requirements.total)}%</span>
+                            </div>
+                            <div class="coverage-bar"><div class="coverage-bar__fill" style="width:${pct(cs.requirements.linkedToUC, cs.requirements.total)}%"></div></div>
+                            <div class="coverage-detail">${cs.requirements.linkedToUC.toLocaleString()} / ${cs.requirements.total.toLocaleString()} linked</div>
+                        </div>
+                        <div class="coverage-card">
+                            <div class="coverage-card__header">
+                                <span>UseCases with Scenarios</span>
+                                <span class="coverage-pct">${pct(cs.usecases.hasScenario, cs.usecases.total)}%</span>
+                            </div>
+                            <div class="coverage-bar"><div class="coverage-bar__fill coverage-bar__fill--green" style="width:${pct(cs.usecases.hasScenario, cs.usecases.total)}%"></div></div>
+                            <div class="coverage-detail">${cs.usecases.hasScenario.toLocaleString()} / ${cs.usecases.total.toLocaleString()} documented</div>
+                        </div>
+                        <div class="coverage-card">
+                            <div class="coverage-card__header">
+                                <span>UseCases in Sequence diagrams</span>
+                                <span class="coverage-pct">${pct(cs.usecases.hasSequence, cs.usecases.total)}%</span>
+                            </div>
+                            <div class="coverage-bar"><div class="coverage-bar__fill coverage-bar__fill--purple" style="width:${pct(cs.usecases.hasSequence, cs.usecases.total)}%"></div></div>
+                            <div class="coverage-detail">${cs.usecases.hasSequence.toLocaleString()} / ${cs.usecases.total.toLocaleString()} with sequence</div>
+                        </div>
+                    </div>
+                    <div class="coverage-alerts">
+                        ${cs.requirements.orphaned > 0 ? `<div class="coverage-alert coverage-alert--warn">⚠️ ${cs.requirements.orphaned.toLocaleString()} orphaned requirements (no connections)</div>` : ''}
+                        ${cs.usecases.orphaned > 0 ? `<div class="coverage-alert coverage-alert--warn">⚠️ ${cs.usecases.orphaned.toLocaleString()} orphaned use cases (no connections)</div>` : ''}
+                    </div>
+                    <div class="coverage-summary">
+                        <span>👤 ${cs.total.actors} Actors</span>
+                        <span>🎯 ${cs.total.usecases} UseCases</span>
+                        <span>📋 ${cs.total.requirements} Requirements</span>
+                        <span>🔷 ${cs.total.classes} Classes</span>
+                        <span>📦 ${cs.total.components} Components</span>
+                    </div>
+                </div>` : ''}
+                `;
+
+                // Initialize components
+                PackageTree.init();
+
+                function showDiagram(id) {
+                    document.getElementById('welcome-screen').style.display = 'none';
+                    document.getElementById('diagram-header').style.display = 'block';
+                    document.getElementById('minimap-panel').style.display = 'flex';
+                    DiagramRenderer.render(id);
+                    // Auto-expand tree to this diagram's location
+                    PackageTree.revealDiagram(id);
+                    // Auto-show detail panel with diagram overview
+                    showDiagramInfo(id);
+                    // Update URL hash for deep linking
+                    history.replaceState(null, '', '#diagram=' + id);
+                }
+                window._showDiagramFn = showDiagram;
+
+                function showDiagramInfo(diagramId) {
+                    const diagram = DataLoader.getDiagram(diagramId);
+                    if (!diagram) return;
+                    const panel = document.getElementById('app-detail');
+                    panel.classList.remove('hidden');
+                    try {
+                    document.getElementById('detail-type-icon').textContent = '📊';
+                    document.getElementById('detail-title').textContent = diagram.name;
+                    const isBm = DataLoader.isBookmarked('diagram', diagramId);
+                    document.getElementById('detail-type').innerHTML = `
+                    <span class="detail-type-badge detail-type-badge--class">${diagram.type}</span>
+                    <button class="bm-star-btn ${isBm ? 'bm-star-btn--active' : ''}" id="bm-star-diagram" title="${isBm ? 'Remove bookmark' : 'Add bookmark'}">${isBm ? '★' : '☆'}</button>`;
+                    document.getElementById('detail-stereotype').innerHTML = '';
+                    document.getElementById('detail-note').innerHTML = `
+                    <div class="detail-section__title">Diagram Info</div>
+                    <div class="detail-section__body">
+                        <p><strong>Package:</strong> ${diagram.package_path} <button class="copy-icon-btn" onclick="_bslCopyText('${diagram.package_path.replace(/'/g, "\\'") }', this); event.stopPropagation();" title="Copy path">⧉</button></p>
+                        <p><strong>Elements:</strong> ${diagram.element_count} · <strong>Connectors:</strong> ${diagram.connector_count}</p>
+                        <p style="color:var(--text-muted);font-size:12px;margin-top:8px">Click on any element in the diagram to view its details, notes, and scenarios.</p>
+                    </div>
+                    ${(() => { try {
+                        const diff = DataLoader.getDiagramDiff(diagramId);
+                        if (!diff) return '';
+                        if (diff.status === 'new') return '<div class="diff-badge diff-badge--new">🆕 New diagram (not in snapshot)</div>';
+                        if (diff.status === 'unchanged') return '<div class="diff-badge diff-badge--ok">✓ No changes since snapshot</div>';
+                        let h = '<div class="diff-section"><div class="detail-section__title">🔄 Changes since ' + new Date(diff.snapshotTime).toLocaleDateString() + '</div>';
+                        if (diff.added.length) h += diff.added.map(e => '<div class="diff-line diff-line--add">+ ' + escapeForHtml(e.name) + ' <span class="diff-type">' + e.type + '</span></div>').join('');
+                        if (diff.removed.length) h += diff.removed.map(e => '<div class="diff-line diff-line--del">- ' + escapeForHtml(e.name) + ' <span class="diff-type">' + e.type + '</span></div>').join('');
+                        if (diff.renamed.length) h += diff.renamed.map(r => '<div class="diff-line diff-line--mod">~ ' + escapeForHtml(r.oldName) + ' → ' + escapeForHtml(r.newName) + '</div>').join('');
+                        if (diff.connectorDelta) h += '<div class="diff-line diff-line--mod">Connectors: ' + (diff.connectorDelta > 0 ? '+' : '') + diff.connectorDelta + '</div>';
+                        h += '</div>';
+                        return h;
+                    } catch(e) { console.warn('Diff render error:', e); return ''; } })()}
+                    `;
+                    document.getElementById('detail-attributes').innerHTML = '';
+                    document.getElementById('detail-operations').innerHTML = '';
+                    document.getElementById('detail-tagged-values').innerHTML = '';
+                    // Show scenarios for all UseCase elements in this diagram
+                    let scenarioHtml = '';
+                    if (diagram.element_ids) {
+                        for (const eid of diagram.element_ids) {
+                            const scenarios = DataLoader.getScenarios(eid);
+                            if (scenarios.length > 0) {
+                                const elem = DataLoader.getElement(eid);
+                                const typeIcons = { 'Basic Path': '🟢', 'Alternate': '🔀', 'Exception': '🔴' };
+                                scenarioHtml += `<div class="detail-section__title" style="margin-top:12px">📋 ${elem ? elem.name : 'Element'} — Scenarios (${scenarios.length})</div>`;
+                                scenarios.sort((a, b) => {
+                                    const o = { 'Basic Path': 0, 'Alternate': 1, 'Exception': 2 };
+                                    return (o[a.type] || 1) - (o[b.type] || 1) || (a.order - b.order);
+                                });
+                                const uid = 'ds' + eid;
+                                const parentName = elem ? elem.name : 'Element';
+                                scenarioHtml += scenarios.map((s, i) => {
+                                    const copyTitle = parentName + ' > ' + s.name + (s.name !== s.type ? ' [' + s.type + ']' : '');
+                                    return `
+                                <div class="scenario-item">
+                                    <div class="scenario-header" data-uid="${uid}_${i}">
+                                        <span class="scenario-toggle">▸</span>
+                                        <span>${typeIcons[s.type] || '📋'}</span>
+                                        <span class="scenario-name">${escapeForHtml(s.name)}</span>
+                                        <span class="scenario-type-badge">${s.type}</span>
+                                        ${s.steps ? '<button class="copy-icon-btn copy-icon-btn--inline" data-copy-sb="sb_' + uid + '_' + i + '" data-copy-title="' + escapeForHtml(copyTitle) + '" title="Copy steps">⧉</button>' : ''}
+                                    </div>
+                                    <div class="scenario-body" id="sb_${uid}_${i}" style="display:none">
+                                        ${s.steps ? '<div class="scenario-steps">' + escapeForHtml(s.steps) + '</div>' : '<em style="color:var(--text-muted)">No steps defined</em>'}
+                                    </div>
+                                </div>`;
+                                }).join('');
+                            }
+                        }
+                    }
+                    document.getElementById('detail-scenarios').innerHTML = scenarioHtml;
+                    document.getElementById('detail-appears-in').innerHTML = '';
+                    document.getElementById('detail-impact').innerHTML = '';
+                    document.getElementById('detail-annotations').innerHTML = '';
+                    // Bind scenario toggles
+                    document.querySelectorAll('#detail-scenarios .scenario-header').forEach(hdr => {
+                        hdr.addEventListener('click', (e) => {
+                            if (e.target.closest('.copy-icon-btn')) return;
+                            const body = document.getElementById('sb_' + hdr.dataset.uid);
+                            const toggle = hdr.querySelector('.scenario-toggle');
+                            if (body.style.display === 'none') { body.style.display = 'block'; toggle.textContent = '▾'; }
+                            else { body.style.display = 'none'; toggle.textContent = '▸'; }
+                        });
+                    });
+                    // Bind copy buttons for scenarios
+                    document.querySelectorAll('#detail-scenarios .copy-icon-btn[data-copy-sb]').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const body = document.getElementById(btn.dataset.copySb);
+                            const title = btn.dataset.copyTitle || '';
+                            if (body) {
+                                const text = title ? title + '\n' + body.innerText : body.innerText;
+                                _bslCopyText(text, btn);
+                            }
+                        });
+                    });
+                    // Bookmark star toggle
+                    const starBtn = document.getElementById('bm-star-diagram');
+                    if (starBtn) {
+                        starBtn.addEventListener('click', () => {
+                            const added = DataLoader.toggleBookmark('diagram', diagramId, diagram.name, diagram.type);
+                            starBtn.textContent = added ? '★' : '☆';
+                            starBtn.classList.toggle('bm-star-btn--active', added);
+                            starBtn.title = added ? 'Remove bookmark' : 'Add bookmark';
+                        });
+                    }
+                    } catch(err) { console.error('showDiagramInfo error:', err); }
+                }
+
+                PackageTree.onDiagramSelect(id => showDiagram(id));
+                DiagramRenderer.onElementClick(id => DetailPanel.show(id));
+                DetailPanel.onNavigate(id => showDiagram(id));
+
+                // Search
+                const searchInput = document.getElementById('search-input');
+                const searchClear = document.getElementById('search-clear');
+                const searchResults = document.getElementById('search-results');
+
+                let searchTimeout;
+                searchInput.addEventListener('input', () => {
+                    clearTimeout(searchTimeout);
+                    const q = searchInput.value.trim();
+                    searchClear.style.display = q ? 'block' : 'none';
+                    if (q.length < 2) { searchResults.style.display = 'none'; return; }
+                    searchTimeout = setTimeout(() => {
+                        const results = DataLoader.searchAll(q);
+                        const total = results.diagrams.length + results.elements.length + results.scenarios.length;
+                        if (total === 0) {
+                            searchResults.innerHTML = '<div class="search-empty">No results found</div>';
+                        } else {
+                            let html = '';
+                            // Diagrams section
+                            if (results.diagrams.length > 0) {
+                                html += `<div class="search-category">📊 Diagrams (${results.diagrams.length})</div>`;
+                                html += results.diagrams.slice(0, 20).map(d => `
+                                <div class="search-result-item" data-id="${d.id}" data-type="diagram">
+                                    <div class="search-result-name">${highlightMatch(escapeForHtml(d.name), q)}</div>
+                                    <div class="search-result-meta">${d.type} · ${escapeForHtml(d.package_path)}</div>
+                                </div>`).join('');
+                            }
+                            // Elements section
+                            if (results.elements.length > 0) {
+                                html += `<div class="search-category">📦 Elements (${results.elements.length})</div>`;
+                                html += results.elements.slice(0, 20).map(e => `
+                                <div class="search-result-item" data-element-id="${e.id}" data-diagram-id="${e.diagrams[0] ? e.diagrams[0].id : ''}" data-type="element">
+                                    <div class="search-result-name">${highlightMatch(escapeForHtml(e.name), q)}</div>
+                                    <div class="search-result-meta">${e.type}${e.stereotype ? ' «' + e.stereotype + '»' : ''} · matched in ${e.matchIn}${e.diagrams.length > 0 ? ' · ' + e.diagrams.length + ' diagram(s)' : ''}</div>
+                                    ${e.snippet ? '<div class="search-result-snippet">' + highlightMatch(escapeForHtml(e.snippet), q) + '</div>' : ''}
+                                </div>`).join('');
+                            }
+                            // Scenarios section
+                            if (results.scenarios.length > 0) {
+                                html += `<div class="search-category">📋 Scenarios (${results.scenarios.length})</div>`;
+                                html += results.scenarios.slice(0, 15).map(s => `
+                                <div class="search-result-item" data-element-id="${s.elementId}" data-diagram-id="${s.diagrams[0] ? s.diagrams[0].id : ''}" data-type="scenario">
+                                    <div class="search-result-name">${highlightMatch(escapeForHtml(s.scenarioName), q)}</div>
+                                    <div class="search-result-meta">${s.scenarioType} · UC: ${escapeForHtml(s.elementName)}</div>
+                                    ${s.snippet ? '<div class="search-result-snippet">' + highlightMatch(escapeForHtml(s.snippet), q) + '</div>' : ''}
+                                </div>`).join('');
+                            }
+                            searchResults.innerHTML = html;
+                        }
+                        searchResults.style.display = 'block';
+                    }, 200);
+                });
+
+                searchClear.addEventListener('click', () => {
+                    searchInput.value = '';
+                    searchClear.style.display = 'none';
+                    searchResults.style.display = 'none';
+                });
+
+                searchResults.addEventListener('click', e => {
+                    const item = e.target.closest('.search-result-item');
+                    if (item) {
+                        const type = item.dataset.type;
+                        if (type === 'diagram') {
+                            showDiagram(parseInt(item.dataset.id));
+                        } else {
+                            // Element or scenario: open diagram, then show element detail
+                            const diagId = item.dataset.diagramId;
+                            const elemId = item.dataset.elementId;
+                            if (diagId) {
+                                showDiagram(parseInt(diagId));
+                                if (elemId) setTimeout(() => DetailPanel.show(parseInt(elemId)), 300);
+                            } else if (elemId) {
+                                DetailPanel.show(parseInt(elemId));
+                            }
+                        }
+                        searchResults.style.display = 'none';
+                        searchInput.value = '';
+                        searchClear.style.display = 'none';
+                    }
+                });
+
+                // Theme toggle
+                document.getElementById('theme-toggle').addEventListener('click', () => {
+                    const html = document.documentElement;
+                    const isDark = html.dataset.theme === 'dark';
+                    html.dataset.theme = isDark ? 'light' : 'dark';
+                    document.getElementById('theme-toggle').textContent = isDark ? '🌙' : '☀️';
+                });
+
+                // ─── Copy Mermaid Source ─────────────────────────
+                document.getElementById('copy-mermaid-btn').addEventListener('click', async () => {
+                    const diagramId = DiagramRenderer.getCurrentDiagramId();
+                    if (!diagramId) return;
+                    const diagram = DataLoader.getDiagram(diagramId);
+                    if (!diagram || !diagram.mermaid) return;
+
+                    const btn = document.getElementById('copy-mermaid-btn');
+                    try {
+                        await navigator.clipboard.writeText(diagram.mermaid);
+                        // Visual feedback on button
+                        btn.classList.add('copied');
+                        btn.querySelector('.copy-icon').textContent = '✅';
+                        btn.querySelector('.copy-label').textContent = 'Copied!';
+                        // Show toast
+                        const toast = document.getElementById('copy-toast');
+                        toast.classList.add('visible');
+                        setTimeout(() => {
+                            toast.classList.remove('visible');
+                            btn.classList.remove('copied');
+                            btn.querySelector('.copy-icon').textContent = '📋';
+                            btn.querySelector('.copy-label').textContent = 'Copy Mermaid';
+                        }, 2000);
+                    } catch (err) {
+                        // Fallback for file:// protocol (clipboard API may not work)
+                        const ta = document.createElement('textarea');
+                        ta.value = diagram.mermaid;
+                        ta.style.cssText = 'position:fixed;opacity:0;';
+                        document.body.appendChild(ta);
+                        ta.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(ta);
+                        // Same visual feedback
+                        btn.classList.add('copied');
+                        btn.querySelector('.copy-icon').textContent = '✅';
+                        btn.querySelector('.copy-label').textContent = 'Copied!';
+                        const toast = document.getElementById('copy-toast');
+                        toast.classList.add('visible');
+                        setTimeout(() => {
+                            toast.classList.remove('visible');
+                            btn.classList.remove('copied');
+                            btn.querySelector('.copy-icon').textContent = '📋';
+                            btn.querySelector('.copy-label').textContent = 'Copy Mermaid';
+                        }, 2000);
+                    }
+                });
+
+                // ─── Export SVG ──────────────────────────────────
+                document.getElementById('export-svg-btn').addEventListener('click', () => {
+                    const svg = document.querySelector('#diagram-container svg');
+                    if (!svg) return;
+                    const diagramId = DiagramRenderer.getCurrentDiagramId();
+                    const diagram = diagramId ? DataLoader.getDiagram(diagramId) : null;
+                    const fileName = (diagram ? diagram.name : 'diagram').replace(/[^a-zA-Z0-9_\- ]/g, '_') + '.svg';
+
+                    // Clone SVG and inject white background + inline styles for standalone viewing
+                    const clone = svg.cloneNode(true);
+                    // Ensure viewBox is set
+                    if (!clone.getAttribute('viewBox')) {
+                        const bbox = svg.getBBox();
+                        clone.setAttribute('viewBox', `${bbox.x - 10} ${bbox.y - 10} ${bbox.width + 20} ${bbox.height + 20}`);
+                    }
+                    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+                    // Add white background rect
+                    const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    bg.setAttribute('width', '100%');
+                    bg.setAttribute('height', '100%');
+                    bg.setAttribute('fill', '#ffffff');
+                    clone.insertBefore(bg, clone.firstChild);
+
+                    const blob = new Blob([new XMLSerializer().serializeToString(clone)], { type: 'image/svg+xml' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = fileName;
+                    document.body.appendChild(a); a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
+
+                // ─── Export PNG ──────────────────────────────────
+                document.getElementById('export-png-btn').addEventListener('click', () => {
+                    const svg = document.querySelector('#diagram-container svg');
+                    if (!svg) return;
+                    const diagramId = DiagramRenderer.getCurrentDiagramId();
+                    const diagram = diagramId ? DataLoader.getDiagram(diagramId) : null;
+                    const fileName = (diagram ? diagram.name : 'diagram').replace(/[^a-zA-Z0-9_\- ]/g, '_') + '.png';
+
+                    const bbox = svg.getBBox();
+                    const scale = 2; // 2x for crisp output
+                    const width = (bbox.width + 20) * scale;
+                    const height = (bbox.height + 20) * scale;
+
+                    const clone = svg.cloneNode(true);
+                    clone.setAttribute('viewBox', `${bbox.x - 10} ${bbox.y - 10} ${bbox.width + 20} ${bbox.height + 20}`);
+                    clone.setAttribute('width', width);
+                    clone.setAttribute('height', height);
+                    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+                    const svgData = new XMLSerializer().serializeToString(clone);
+                    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+                    const url = URL.createObjectURL(svgBlob);
+
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, width, height);
+                        ctx.drawImage(img, 0, 0, width, height);
+                        URL.revokeObjectURL(url);
+
+                        canvas.toBlob((blob) => {
+                            const a = document.createElement('a');
+                            a.href = URL.createObjectURL(blob);
+                            a.download = fileName;
+                            document.body.appendChild(a); a.click();
+                            document.body.removeChild(a);
+                        }, 'image/png');
+                    };
+                    img.src = url;
+                });
+
+                // Tab switching
+                const TAB_MAP = { tree: 'package-tree', recent: 'recent-list', glossary: 'glossary-panel', bookmarks: 'bookmark-list' };
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelectorAll('.sidebar-content').forEach(c => c.classList.remove('active'));
+                        btn.classList.add('active');
+                        const panelId = TAB_MAP[btn.dataset.tab] || 'package-tree';
+                        document.getElementById(panelId).classList.add('active');
+                        // Lazy-load glossary on first click
+                        if (btn.dataset.tab === 'glossary' && !window._glossaryLoaded) {
+                            window._glossaryLoaded = true;
+                            buildGlossary();
+                        }
+                        // Render bookmarks on tab click
+                        if (btn.dataset.tab === 'bookmarks') {
+                            renderBookmarkList();
+                        }
+                    });
+                });
+
+                // ─── Resizable Sidebars ─────────────────────────
+                initResize('sidebar-resize', 'app-sidebar', 'width', 180, 600);
+                initResize('detail-resize', 'app-detail', 'width', 220, 700, true);
+
+                function initResize(handleId, panelId, prop, min, max, fromRight) {
+                    const handle = document.getElementById(handleId);
+                    const panel = document.getElementById(panelId);
+                    if (!handle || !panel) return;
+                    let startX, startW;
+                    handle.addEventListener('mousedown', e => {
+                        startX = e.clientX;
+                        startW = panel.offsetWidth;
+                        document.body.style.cursor = 'col-resize';
+                        document.body.style.userSelect = 'none';
+                        function onMove(e) {
+                            const dx = e.clientX - startX;
+                            const newW = fromRight ? startW - dx : startW + dx;
+                            panel.style.width = Math.max(min, Math.min(max, newW)) + 'px';
+                        }
+                        function onUp() {
+                            document.removeEventListener('mousemove', onMove);
+                            document.removeEventListener('mouseup', onUp);
+                            document.body.style.cursor = '';
+                            document.body.style.userSelect = '';
+                        }
+                        document.addEventListener('mousemove', onMove);
+                        document.addEventListener('mouseup', onUp);
+                        e.preventDefault();
+                    });
+                }
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', e => {
+                    if (e.key === '/' && !e.ctrlKey && document.activeElement.tagName !== 'INPUT') {
+                        e.preventDefault();
+                        searchInput.focus();
+                    }
+                    if (e.key === 'Escape') {
+                        if (document.activeElement === searchInput) {
+                            searchInput.blur();
+                            searchResults.style.display = 'none';
+                        } else {
+                            DetailPanel.hide();
+                        }
+                    }
+                    // Zoom shortcuts
+                    if (e.key === '+' || e.key === '=') { DiagramRenderer.zoomIn(); }
+                    if (e.key === '-') { DiagramRenderer.zoomOut(); }
+                    if (e.key === '0' && e.ctrlKey) { e.preventDefault(); DiagramRenderer.zoomReset(); }
+                });
+
+                // ─── Deep Linking (URL Hash) ─────────────────────
+                const _parseHash = () => {
+                    const hash = window.location.hash.substring(1);
+                    if (!hash) return;
+                    const params = Object.fromEntries(hash.split('&').map(p => p.split('=')));
+                    if (params.diagram) {
+                        const diagId = parseInt(params.diagram);
+                        if (diagId && DataLoader.getDiagram(diagId)) {
+                            showDiagram(diagId);
+                            if (params.element) {
+                                const elemId = parseInt(params.element);
+                                if (elemId) setTimeout(() => DetailPanel.show(elemId), 300);
+                            }
+                        }
+                    } else if (params.element) {
+                        const elemId = parseInt(params.element);
+                        if (elemId) {
+                            DetailPanel.show(elemId);
+                            const diagrams = DataLoader.getDiagramsForElement(elemId);
+                            if (diagrams.length > 0) showDiagram(diagrams[0].id);
+                        }
+                    }
+                };
+                _parseHash();
+                window.addEventListener('hashchange', _parseHash);
+
+                setProgress('Ready!', 100);
+
+            } catch (err) {
+                setProgress('Error: ' + err.message, 0);
+                console.error('Init failed:', err);
+            }
+        })();
+
+        function highlightMatch(text, query) {
+            if (!query) return text;
+            // Highlight each individual term for multi-word queries
+            const terms = query.trim().split(/\s+/).filter(t => t.length > 0);
+            let result = text;
+            for (const term of terms) {
+                const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                result = result.replace(regex, '<mark>$1</mark>');
+            }
+            return result;
+        }
+        function escapeForHtml(text) {
+            if (!text) return '';
+            const d = document.createElement('div');
+            d.textContent = text;
+            return d.innerHTML;
+        }
+
+        // ─── Copy to Clipboard Helper ─────────────────────────────
+        function _bslCopyText(text, triggerBtn) {
+            const onSuccess = () => {
+                const orig = triggerBtn.textContent;
+                triggerBtn.textContent = '✓';
+                triggerBtn.classList.add('copy-icon-btn--success');
+                setTimeout(() => {
+                    triggerBtn.textContent = orig;
+                    triggerBtn.classList.remove('copy-icon-btn--success');
+                }, 1200);
+            };
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(onSuccess).catch(() => {
+                    _bslCopyFallback(text); onSuccess();
+                });
+            } else {
+                _bslCopyFallback(text); onSuccess();
+            }
+        }
+        function _bslCopyFallback(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.cssText = 'position:fixed;left:-9999px;opacity:0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
+
+        // ─── Minimap Toggle ───────────────────────────────────────
+        (function() {
+            document.addEventListener('DOMContentLoaded', () => {
+                const toggle = document.getElementById('minimap-toggle');
+                const collapsible = document.getElementById('minimap-collapsible');
+                if (!toggle || !collapsible) return;
+
+                let collapsed = false;
+                function setCollapsed(val) {
+                    collapsed = val;
+                    collapsible.style.display = collapsed ? 'none' : 'block';
+                    toggle.textContent = collapsed ? '▲' : '▼';
+                    toggle.title = collapsed ? 'Show minimap (M)' : 'Hide minimap (M)';
+                }
+
+                toggle.addEventListener('click', () => setCollapsed(!collapsed));
+
+                // M key shortcut
+                document.addEventListener('keydown', (e) => {
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+                    if (e.key === 'm' || e.key === 'M') {
+                        if (!e.ctrlKey && !e.altKey && !e.metaKey) {
+                            setCollapsed(!collapsed);
+                        }
+                    }
+                });
+            });
+        })();
+
+        // ─── Bookmark List Builder ─────────────────────────────
+        const TYPE_ICONS_BM = { 'Class':'🔷','Interface':'🔶','Actor':'👤','UseCase':'🎯','Component':'📦','Requirement':'📋','Package':'📁' };
+
+        // Context menu element (reusable)
+        let _bmCtxMenu = null;
+        function _closeBmCtxMenu() { if (_bmCtxMenu) { _bmCtxMenu.remove(); _bmCtxMenu = null; } }
+        document.addEventListener('click', _closeBmCtxMenu);
+
+        function _showContextMenu(e, menuItems) {
+            e.preventDefault();
+            _closeBmCtxMenu();
+            const menu = document.createElement('div');
+            menu.className = 'bm-ctx-menu';
+            menu.innerHTML = menuItems.map(m =>
+                m.separator ? '<div class="bm-ctx-sep"></div>' :
+                `<div class="bm-ctx-item ${m.danger ? 'bm-ctx-item--danger' : ''}" data-action="${m.action}">${m.icon || ''} ${m.label}</div>`
+            ).join('');
+            menu.style.left = e.clientX + 'px';
+            menu.style.top = e.clientY + 'px';
+            document.body.appendChild(menu);
+            // Adjust if overflows
+            const r = menu.getBoundingClientRect();
+            if (r.right > window.innerWidth) menu.style.left = (window.innerWidth - r.width - 8) + 'px';
+            if (r.bottom > window.innerHeight) menu.style.top = (window.innerHeight - r.height - 8) + 'px';
+            _bmCtxMenu = menu;
+            return menu;
+        }
+
+        function renderBookmarkList() {
+            const panel = document.getElementById('bookmark-list');
+            const bm = DataLoader.getBookmarks();
+            const totalItems = bm.unfiled.length + bm.folders.reduce((s, f) => s + f.items.length, 0);
+
+            let html = `<div class="bm-toolbar">
+                <button id="bm-new-folder" class="bm-new-folder-btn">+ New Folder</button>
+                <span class="bm-count">${totalItems} bookmarks</span>
+            </div>`;
+
+            // Folders
+            for (const folder of bm.folders) {
+                html += `<div class="bm-folder" data-fid="${folder.id}">
+                    <div class="bm-folder__header" data-fid="${folder.id}">
+                        <span class="bm-folder__toggle">▾</span>
+                        <span class="bm-folder__icon">📁</span>
+                        <span class="bm-folder__name">${escapeForHtml(folder.name)}</span>
+                        <span class="bm-folder__count">${folder.items.length}</span>
+                    </div>
+                    <div class="bm-folder__items">${_renderBmItems(folder.items)}</div>
+                </div>`;
+            }
+
+            // Unfiled
+            if (bm.unfiled.length > 0) {
+                html += `<div class="bm-unfiled">
+                    <div class="bm-unfiled__header">── Unfiled ──</div>
+                    ${_renderBmItems(bm.unfiled)}
+                </div>`;
+            }
+
+            if (totalItems === 0) {
+                html += `<div class="bm-empty">No bookmarks yet.<br>Click ☆ on a diagram or element to bookmark it.</div>`;
+            }
+
+            panel.innerHTML = html;
+
+            // Event: New folder
+            document.getElementById('bm-new-folder').addEventListener('click', () => {
+                const name = prompt('Folder name:');
+                if (name && name.trim()) {
+                    DataLoader.createBookmarkFolder(name.trim());
+                    renderBookmarkList();
+                }
+            });
+
+            // Event: Click items → navigate
+            panel.querySelectorAll('.bm-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const kind = item.dataset.kind;
+                    const id = parseInt(item.dataset.id);
+                    if (kind === 'diagram') {
+                        if (window._showDiagramFn) window._showDiagramFn(id);
+                    } else {
+                        DetailPanel.show(id);
+                        const diagrams = DataLoader.getDiagramsForElement(id);
+                        if (diagrams.length > 0 && window._showDiagramFn) window._showDiagramFn(diagrams[0].id);
+                    }
+                });
+            });
+
+            // Event: Folder collapse/expand (left click on header)
+            panel.querySelectorAll('.bm-folder__header').forEach(hdr => {
+                hdr.addEventListener('click', () => {
+                    const folder = hdr.closest('.bm-folder');
+                    folder.classList.toggle('collapsed');
+                    hdr.querySelector('.bm-folder__toggle').textContent = folder.classList.contains('collapsed') ? '▸' : '▾';
+                });
+            });
+
+            // ── RIGHT-CLICK: Folder context menu ──
+            panel.querySelectorAll('.bm-folder__header').forEach(hdr => {
+                hdr.addEventListener('contextmenu', (e) => {
+                    const fid = hdr.dataset.fid;
+                    const fname = hdr.querySelector('.bm-folder__name').textContent;
+                    const menu = _showContextMenu(e, [
+                        { action: 'rename', icon: '✏️', label: 'Rename folder' },
+                        { separator: true },
+                        { action: 'delete', icon: '🗑️', label: 'Delete folder', danger: true },
+                    ]);
+                    menu.addEventListener('click', (ev) => {
+                        const action = ev.target.closest('.bm-ctx-item')?.dataset.action;
+                        if (action === 'rename') {
+                            const newName = prompt('New folder name:', fname);
+                            if (newName && newName.trim()) {
+                                DataLoader.renameBookmarkFolder(fid, newName.trim());
+                                renderBookmarkList();
+                            }
+                        } else if (action === 'delete') {
+                            if (confirm('Delete "' + fname + '"? Items will move to General.')) {
+                                DataLoader.deleteBookmarkFolder(fid);
+                                renderBookmarkList();
+                            }
+                        }
+                        _closeBmCtxMenu();
+                    });
+                });
+            });
+
+            // ── RIGHT-CLICK: Item context menu ──
+            panel.querySelectorAll('.bm-item').forEach(item => {
+                item.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const kind = item.dataset.kind;
+                    const id = parseInt(item.dataset.id);
+                    const currentBm = DataLoader.getBookmarks();
+
+                    // Build "Move to" submenu items
+                    const moveItems = currentBm.folders.map(f => ({
+                        action: 'move_' + f.id, icon: '📁', label: f.name
+                    }));
+                    if (currentBm.folders.length > 0) {
+                        moveItems.push({ separator: true });
+                    }
+
+                    const menu = _showContextMenu(e, [
+                        ...moveItems.length > 0 ? [{ action: '_label', icon: '↪', label: 'Move to:' }] : [],
+                        ...moveItems,
+                        { separator: true },
+                        { action: 'remove', icon: '🗑️', label: 'Remove bookmark', danger: true },
+                    ]);
+                    menu.addEventListener('click', (ev) => {
+                        const action = ev.target.closest('.bm-ctx-item')?.dataset.action;
+                        if (!action || action === '_label') return;
+                        if (action === 'remove') {
+                            DataLoader.removeBookmark(kind, id);
+                        } else if (action.startsWith('move_')) {
+                            DataLoader.moveBookmarkToFolder(kind, id, action.replace('move_', ''));
+                        }
+                        renderBookmarkList();
+                        _closeBmCtxMenu();
+                    });
+                });
+            });
+        }
+
+        function _renderBmItems(items) {
+            return items.map(item => {
+                const icon = item.kind === 'diagram' ? '📊' : (TYPE_ICONS_BM[item.type] || '📝');
+                return `<div class="bm-item" data-kind="${item.kind}" data-id="${item.id}">
+                    <span class="bm-item__icon">${icon}</span>
+                    <span class="bm-item__name">${escapeForHtml(item.name)}</span>
+                    <span class="bm-item__type">${item.type}</span>
+                </div>`;
+            }).join('');
+        }
+
+
+        // ─── Glossary Builder ───────────────────────────────
+        function buildGlossary() {
+            const panel = document.getElementById('glossary-panel');
+            const glossary = DataLoader.getGlossary();
+            const domains = Object.keys(glossary);
+            const totalTerms = domains.reduce((s, d) => s + glossary[d].length, 0);
+
+            let html = `
+                <div class="glossary-header">
+                    <div class="glossary-stats">${totalTerms.toLocaleString()} terms · ${domains.length} domains</div>
+                    <input id="glossary-filter" type="text" placeholder="Filter terms..." class="glossary-filter">
+                </div>
+                <div id="glossary-list">
+            `;
+
+            for (const domain of domains) {
+                const entries = glossary[domain];
+                html += `
+                    <div class="glossary-domain" data-domain="${escapeForHtml(domain)}">
+                        <div class="glossary-domain__header" data-expanded="false">
+                            <span class="glossary-domain__toggle">▸</span>
+                            <span class="glossary-domain__name">${escapeForHtml(domain)}</span>
+                            <span class="glossary-domain__count">${entries.length}</span>
+                        </div>
+                        <div class="glossary-domain__body" style="display:none">
+                            ${entries.map(e => `
+                                <div class="glossary-entry" data-element-id="${e.id}" data-name="${escapeForHtml(e.name.toLowerCase())}">
+                                    <span class="glossary-entry__name">${escapeForHtml(e.name)}</span>
+                                    <span class="glossary-entry__badges">
+                                        <span class="glossary-entry__type">${e.type}</span>
+                                        ${e.stereotype ? `<span class="glossary-entry__stereo">«${escapeForHtml(e.stereotype)}»</span>` : ''}
+                                        ${e.hasNote ? '<span title="Has documentation">📝</span>' : ''}
+                                        <span class="glossary-entry__diagrams" title="Appears in ${e.diagramCount} diagrams">${e.diagramCount}📊</span>
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            html += '</div>';
+            panel.innerHTML = html;
+
+            // Toggle domain sections
+            panel.querySelectorAll('.glossary-domain__header').forEach(hdr => {
+                hdr.addEventListener('click', () => {
+                    const body = hdr.nextElementSibling;
+                    const toggle = hdr.querySelector('.glossary-domain__toggle');
+                    const expanded = hdr.dataset.expanded === 'true';
+                    body.style.display = expanded ? 'none' : 'block';
+                    toggle.textContent = expanded ? '▸' : '▾';
+                    hdr.dataset.expanded = String(!expanded);
+                });
+            });
+
+            // Click entry → show in detail panel
+            panel.querySelectorAll('.glossary-entry').forEach(entry => {
+                entry.addEventListener('click', () => {
+                    const elemId = parseInt(entry.dataset.elementId);
+                    DetailPanel.show(elemId);
+                    // Also navigate to first diagram if available
+                    const diagrams = DataLoader.getDiagramsForElement(elemId);
+                    if (diagrams.length > 0) {
+                        const showDiagramFn = window._showDiagramFn;
+                        if (showDiagramFn) showDiagramFn(diagrams[0].id);
+                    }
+                });
+            });
+
+            // Filter
+            const filterInput = document.getElementById('glossary-filter');
+            filterInput.addEventListener('input', () => {
+                const q = filterInput.value.toLowerCase().trim();
+                panel.querySelectorAll('.glossary-domain').forEach(dom => {
+                    let anyVisible = false;
+                    dom.querySelectorAll('.glossary-entry').forEach(entry => {
+                        const match = !q || entry.dataset.name.includes(q);
+                        entry.style.display = match ? '' : 'none';
+                        if (match) anyVisible = true;
+                    });
+                    dom.style.display = anyVisible ? '' : 'none';
+                    // Auto-expand domains when filtering
+                    if (q && anyVisible) {
+                        const body = dom.querySelector('.glossary-domain__body');
+                        const hdr = dom.querySelector('.glossary-domain__header');
+                        body.style.display = 'block';
+                        hdr.querySelector('.glossary-domain__toggle').textContent = '▾';
+                        hdr.dataset.expanded = 'true';
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

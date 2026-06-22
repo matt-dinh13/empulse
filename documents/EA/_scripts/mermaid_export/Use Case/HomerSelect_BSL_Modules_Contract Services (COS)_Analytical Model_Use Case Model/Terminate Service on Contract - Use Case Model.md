@@ -1,0 +1,27 @@
+# Terminate Service on Contract - Use Case Model
+
+- **Diagram Type**: Use Case
+- **Package**: HomerSelect/BSL/Modules/Contract Services (COS)/Analytical Model/Use Case Model
+- **Diagram ID**: 163697
+- **Elements**: 9
+- **Connectors**: 7
+
+```mermaid
+graph LR
+    Process_Contract_Service_operation_response_Use_Case_Model["Process Contract Service operation response - Use Case Model"]
+    ADD_Check_Contract_status_for_Contract_Service_cancellation_["{ADD}Check Contract status for Contract Service cancellation and termination (COS)"]
+    Get_Service_definition_from_Services_COS["Get Service definition from Services (COS)"]
+    Get_Service_definition_from_New_Service_Catalogue_COS["Get Service definition from New Service Catalogue (COS)"]
+    Contract_Services_Terminate_Contract_Service_method_COS["Contract Services : Terminate Contract Service method (COS)"]
+    ADD_Add_Event_into_Contract_Business_Events_BSL["{ADD}Add Event into Contract Business Events (BSL)"]
+    VAS_Deal[/"VAS Deal"/]
+    External_System[/"External System"/]
+    n_08_040_Terminate_Loan_Service_COS(("08.040 Terminate Loan Service (COS)"))
+    External_System --- n_08_040_Terminate_Loan_Service_COS
+    VAS_Deal --- n_08_040_Terminate_Loan_Service_COS
+    Contract_Services_Terminate_Contract_Service_method_COS -->|unnamed| n_08_040_Terminate_Loan_Service_COS
+    n_08_040_Terminate_Loan_Service_COS -->|unnamed| ADD_Add_Event_into_Contract_Business_Events_BSL
+    n_08_040_Terminate_Loan_Service_COS -->|unnamed| Get_Service_definition_from_New_Service_Catalogue_COS
+    n_08_040_Terminate_Loan_Service_COS -->|unnamed| Get_Service_definition_from_Services_COS
+    n_08_040_Terminate_Loan_Service_COS -->|unnamed| ADD_Check_Contract_status_for_Contract_Service_cancellation_
+```

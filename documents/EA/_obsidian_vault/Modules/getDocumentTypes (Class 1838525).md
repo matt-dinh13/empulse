@@ -1,0 +1,26 @@
+---
+type: Class
+stereotype: "Resource"
+package: "HomerSelect/BSL/Modules/Contract Management (COMA_NG)/Interface Consumed/REST/DMS/v2/getDocumentTypes"
+domain: "Modules"
+element_id: 1838525
+diagrams: 1
+connections: 0
+tags:
+  - class
+  - modules
+---
+
+# 🔷 getDocumentTypes
+
+> **Type**: Class · **Stereotype**: «Resource»
+> **Package**: HomerSelect/BSL/Modules/Contract Management (COMA_NG)/Interface Consumed/REST/DMS/v2/getDocumentTypes
+
+## 📝 Notes
+
+{ADD CLM-12588}
+https://api.dms.id00a1.cz.infra/rest/v2/document-types?documentTypeCodes=*DOCUMENT_TYPE*&projections=FLAG&activeOnly=true
+
+## 📊 Appears In (1 diagrams)
+
+- Logical: getDocumentTypes

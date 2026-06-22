@@ -1,0 +1,21 @@
+---
+type: Boundary
+stereotype: ""
+package: "HomerSelect/BSL/Requirements Model/Finished/CLM/CBL-14504 (CLM-5127) Asynchronous contract activation"
+domain: "Requirements Model"
+element_id: 1728231
+diagrams: 1
+connections: 0
+tags:
+  - boundary
+  - requirements-model
+---
+
+# 🔲 FF finishContractBasedOnABCForLoanServices dead code removal
+
+> **Type**: Boundary
+> **Package**: HomerSelect/BSL/Requirements Model/Finished/CLM/CBL-14504 (CLM-5127) Asynchronous contract activation
+
+## 📊 Appears In (1 diagrams)
+
+- Custom: CBL-14504 (CLM-5127) Asynchronous contract activation

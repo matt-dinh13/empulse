@@ -1,0 +1,35 @@
+---
+type: Requirement
+stereotype: "Access Right"
+package: "HomerSelect/BSL/Requirements Model/Finished/CLM/CBL-7465 (CLM-2299) Separate access rights for Take photo functionality"
+domain: "Requirements Model"
+element_id: 1678213
+diagrams: 2
+connections: 1
+tags:
+  - requirement
+  - requirements-model
+---
+
+# 📋 {ADD}01.129 Upload client document (all salesrooms)
+
+> **Type**: Requirement · **Stereotype**: «Access Right»
+> **Package**: HomerSelect/BSL/Requirements Model/Finished/CLM/CBL-7465 (CLM-2299) Separate access rights for Take photo functionality
+
+## 📝 Notes
+
+{ADD CLM-2299}
+Specific right for UC activation
+Code=UC01_129_AllSalesRooms
+
+Rule Access control to Document by Salesroom is applied, user can access to contracts without salesroom restriction.
+{/ADD
+
+## 🔗 Connections (1)
+
+- ← Realisation: [[01.129 Take and upload client document photo (UseCase 1880234)]]
+
+## 📊 Appears In (2 diagrams)
+
+- Custom: CBL-7465 (CLM-2299) Separate access rights for Take photo functionality
+- Custom: Client documents - Access Rights

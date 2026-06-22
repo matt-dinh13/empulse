@@ -1,0 +1,33 @@
+---
+type: Class
+stereotype: "REST Definition"
+package: "HomerSelect/BSL/Modules/Ticketing (TCK)/Interface Provided/Web Services/Ticketing API/assignments/assignTicketFromQueue"
+domain: "Modules"
+element_id: 1836560
+diagrams: 1
+connections: 0
+tags:
+  - class
+  - modules
+---
+
+# 🔷 {MOD}CreateTicketAssignmentFromQueue
+
+> **Type**: Class · **Stereotype**: «REST Definition»
+> **Package**: HomerSelect/BSL/Modules/Ticketing (TCK)/Interface Provided/Web Services/Ticketing API/assignments/assignTicketFromQueue
+
+## 📝 Notes
+
+Ticket assignment to currently logged user based on queue configuration
+
+## 📊 Appears In (1 diagrams)
+
+- Logical: assignTicketFromQueue
+
+## 📋 Attributes
+
+| Name | Type | Default |
+|------|------|---------|
+| queue | string |  |
+| ticketStatuses | string[] |  |
+| ticketTargetStatus | string |  |

@@ -1,0 +1,28 @@
+---
+type: GUIElement
+stereotype: "label"
+package: "HomerSelect/BSL/Modules/Product Catalog (PRC)/Analytical Model/Tariff/User Interface for Tariff Management/Tariff Root/User Interface"
+domain: "Modules"
+element_id: 1831553
+diagrams: 1
+connections: 0
+tags:
+  - guielement
+  - modules
+---
+
+# 🖥️ Version activated
+
+> **Type**: GUIElement · **Stereotype**: «label»
+> **Package**: HomerSelect/BSL/Modules/Product Catalog (PRC)/Analytical Model/Tariff/User Interface for Tariff Management/Tariff Root/User Interface
+
+## 📝 Notes
+
+LDM: Tariff.VersionActivationDate
+Format: date+time
+Localization code: GEN_VersionActivationDate
+Hidden in status ForActivation.
+
+## 📊 Appears In (1 diagrams)
+
+- Custom: Show Tariff

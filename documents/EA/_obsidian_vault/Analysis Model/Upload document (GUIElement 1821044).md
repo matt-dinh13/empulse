@@ -1,0 +1,37 @@
+---
+type: GUIElement
+stereotype: "button"
+package: "HomerSelect/BSL/Analysis Model/Contract Origination/Application detail/User Interface Model/Tab - Direct debit mandates"
+domain: "Analysis Model"
+element_id: 1821044
+diagrams: 1
+connections: 2
+tags:
+  - guielement
+  - analysis-model
+---
+
+# 🖥️ Upload document
+
+> **Type**: GUIElement · **Stereotype**: «button»
+> **Package**: HomerSelect/BSL/Analysis Model/Contract Origination/Application detail/User Interface Model/Tab - Direct debit mandates
+
+## 📝 Notes
+
+Button for uploading the document's page content into the document archive.
+
+Activates:
+- 01.125 Upload contract document - when applicationDetail.dmsUploadFile = FALSE
+- 20.125 Upload application document - when applicationDetail.dmsUploadFile = TRUE
+
+Localization code:
+DOC_Upload
+
+## 🔗 Connections (2)
+
+- → Dependency: [[01.125 Upload contract document]]
+- → Dependency: [[20.125 Upload application document]]
+
+## 📊 Appears In (1 diagrams)
+
+- Custom: Tab - Direct debit mandates

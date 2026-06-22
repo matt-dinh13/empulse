@@ -1,0 +1,28 @@
+---
+type: State
+stereotype: ""
+package: "HomerSelect/BSL/Analysis Model/Contract Management/COMMON for Contract Management/Loan Statechart Model"
+domain: "Analysis Model"
+element_id: 1655391
+diagrams: 1
+connections: 4
+tags:
+  - state
+  - analysis-model
+---
+
+# 🔄 CF Client draft
+
+> **Type**: State
+> **Package**: HomerSelect/BSL/Analysis Model/Contract Management/COMMON for Contract Management/Loan Statechart Model
+
+## 🔗 Connections (4)
+
+- ← ObjectFlow: [[PLW - LAP waiting]]
+- → ObjectFlow: [[PDRAFT - Draft]]
+- ← ObjectFlow: [[ACL Approved with Cross-sell limits]]
+- → ObjectFlow: [[Leave status _In pre-process_]]
+
+## 📊 Appears In (1 diagrams)
+
+- Statechart: In Pre-process (P)

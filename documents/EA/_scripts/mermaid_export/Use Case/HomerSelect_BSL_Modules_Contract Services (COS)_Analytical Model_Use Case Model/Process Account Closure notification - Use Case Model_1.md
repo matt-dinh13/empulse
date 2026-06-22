@@ -1,0 +1,24 @@
+# Process Account Closure notification - Use Case Model
+
+```mermaid
+graph TD
+    n_08_050_Cancel_Loan_Service_method_COS["08.050 Cancel Loan Service method (COS)"]
+    n_08_040_Terminate_Loan_Service_COS["08.040 Terminate Loan Service (COS)"]
+    n_08_030_Deactivate_Loan_Service_method_COS["08.030 Deactivate Loan Service method (COS)"]
+    AM["AM"]
+    Get_Service_definition_from_Services_COS["Get Service definition from Services (COS)"]
+    Get_Service_definition_from_New_Service_Catalogue_COS["Get Service definition from New Service Catalogue (COS)"]
+    n_08_218_Process_Account_Closure_notifications["08.218 Process Account Closure notifications"]
+    AM -->|unnamed| n_08_218_Process_Account_Closure_notifications
+    n_08_218_Process_Account_Closure_notifications -->|unnamed| Get_Service_definition_from_New_Service_Catalogue_COS
+    n_08_030_Deactivate_Loan_Service_method_COS -->|unnamed| Get_Service_definition_from_New_Service_Catalogue_COS
+    n_08_040_Terminate_Loan_Service_COS -->|unnamed| Get_Service_definition_from_New_Service_Catalogue_COS
+    n_08_050_Cancel_Loan_Service_method_COS -->|unnamed| Get_Service_definition_from_New_Service_Catalogue_COS
+    n_08_050_Cancel_Loan_Service_method_COS -->|unnamed| Get_Service_definition_from_Services_COS
+    n_08_030_Deactivate_Loan_Service_method_COS -->|unnamed| Get_Service_definition_from_Services_COS
+    n_08_040_Terminate_Loan_Service_COS -->|unnamed| Get_Service_definition_from_Services_COS
+    n_08_218_Process_Account_Closure_notifications -->|unnamed| Get_Service_definition_from_Services_COS
+    n_08_218_Process_Account_Closure_notifications -->|unnamed| n_08_030_Deactivate_Loan_Service_method_COS
+    n_08_218_Process_Account_Closure_notifications -->|unnamed| n_08_040_Terminate_Loan_Service_COS
+    n_08_218_Process_Account_Closure_notifications -->|unnamed| n_08_050_Cancel_Loan_Service_method_COS
+```

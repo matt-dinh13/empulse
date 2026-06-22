@@ -1,0 +1,25 @@
+---
+type: Collaboration
+stereotype: ""
+package: "HomerSelect/BSL/Requirements Model/Finished/CSI/CBL-16152 (CSI-1340) Contract service modularization - analysis/Service concept (object model)"
+domain: "Requirements Model"
+element_id: 1748464
+diagrams: 1
+connections: 1
+tags:
+  - collaboration
+  - requirements-model
+---
+
+# 📄 Create a 3party contract
+
+> **Type**: Collaboration
+> **Package**: HomerSelect/BSL/Requirements Model/Finished/CSI/CBL-16152 (CSI-1340) Contract service modularization - analysis/Service concept (object model)
+
+## 🔗 Connections (1)
+
+- → Dependency: [[HBO 2 (Object 1748524)]]
+
+## 📊 Appears In (1 diagrams)
+
+- Object: Service concept (object model)

@@ -1,0 +1,37 @@
+---
+type: GUIElement
+stereotype: "button"
+package: "HomerSelect/BSL/Analysis Model/Contract Origination/Application detail/User Interface Model/Tab - Client"
+domain: "Analysis Model"
+element_id: 1814763
+diagrams: 1
+connections: 0
+tags:
+  - guielement
+  - analysis-model
+---
+
+# 🖥️ Manage client
+
+> **Type**: GUIElement · **Stereotype**: «button»
+> **Package**: HomerSelect/BSL/Analysis Model/Contract Origination/Application detail/User Interface Model/Tab - Client
+
+## 📝 Notes
+
+Button for opening the detail of respective client in external CIF system using the dynamically constructed hyperlink.
+- https://pif.{environment}.infra/party-web/pif/customerperson/{CUID}?access={CUID hashed in MD5}
+
+Visible only if all the following conditions are met:
+
+	
+- User has assigned the 06.030 Show client data (Manage in CIF) (UC06_030_AC) privilege.
+	
+- Client's CUID is known (i.e. Contract->Deal->Client_Snapshot->Client.CUID is not null).
+
+
+Localization code:
+CLI_Manage
+
+## 📊 Appears In (1 diagrams)
+
+- Custom: Tab - Client

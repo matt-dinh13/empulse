@@ -1,0 +1,17 @@
+---
+type: Trigger
+stereotype: ""
+package: ""
+domain: "_Uncategorized"
+element_id: 1877016
+diagrams: 0
+connections: 0
+tags:
+  - trigger
+  - _uncategorized
+---
+
+# 📄 Process Refund Request with external identifiers
+
+> **Type**: Trigger
+> **Package**: N/A

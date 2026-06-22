@@ -1,0 +1,15 @@
+# Show ER request history
+
+```mermaid
+graph TD
+    n_08_359_Print_service_request_document["08.359 Print service request document"]
+    MOD_03_202_Extend_or_Reactivate_ER_request["{MOD}03.202 Extend or Reactivate ER request"]
+    ER_request_history_screen_ER_request_history["ER request history screen : ER request history"]
+    n_03_200_Show_ER_request_history["03.200 Show ER request history"]
+    User["User"]
+    ER_request_history_screen_ER_request_history -->|unnamed| n_03_200_Show_ER_request_history
+    ER_request_history_screen_ER_request_history -->|unnamed| MOD_03_202_Extend_or_Reactivate_ER_request
+    User -->|unnamed| n_03_200_Show_ER_request_history
+    User -->|unnamed| MOD_03_202_Extend_or_Reactivate_ER_request
+    User -->|unnamed| n_08_359_Print_service_request_document
+```

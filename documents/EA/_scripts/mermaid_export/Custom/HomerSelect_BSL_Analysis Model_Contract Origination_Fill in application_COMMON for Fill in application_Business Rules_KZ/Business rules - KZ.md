@@ -1,0 +1,13 @@
+# Business rules - KZ
+
+- **Diagram Type**: Custom
+- **Package**: HomerSelect/BSL/Analysis Model/Contract Origination/Fill in application/COMMON for Fill in application/Business Rules/KZ
+- **Diagram ID**: 118226
+- **Elements**: 2
+- **Connectors**: 0
+
+```mermaid
+graph TD
+    Mapping_CIF_data_to_application_form_KZ["Mapping CIF data to application form-KZ"]
+    Equality_data_rule_for_related_person_KZ["Equality data rule for related person - KZ"]
+```

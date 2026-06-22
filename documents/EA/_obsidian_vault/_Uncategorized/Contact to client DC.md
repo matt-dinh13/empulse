@@ -1,0 +1,21 @@
+---
+type: Boundary
+stereotype: ""
+package: ""
+domain: "_Uncategorized"
+element_id: 1539295
+diagrams: 0
+connections: 0
+tags:
+  - boundary
+  - _uncategorized
+---
+
+# 🔲 Contact to client DC
+
+> **Type**: Boundary
+> **Package**: N/A
+
+## 📝 Notes
+
+Name=Contact to client DC;Type=GUIElement;

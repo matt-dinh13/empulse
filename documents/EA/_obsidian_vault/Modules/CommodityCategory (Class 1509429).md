@@ -1,0 +1,40 @@
+---
+type: Class
+stereotype: "XSDcomplexType"
+package: "HomerSelect/BSL/Modules/Product Catalog (PRC)/Analytical Model/Financing Scheme/Financing Package/Provided Services/Interface Provided/GetFinancingPackageCodeLists"
+domain: "Modules"
+element_id: 1509429
+diagrams: 1
+connections: 2
+tags:
+  - class
+  - modules
+---
+
+# 🔷 CommodityCategory
+
+> **Type**: Class · **Stereotype**: «XSDcomplexType»
+> **Package**: HomerSelect/BSL/Modules/Product Catalog (PRC)/Analytical Model/Financing Scheme/Financing Package/Provided Services/Interface Provided/GetFinancingPackageCodeLists
+
+## 📝 Notes
+
+This data type defines list of Commodity Category.
+If not successfully retrieved then add NOTAVAILABLE_COMMODITYCATEGORY to GetFinancingPackageCodeListsResponse.errorCode.
+
+## 🔗 Connections (2)
+
+- → Dependency: [[Commodity Category (Class 1758909)]]
+- ← Dependency: [[GetFinancingPackageCodeListsResponse]]
+
+## 📊 Appears In (1 diagrams)
+
+- Logical: GetFinancingPackageCodeLists
+
+## 📋 Attributes
+
+| Name | Type | Default |
+|------|------|---------|
+| code | string |  |
+| name | LocalizedString |  |
+| sortOrder | Number |  |
+| active | boolean |  |

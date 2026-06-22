@@ -1,0 +1,32 @@
+---
+type: Class
+stereotype: ""
+package: "HomerSelect/BSL/Analysis Model/_Interface/Consumed services/COMA/v12/getContract "
+domain: "Analysis Model"
+element_id: 1707014
+diagrams: 1
+connections: 1
+tags:
+  - class
+  - analysis-model
+---
+
+# 🔷 ContractProduct
+
+> **Type**: Class
+> **Package**: HomerSelect/BSL/Analysis Model/_Interface/Consumed services/COMA/v12/getContract 
+
+## 🔗 Connections (1)
+
+- ← Usage: [[Contract (Class 1707015)]]
+
+## 📊 Appears In (1 diagrams)
+
+- Logical: getContract
+
+## 📋 Attributes
+
+| Name | Type | Default |
+|------|------|---------|
+| code | string |  |
+| version | int |  |

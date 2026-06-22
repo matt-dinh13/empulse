@@ -1,0 +1,21 @@
+---
+type: Boundary
+stereotype: ""
+package: ""
+domain: "_Uncategorized"
+element_id: 865592
+diagrams: 0
+connections: 0
+tags:
+  - boundary
+  - _uncategorized
+---
+
+# 🔲 Search criteria panel
+
+> **Type**: Boundary
+> **Package**: N/A
+
+## 📝 Notes
+
+Name=Search criteria panel;Type=GUIElement;

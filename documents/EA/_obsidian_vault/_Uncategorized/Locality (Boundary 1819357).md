@@ -1,0 +1,21 @@
+---
+type: Boundary
+stereotype: ""
+package: ""
+domain: "_Uncategorized"
+element_id: 1819357
+diagrams: 0
+connections: 0
+tags:
+  - boundary
+  - _uncategorized
+---
+
+# 🔲 Locality
+
+> **Type**: Boundary
+> **Package**: N/A
+
+## 📝 Notes
+
+Name=Locality;Type=GUIElement;

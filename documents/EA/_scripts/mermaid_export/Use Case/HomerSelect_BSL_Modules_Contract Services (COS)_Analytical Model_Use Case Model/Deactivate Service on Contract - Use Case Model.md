@@ -1,0 +1,27 @@
+# Deactivate Service on Contract - Use Case Model
+
+- **Diagram Type**: Use Case
+- **Package**: HomerSelect/BSL/Modules/Contract Services (COS)/Analytical Model/Use Case Model
+- **Diagram ID**: 163696
+- **Elements**: 9
+- **Connectors**: 7
+
+```mermaid
+graph LR
+    Process_Contract_Service_operation_response_Use_Case_Model["Process Contract Service operation response - Use Case Model"]
+    ADD_Get_the_latest_Service_Operation_Status_COS["{ADD}Get the latest Service Operation Status (COS)"]
+    ADD_Create_Loan_Service_Request_with_Service_Operation_Statu["{ADD}Create Loan Service Request with Service Operation Status (COS)"]
+    Get_Service_definition_from_Services_COS["Get Service definition from Services (COS)"]
+    Get_Service_definition_from_New_Service_Catalogue_COS["Get Service definition from New Service Catalogue (COS)"]
+    Contract_Services_Deactivate_Contract_Services_method_COS["Contract Services : Deactivate Contract Services method (COS)"]
+    VAS_Deal[/"VAS Deal"/]
+    External_System[/"External System"/]
+    n_08_030_Deactivate_Loan_Service_method_COS(("08.030 Deactivate Loan Service method (COS)"))
+    External_System --- n_08_030_Deactivate_Loan_Service_method_COS
+    VAS_Deal --- n_08_030_Deactivate_Loan_Service_method_COS
+    Contract_Services_Deactivate_Contract_Services_method_COS -->|unnamed| n_08_030_Deactivate_Loan_Service_method_COS
+    n_08_030_Deactivate_Loan_Service_method_COS -->|unnamed| Get_Service_definition_from_New_Service_Catalogue_COS
+    n_08_030_Deactivate_Loan_Service_method_COS -->|unnamed| Get_Service_definition_from_Services_COS
+    n_08_030_Deactivate_Loan_Service_method_COS -->|unnamed| ADD_Create_Loan_Service_Request_with_Service_Operation_Statu
+    n_08_030_Deactivate_Loan_Service_method_COS -->|unnamed| ADD_Get_the_latest_Service_Operation_Status_COS
+```

@@ -1,0 +1,21 @@
+---
+type: Requirement
+stereotype: ""
+package: "HomerSelect/BSL/Requirements Model/Finished/CSI/CBL-22680 Service Management Modules for REL (KZ)"
+domain: "Requirements Model"
+element_id: 1820503
+diagrams: 1
+connections: 0
+tags:
+  - requirement
+  - requirements-model
+---
+
+# 📋 Get Contract Service methods
+
+> **Type**: Requirement
+> **Package**: HomerSelect/BSL/Requirements Model/Finished/CSI/CBL-22680 Service Management Modules for REL (KZ)
+
+## 📊 Appears In (1 diagrams)
+
+- Custom: CBL-22680 Overview of Stories

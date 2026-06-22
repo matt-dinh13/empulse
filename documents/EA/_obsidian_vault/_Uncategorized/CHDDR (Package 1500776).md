@@ -1,0 +1,17 @@
+---
+type: Package
+stereotype: ""
+package: ""
+domain: "_Uncategorized"
+element_id: 1500776
+diagrams: 0
+connections: 0
+tags:
+  - package
+  - _uncategorized
+---
+
+# 📁 CHDDR
+
+> **Type**: Package
+> **Package**: N/A

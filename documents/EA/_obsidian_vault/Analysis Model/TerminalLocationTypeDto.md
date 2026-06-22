@@ -1,0 +1,33 @@
+---
+type: Enumeration
+stereotype: ""
+package: "HomerSelect/BSL/Analysis Model/_Interface/Consumed services/Payment Card system/Account/Account Transactions"
+domain: "Analysis Model"
+element_id: 1819470
+diagrams: 2
+connections: 1
+tags:
+  - enumeration
+  - analysis-model
+---
+
+# 📝 TerminalLocationTypeDto
+
+> **Type**: Enumeration
+> **Package**: HomerSelect/BSL/Analysis Model/_Interface/Consumed services/Payment Card system/Account/Account Transactions
+
+## 🔗 Connections (1)
+
+- ← Dependency: [[TxTerminalInfoDto]]
+
+## 📊 Appears In (2 diagrams)
+
+- Logical: AccountTransactionWS - usage on REL transaction confirmation
+- Logical: AuthorizeTransactionWithIPVariant
+
+## 📋 Attributes
+
+| Name | Type | Default |
+|------|------|---------|
+| DOMESTIC | string |  |
+| ABROAD | string |  |

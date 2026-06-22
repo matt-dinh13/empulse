@@ -1,0 +1,21 @@
+---
+type: Package
+stereotype: ""
+package: ""
+domain: "_Uncategorized"
+element_id: 1581697
+diagrams: 0
+connections: 0
+tags:
+  - package
+  - _uncategorized
+---
+
+# 📁 FER
+
+> **Type**: Package
+> **Package**: N/A
+
+## 📝 Notes
+
+Client can pay full outstanding debt by an extraordinary installment.

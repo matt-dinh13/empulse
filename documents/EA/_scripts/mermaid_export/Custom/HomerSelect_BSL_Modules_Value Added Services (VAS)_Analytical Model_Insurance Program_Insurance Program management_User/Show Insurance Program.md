@@ -1,0 +1,74 @@
+# Show Insurance Program
+
+- **Diagram Type**: Custom
+- **Package**: HomerSelect/BSL/Modules/Value Added Services (VAS)/Analytical Model/Insurance Program/Insurance Program management/User Interface Model
+- **Diagram ID**: 135208
+- **Elements**: 56
+- **Connectors**: 7
+
+```mermaid
+graph TD
+    Set_main_Insurance_Program_properties["Set main Insurance Program properties"]
+    n_08_540_Cancel_Insurance_Program_version["08.540 Cancel Insurance Program version"]
+    n_08_530_Create_Insurance_Program_version["08.530 Create Insurance Program version"]
+    n_08_550_Set_main_Insurance_Program_properties["08.550 Set main Insurance Program properties"]
+    n_08_525_Create_Insurance_Program_by_copy["08.525 Create Insurance Program by copy"]
+    n_08_580_Activate_Insurance_Program_version_manually["08.580 Activate Insurance Program version manually"]
+    n_08_560_Show_Insurance_Program_version_detail["08.560 Show Insurance Program version detail"]
+    Description["Description"]
+    Back["‹- Back"]
+    Custom_data_tab["Custom data tab"]
+    Ineligible_professions_tab["Ineligible professions tab"]
+    Eligible_commodities_tab["Eligible commodities tab"]
+    Eligibility_criteria["Eligibility criteria"]
+    Maximal_Age_Restriction_Type["Maximal Age Restriction Type"]
+    Maximal_Age_Female["Maximal Age Female"]
+    Maximal_Sum_Insured_for_Client["Maximal Sum Insured for Client"]
+    Maximal_Age_Male["Maximal Age Male"]
+    Maximal_Sum_Insured_for_Contract["Maximal Sum Insured for Contract"]
+    Minimal_Age["Minimal Age"]
+    Revenue_share_rounding_scale["Revenue share rounding scale"]
+    Revenue_share_rounding["Revenue share rounding"]
+    Revenue_share_frequency["Revenue share frequency"]
+    Revenue_share_base["Revenue share base"]
+    Revenue_share["Revenue share"]
+    Frequency["Frequency"]
+    Offset["Offset"]
+    Register_inclusion_date["Register inclusion date"]
+    Insured_subject_type["Insured subject type"]
+    Insurance_contract_type["Insurance contract type"]
+    Fixed_contract_number["Fixed contract number"]
+    Description["Description"]
+    Contract_number_suffix["Contract number suffix"]
+    Contract_number_prefix["Contract number prefix"]
+    Contract_numbering["Contract numbering"]
+    Version_terminated["Version terminated"]
+    Version_activated["Version activated"]
+    Version_number["Version number"]
+    Code["Code"]
+    Provider["Provider"]
+    Version_status["Version status"]
+    New_version["New version"]
+    Create_program_by_copy["Create program by copy"]
+    Update["Update"]
+    Cancel_version["Cancel version"]
+    Activate["Activate"]
+    Buttons_group["Buttons group"]
+    Valid_to["Valid to"]
+    Valid_from["Valid from"]
+    Name["Name"]
+    Basic_info["Basic info"]
+    Version_info["Version info"]
+    Contract_numbering["Contract numbering"]
+    Register_inclusion_date["Register inclusion date"]
+    Revenue_share["Revenue share"]
+    Insurance_program_detail_panel["Insurance program detail panel"]
+    Insurance_program["Insurance program"]
+    Insurance_program -->|unnamed| n_08_560_Show_Insurance_Program_version_detail
+    Activate -->|unnamed| n_08_580_Activate_Insurance_Program_version_manually
+    Create_program_by_copy -->|unnamed| n_08_525_Create_Insurance_Program_by_copy
+    Update -->|unnamed| n_08_550_Set_main_Insurance_Program_properties
+    New_version -->|unnamed| n_08_530_Create_Insurance_Program_version
+    Cancel_version -->|unnamed| n_08_540_Cancel_Insurance_Program_version
+    Update -->|unnamed| Set_main_Insurance_Program_properties
+```

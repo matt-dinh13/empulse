@@ -1,0 +1,6 @@
+# Getting Insurance Contract statistics
+
+```mermaid
+graph TD
+    n_11_070_Get_Insurance_Contract_statistics["11.070 Get Insurance Contract statistics"]
+```

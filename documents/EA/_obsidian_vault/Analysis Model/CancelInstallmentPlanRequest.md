@@ -1,0 +1,31 @@
+---
+type: Class
+stereotype: "XSDtopLevelElement"
+package: "HomerSelect/BSL/Analysis Model/_Interface/Consumed services/Payment Card system/Account/InstallmentPlanWS/CancelInstalmentPlan"
+domain: "Analysis Model"
+element_id: 968279
+diagrams: 1
+connections: 1
+tags:
+  - class
+  - analysis-model
+---
+
+# 🔷 CancelInstallmentPlanRequest
+
+> **Type**: Class · **Stereotype**: «XSDtopLevelElement»
+> **Package**: HomerSelect/BSL/Analysis Model/_Interface/Consumed services/Payment Card system/Account/InstallmentPlanWS/CancelInstalmentPlan
+
+## 🔗 Connections (1)
+
+- ← Dependency: [[InstalmentPlanWS]]
+
+## 📊 Appears In (1 diagrams)
+
+- Logical: CancelInstalmentPlan
+
+## 📋 Attributes
+
+| Name | Type | Default |
+|------|------|---------|
+| installmentPlanID | CodeType |  |

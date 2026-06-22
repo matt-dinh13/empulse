@@ -1,0 +1,23 @@
+# List of country application forms
+
+- **Diagram Type**: Custom
+- **Package**: HomerSelect/BSL/Analysis Model/Contract Origination/Fill in application/COMMON for Fill in application/User Interface Model
+- **Diagram ID**: 150052
+- **Elements**: 7
+- **Connectors**: 5
+
+```mermaid
+graph TD
+    Edit_Address["Edit Address"]
+    Indonesia["Indonesia"]
+    India["India"]
+    Kazakhstan["Kazakhstan"]
+    Philippines["Philippines"]
+    Vietnam["Vietnam"]
+    Product_AF["Product AF"]
+    Indonesia -->|unnamed| Product_AF
+    India -->|unnamed| Product_AF
+    Kazakhstan -->|unnamed| Product_AF
+    Philippines -->|unnamed| Product_AF
+    Vietnam -->|unnamed| Product_AF
+```

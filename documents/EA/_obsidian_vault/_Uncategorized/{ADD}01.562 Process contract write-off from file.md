@@ -1,0 +1,25 @@
+---
+type: Boundary
+stereotype: ""
+package: ""
+domain: "_Uncategorized"
+element_id: 1880911
+diagrams: 0
+connections: 1
+tags:
+  - boundary
+  - _uncategorized
+---
+
+# 🔲 {ADD}01.562 Process contract write-off from file
+
+> **Type**: Boundary
+> **Package**: N/A
+
+## 📝 Notes
+
+Name={ADD}01.562 Process contract write-off from file;Type=UseCase;
+
+## 🔗 Connections (1)
+
+- ← UseCase: [[Time (Actor 1880869)]]
